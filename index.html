@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maestro AI — Autonomous Executive Event Producer · Exploratorium Pier 15</title>
+<link rel="stylesheet" href="css/maestro.css">
+</head>
+<body>
+
+  <!-- Top Navigation & Instant Venue Config Switcher -->
+  <header class="topbar">
+    <div class="brand-cluster">
+      <div class="brand-logo">M</div>
+      <div class="brand-titles">
+        <h1>
+          Maestro AI
+          <span class="agent-games-badge">🏆 Built for Agent Games</span>
+        </h1>
+        <p>Autonomous Executive Event Producer · OKF v2.0 · Wedding Venues &amp; Event Packages Track</p>
+      </div>
+    </div>
+
+    <div class="topbar-controls">
+      <select id="venue-selector" class="ctrl-pill" title="Switch Active Venue Dataset">
+        <option value="exploratorium_pier15">🏛️ The Exploratorium (Pier 15 Waterfront)</option>
+        <option value="sfmoma">🏛️ SFMOMA (Evelyn &amp; Walter Haas Atrium)</option>
+        <option value="the_pearl_sf">🏛️ The Pearl (Dogpatch 3-Level)</option>
+      </select>
+
+      <button type="button" class="ctrl-pill" id="btn-toggle-mode">
+        🔄 Mode: Waterfront Jazz Wedding
+      </button>
+
+      <button type="button" class="ctrl-pill" id="btn-upload-venue-json" title="Adapt to any real venue website with a JSON config">
+        ⚡ Swap Venue JSON
+      </button>
+      <input type="file" id="venue-json-input" accept=".json" style="display:none">
+
+      <button type="button" class="ctrl-pill" id="btn-export-okf">
+        💾 Export OKF JSON
+      </button>
+
+      <button type="button" class="ctrl-pill cta-hold" id="btn-open-hold">
+        🔒 Lock 14-Day Free Soft Hold / Tour
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Split-Screen Workspace -->
+  <main class="workspace-split">
+
+    <!-- Left Pane: Conversational Maestro AI Agent (English) -->
+    <aside class="chat-pane">
+      <div class="portal-clue-banner">
+        <div class="portal-label">
+          <span id="portal-venue-name">Exploratorium (Pier 15) · Live Portal Clue</span>
+          <span>Active Theory × Amado UI</span>
+        </div>
+        <div class="portal-text" id="portal-clue-text">
+          "Prismatic light beams refracting through suspended kinetic sculptures as twilight settles over the Bay Bridge and shimmering water."
+        </div>
+      </div>
+
+      <div class="chat-stream" id="chat-stream"></div>
+
+      <form class="chat-composer" id="chat-form">
+        <div class="composer-row">
+          <button type="button" class="voice-btn" id="voice-btn" title="Speak to Maestro AI (English Voice)">🎙️</button>
+          <input
+            type="text"
+            id="chat-input"
+            class="composer-input"
+            placeholder="Ask Maestro: '220 guests, $125k budget, grandparents need quiet terrace...'"
+            autocomplete="off"
+          >
+          <button type="submit" class="send-btn">Send ➔</button>
+        </div>
+      </form>
+    </aside>
+
+    <!-- Right Pane: Live OKF Dynamic Producer Dashboard -->
+    <section class="dashboard-pane">
+
+      <!-- Real-Time Telemetry Strip -->
+      <div class="telemetry-strip">
+        <div class="stat-tile">
+          <div class="lbl">Active Venue Space</div>
+          <div class="val" id="stat-venue">Exploratorium (Pier 15)</div>
+          <div class="sub" id="stat-venue-url">exploratorium.edu/rentals</div>
+        </div>
+        <div class="stat-tile">
+          <div class="lbl">Target Date &amp; Mode</div>
+          <div class="val" id="stat-date">2027-01-22 (Friday)</div>
+          <div class="sub" id="stat-mode">Jazz Wedding &amp; Gala</div>
+        </div>
+        <div class="stat-tile">
+          <div class="lbl">Guest Count &amp; Package</div>
+          <div class="val" id="stat-guests">220 Guests</div>
+          <div class="sub" id="stat-package">Observatory + East Bundle</div>
+        </div>
+        <div class="stat-tile">
+          <div class="lbl">Turnkey Production Est.</div>
+          <div class="val" id="stat-total-est">$142,800</div>
+          <div class="sub" id="stat-venue-fee">$16,500 Venue Fee</div>
+        </div>
+        <div class="stat-tile">
+          <div class="lbl">Stakeholder Harmony</div>
+          <div class="val" id="stat-alignment" style="color:var(--accent-emerald)">94% Harmony</div>
+          <div class="sub" id="stat-budget-status">✅ Within Envelope</div>
+        </div>
+      </div>
+
+      <!-- Stage Navigation Tabs -->
+      <div class="stage-nav">
+        <button type="button" class="stage-tab active" data-view="view-spatial">
+          🏛️ Stage 1: 3-Level Spatial Journey &amp; Live Pricing
+        </button>
+        <button type="button" class="stage-tab" data-view="view-stakeholders">
+          📲 Stage 1.5: Stakeholder Circle &amp; 5-Q Micro-Survey
+        </button>
+        <button type="button" class="stage-tab" data-view="view-floorplan">
+          📐 Stage 2: Interactive Museum Blueprint &amp; Sanctuary
+        </button>
+        <button type="button" class="stage-tab" data-view="view-ros">
+          ⚡ Stage 3: IF-THEN Rules, Vendors &amp; Run of Show
+        </button>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════
+           VIEW 1: 3-LEVEL SPATIAL JOURNEY & PRICING
+      ════════════════════════════════════════════════════════════ -->
+      <div class="stage-view active" id="view-spatial">
+        <div class="glass-grid-3" id="levels-grid"></div>
+
+        <div class="glass-grid-2">
+          <div class="glass-card">
+            <h3>
+              <span>💎 Real-Time Turnkey Pricing Matrix (OKF Procurement)</span>
+              <span style="font-size:0.74rem;color:var(--text-muted)">Zero Hidden Fees</span>
+            </h3>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Package / Tier-1 San Francisco Partner</th>
+                  <th>Estimate (USD)</th>
+                </tr>
+              </thead>
+              <tbody id="pricing-breakdown-body"></tbody>
+            </table>
+          </div>
+
+          <div class="glass-card">
+            <h3>
+              <span>🎁 Included Venue Perks &amp; Curatorial Guardrails</span>
+              <span style="font-size:0.74rem;color:var(--accent-emerald)">Verified Policy</span>
+            </h3>
+            <ul id="venue-perks-list" style="list-style:none;padding-top:4px"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════
+           VIEW 1.5: STAKEHOLDER CIRCLE, 5-Q SURVEY & ALIGNMENT ENGINE
+      ════════════════════════════════════════════════════════════ -->
+      <div class="stage-view" id="view-stakeholders">
+        <div class="glass-grid-2">
+          <div class="glass-card">
+            <h3>
+              <span>👥 Stakeholder Circle (`StakeholderCircle` Entity)</span>
+              <span style="font-size:0.74rem;color:var(--accent-emerald)">3/3 Responded</span>
+            </h3>
+            <div id="stakeholders-list" style="margin-bottom:14px"></div>
+
+            <div style="border-top:1px solid var(--border-glass);padding-top:12px">
+              <div style="font-size:0.78rem;font-weight:700;margin-bottom:8px;color:var(--accent-cyan)">
+                ➕ Add Stakeholder &amp; Dispatch 60-Second WhatsApp Micro-Survey
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px">
+                <input type="text" id="new-st-name" placeholder="Name (e.g. Grandma Evelyn)" class="composer-input" style="padding:7px 10px;font-size:0.78rem">
+                <input type="text" id="new-st-role" placeholder="Role (e.g. Family Elder)" class="composer-input" style="padding:7px 10px;font-size:0.78rem">
+                <input type="text" id="new-st-phone" placeholder="WhatsApp / SMS" class="composer-input" style="padding:7px 10px;font-size:0.78rem">
+                <button type="button" class="ctrl-pill cta-hold" id="btn-send-survey">📲 Send 5-Q</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card">
+            <h3>
+              <span>💬 Automated WhatsApp / SMS 5-Question Micro-Survey</span>
+              <span style="font-size:0.74rem;color:var(--text-muted)">&lt;60 Sec Completion</span>
+            </h3>
+            <div class="whatsapp-preview">
+              <div class="whatsapp-bubble" id="whatsapp-survey-text"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card">
+          <h3>
+            <span>🧭 Maestro AI Alignment Matrix &amp; Diplomatic Conflict Resolution Engine</span>
+            <span style="font-size:0.75rem;color:var(--accent-emerald)">Rule 4 Active</span>
+          </h3>
+          <div id="alignment-matrix-content"></div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════
+           VIEW 2: INTERACTIVE 3-LEVEL MUSEUM FLOORPLAN BLUEPRINT
+      ════════════════════════════════════════════════════════════ -->
+      <div class="stage-view" id="view-floorplan">
+        <div class="blueprint-stage">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+            <div>
+              <h3 style="color:var(--accent-cyan);font-size:1rem">📐 Live Architectural &amp; Acoustic Zoning Blueprint — Pier 15 Waterfront</h3>
+              <p style="font-size:0.78rem;color:var(--text-muted)">Simultaneous multi-generational harmony: Kinetic Light Portal (L1) ➔ Seated Michelin Jazz Banquet (L2) ➔ Waterfront Chuppah &amp; &lt;65 dB Senior Sanctuary (L3)</p>
+            </div>
+            <span class="agent-games-badge">Flexible LED Skins + ADA Zero-Step Routing</span>
+          </div>
+          <div id="floorplan-svg-wrapper"></div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════
+           VIEW 3: OPERATIONAL INFERENCE RULES, VENDORS & RUN OF SHOW
+      ════════════════════════════════════════════════════════════ -->
+      <div class="stage-view" id="view-ros">
+        <div class="glass-card" style="margin-bottom:18px">
+          <h3>
+            <span>⚙️ Active OKF Production Inference Rules (`IF-THEN` Engine)</span>
+            <span style="font-size:0.74rem;color:var(--accent-cyan)">4 Rules Triggered</span>
+          </h3>
+          <div class="glass-grid-3" style="margin-bottom:0">
+            <div class="rule-code"><strong>RULE 1: Museum Turnaround Rule</strong>
+IF Venue == PublicMuseum &amp;&amp; Close == 17:00
+THEN:
+• Pre-rig 24h prior at Blueprint &amp; Argus HD
+• Deploy Jay's Small Moves 90-min dock crew
+• Doors open strictly at 18:45</div>
+            <div class="rule-code"><strong>RULE 2: Acoustic Damping Rule</strong>
+IF Concept == LiveJazz &amp;&amp; Material IN [Glass, Steel]
+THEN:
+• Mandate Argus HD DSP Line-Array calibration
+• Deploy OrangePiel drapes &amp; The Rug Company
+• Lock &lt;65 dB Senior Sanctuary on Terrace</div>
+            <div class="rule-code"><strong>RULE 3: High-Volume Flow Rule</strong>
+IF Guests &gt;= 150
+THEN:
+• Synchronized Paula LeDuc seated courses
+• 3 distributed Tonic Beverage mixology bars
+• Double Espresso Subito + Caviar Co. VIP</div>
+          </div>
+        </div>
+
+        <div class="glass-card" style="margin-bottom:18px">
+          <h3>
+            <span>⏱️ Minute-by-Minute Operational Run of Show (`RunOfShowLog`)</span>
+            <span style="font-size:0.74rem;color:var(--accent-emerald)">Includes Live Fallback Protocols</span>
+          </h3>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Phase &amp; Spatial Zone</th>
+                <th>Responsible Lead Vendors</th>
+                <th>OKF Rule</th>
+                <th>Automated Fallback Protocol</th>
+              </tr>
+            </thead>
+            <tbody id="ros-table-body"></tbody>
+          </table>
+        </div>
+
+        <div class="glass-card">
+          <h3>
+            <span>🤝 Bound Tier-1 San Francisco Vendor Entities (`VendorEntity` Catalog)</span>
+            <span style="font-size:0.74rem;color:var(--text-muted)">Pre-Vetted Museum Partners</span>
+          </h3>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Vendor Name &amp; Category</th>
+                <th>In-House Capabilities</th>
+                <th>Direct Dispatch Contact</th>
+                <th>Allocated Budget</th>
+              </tr>
+            </thead>
+            <tbody id="vendors-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- Actionable Conversion Modal: 14-Day Soft Hold / Venue Tour -->
+  <div class="modal-overlay" id="hold-modal">
+    <div class="modal-box">
+      <h3 style="color:var(--accent-cyan);margin-bottom:6px">🔒 Lock 14-Day Complimentary Soft Hold or Pier 15 Venue Tour</h3>
+      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:16px">
+        Per official Exploratorium policy, a complimentary <strong>2-Week Soft Hold</strong> locks your preferred date with zero deposit while Maestro AI dispatches your complete OKF Run-of-Show and Vendor RFP packet.
+      </p>
+      <form id="hold-form">
+        <div class="form-row">
+          <label>Conversion Action</label>
+          <select id="hold-action">
+            <option value="soft_hold">🔒 Place 14-Day Complimentary Soft Hold ($0 Deposit)</option>
+            <option value="venue_tour">🏛️ Schedule Private On-Site Pier 15 Gallery Tour</option>
+            <option value="custom_rfp">📄 Dispatch Official Custom Quote &amp; Vendor RFP Packet</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Your Name(s) / Organization</label>
+          <input type="text" id="hold-name" value="Alex &amp; Jordan" required>
+        </div>
+        <div class="form-row">
+          <label>Email Address (for Soft Hold Confirmation &amp; OKF Packet)</label>
+          <input type="email" id="hold-email" placeholder="alex.jordan@example.com" required>
+        </div>
+        <div class="form-row">
+          <label>Mobile Number (for WhatsApp Stakeholder Micro-Survey Link)</label>
+          <input type="tel" id="hold-phone" value="+1 (415) 890-2211">
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:18px">
+          <button type="button" class="ctrl-pill" id="btn-close-hold">Cancel</button>
+          <button type="submit" class="ctrl-pill cta-hold">✅ Confirm &amp; Dispatch Packet</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/okf-engine.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+{
+  "defaultVenueId": "exploratorium_pier15",
+  "venues": [
+    {
+      "venueId": "exploratorium_pier15",
+      "venueName": "The Exploratorium — Pier 15 Waterfront Galleries",
+      "shortName": "Exploratorium (Pier 15)",
+      "city": "San Francisco, CA (Embarcadero Pier 15)",
+      "officialRentalUrl": "https://www.exploratorium.edu/rentals",
+      "contactEmail": "events@exploratorium.edu",
+      "contactPhone": "+1 (415) 528-4500",
+      "isPublicMuseum": true,
+      "museumCloseTime": "17:00",
+      "loadInWindowHours": 2.0,
+      "architectureMaterial": ["Glass", "Steel", "Concrete", "Panoramic Waterfront"],
+      "curatorialConstraints": [
+        "FlameProhibited (LED/Electronic Candles Only)",
+        "MaxDecibelThreshold (88dB Main / 65dB Terrace Sanctuary)",
+        "RiggingWeightLimit (Pre-Approved Truss Points)",
+        "ApprovedCatererListEnforced",
+        "ZeroStepElevatorAccessRequiredForSeniors"
+      ],
+      "portalClue": "Prismatic light beams refracting through suspended kinetic sculptures as twilight settles over the Bay Bridge and shimmering water.",
+      "levelsAndGalleries": [
+        {
+          "level": 1,
+          "id": "bechtel_central",
+          "name": "Level 1: Bechtel Central Gallery (Light, Vision & Sound Portal)",
+          "role": "Arrival Portal, Interactive Cocktail Reception & Kinetic Light Immersion",
+          "standingCapacity": 800,
+          "seatedCapacity": 350,
+          "baseRate": 14000,
+          "acousticProfile": "Dynamic Interactive (78 dB)",
+          "accessibility": "Ground-level step-free entry from Embarcadero Pier 15",
+          "ledSkinPreset": "Bioluminescent Deep Ocean & Prismatic Refraction"
+        },
+        {
+          "level": 2,
+          "id": "moore_east_mezzanine",
+          "name": "Level 2: Moore East Gallery & Mezzanine (Dual-Level Transition)",
+          "role": "Main Seated Banquet, Academic Speakeasy & Live Jazz Stage",
+          "standingCapacity": 450,
+          "seatedCapacity": 150,
+          "baseRate": 12500,
+          "acousticProfile": "DSP Calibrated Jazz & Dining (72–82 dB)",
+          "accessibility": "Dual-elevator access to Mezzanine + wide aisle geometry",
+          "ledSkinPreset": "Warm Amber Speakeasy & Architectural Column Skins"
+        },
+        {
+          "level": 3,
+          "id": "fisher_bay_observatory",
+          "name": "Level 3: Fisher Bay Observatory Gallery & Waterfront Terrace",
+          "role": "Chuppah / Keynote Apex, VIP Caviar Lounge & Senior Acoustic Sanctuary",
+          "standingCapacity": 200,
+          "seatedCapacity": 150,
+          "ceremonySeated": 120,
+          "baseRate": 11000,
+          "acousticProfile": "Protected Acoustic Sanctuary (<65 dB on Terrace)",
+          "accessibility": "Direct dedicated elevator + heated wind-shielded waterfront seating",
+          "ledSkinPreset": "Obsidian Glass Starlight & Bay Bridge Reflection"
+        },
+        {
+          "level": 4,
+          "id": "kanbar_forum",
+          "name": "Modular Bonus: Kanbar Forum (Mid-Week Tech Keynote & Cinema Hall)",
+          "role": "Executive Keynotes, Product Launches, Live Broadcasts & Chamber Sets",
+          "standingCapacity": 300,
+          "seatedCapacity": 200,
+          "baseRate": 9500,
+          "acousticProfile": "Studio-GradeMeyer Sound Constellation Acoustics",
+          "accessibility": "ADA stadium ramp & hearing-loop induction system",
+          "ledSkinPreset": "Silicon Valley Keynote Matrix & Live Telemetry"
+        }
+      ],
+      "pricingPackages": [
+        {
+          "packageId": "observatory_standalone",
+          "name": "Fisher Bay Observatory & Terrace Package",
+          "maxGuestsSeated": 150,
+          "maxGuestsStanding": 200,
+          "basePrice": 11000,
+          "bestFor": "Intimate Waterfront Weddings & Executive VIP Dinners (up to 150 seated)"
+        },
+        {
+          "packageId": "observatory_east_bundle",
+          "name": "Observatory + Moore East Gallery Wedding Bundle",
+          "maxGuestsSeated": 300,
+          "maxGuestsStanding": 450,
+          "basePrice": 16500,
+          "bestFor": "Signature 3-Level Flow: Ceremony in Observatory -> Dinner & Jazz in East Gallery (150–450 guests)"
+        },
+        {
+          "packageId": "full_pier15_flagship",
+          "name": "Full Pier 15 Multi-Gallery Buyout (Bechtel + East + Observatory)",
+          "maxGuestsSeated": 500,
+          "maxGuestsStanding": 1200,
+          "basePrice": 28000,
+          "bestFor": "450+ Guest High-Society Galas, Large Weddings & Enterprise Summits"
+        }
+      ],
+      "includedPerks": [
+        "On-site 'Explainer' Science Educators facilitating live interactive exhibits",
+        "1-Hour Private Museum Photo Shoot across Pier 15 galleries",
+        "Dedicated Get-Ready Classroom / Green Room for Couple or Keynote Speakers",
+        "In-house Architectural LED Lighting & Base PA System",
+        "1-Year Complimentary Dual Explorers Museum Membership",
+        "14-Day Complimentary Soft Hold (Zero Deposit Required to Lock Date)",
+        "15% Base Rental Discount for 501(c)(3) Nonprofit Organizations"
+      ]
+    },
+    {
+      "venueId": "sfmoma",
+      "venueName": "SFMOMA — Evelyn & Walter Haas Jr. Atrium & galleries",
+      "shortName": "SFMOMA",
+      "city": "San Francisco, CA (SoMa)",
+      "officialRentalUrl": "https://www.sfmoma.org/event-rentals/",
+      "contactEmail": "specialevents@sfmoma.org",
+      "contactPhone": "+1 (415) 357-4075",
+      "isPublicMuseum": true,
+      "museumCloseTime": "17:00",
+      "loadInWindowHours": 2.0,
+      "architectureMaterial": ["Marble", "HighCeilingSteel", "OculusGlass"],
+      "curatorialConstraints": [
+        "FlameProhibited",
+        "StrictArtProximityBuffers",
+        "ApprovedCatererListEnforced"
+      ],
+      "portalClue": "Oculus sky light casting geometric shadows across white Carrara marble staircases.",
+      "levelsAndGalleries": [
+        {
+          "level": 1,
+          "id": "haas_atrium",
+          "name": "Level 1: Evelyn & Walter Haas Jr. Atrium",
+          "role": "Grand Arrival & Seated Gala Banquet",
+          "standingCapacity": 600,
+          "seatedCapacity": 350,
+          "baseRate": 18000,
+          "acousticProfile": "High Reverb Marble (Requires Argus HD DSP)",
+          "accessibility": "Full ADA elevator & ramp access",
+          "ledSkinPreset": "Monochrome Modernist Halo"
+        },
+        {
+          "level": 2,
+          "id": "schwab_hall",
+          "name": "Level 2: Helen & Charles Schwab Hall",
+          "role": "Cocktail Reception & Interactive Installations",
+          "standingCapacity": 450,
+          "seatedCapacity": 220,
+          "baseRate": 15000,
+          "acousticProfile": "Warm Mid-Ceiling Gallery",
+          "accessibility": "Direct elevator bank",
+          "ledSkinPreset": "Rothko Warm Crimson Gradient"
+        },
+        {
+          "level": 3,
+          "id": "sculpture_terrace",
+          "name": "Level 3: Living Wall & Sculpture Terrace",
+          "role": "Chuppah Ceremony & Quiet Senior Garden Sanctuary",
+          "standingCapacity": 250,
+          "seatedCapacity": 160,
+          "baseRate": 12000,
+          "acousticProfile": "Natural Botanical Absorption (<62 dB)",
+          "accessibility": "Step-free terrace doors",
+          "ledSkinPreset": "Botanical Emerald Glow"
+        }
+      ],
+      "pricingPackages": [
+        {
+          "packageId": "sfmoma_atrium_bundle",
+          "name": "Atrium + Schwab Hall + Living Wall Bundle",
+          "maxGuestsSeated": 450,
+          "maxGuestsStanding": 700,
+          "basePrice": 25000,
+          "bestFor": "High-Society Museum Weddings & Executive Galas"
+        }
+      ],
+      "includedPerks": [
+        "Private Gallery Viewing Guards",
+        "Dedicated Museum Event Manager",
+        "14-Day Soft Hold Option"
+      ]
+    },
+    {
+      "venueId": "the_pearl_sf",
+      "venueName": "The Pearl — Dogpatch Multi-Level Industrial Venue",
+      "shortName": "The Pearl (Dogpatch)",
+      "city": "San Francisco, CA (Dogpatch)",
+      "officialRentalUrl": "https://www.thepearlsf.com/private-events",
+      "contactEmail": "info@thepearlsf.com",
+      "contactPhone": "+1 (415) 598-8309",
+      "isPublicMuseum": false,
+      "museumCloseTime": "14:00",
+      "loadInWindowHours": 4.5,
+      "architectureMaterial": ["Steel", "WarmWood", "RooftopGlass"],
+      "curatorialConstraints": [
+        "FlamePermittedInVotives",
+        "InHouseBarProgramRequired"
+      ],
+      "portalClue": "Golden hour over the Bay transitioning into warm candlelight across dark oak tables.",
+      "levelsAndGalleries": [
+        {
+          "level": 1,
+          "id": "pearl_main_floor",
+          "name": "Level 1: Main Industrial Floor & Custom Stage",
+          "role": "Main Reception, Banquet & Keynote Stage",
+          "standingCapacity": 450,
+          "seatedCapacity": 230,
+          "baseRate": 10500,
+          "acousticProfile": "Meyer Sound In-House Array",
+          "accessibility": "Ground level + elevator to all floors",
+          "ledSkinPreset": "Industrial Copper & Obsidian"
+        },
+        {
+          "level": 2,
+          "id": "pearl_mezzanine",
+          "name": "Level 2: Art Mezzanine & Lounge Overlook",
+          "role": "VIP Speakeasy & Cocktail Overlook",
+          "standingCapacity": 150,
+          "seatedCapacity": 80,
+          "baseRate": 4500,
+          "acousticProfile": "Intimate Lounge",
+          "accessibility": "Elevator access",
+          "ledSkinPreset": "Velvet Violet Speakeasy"
+        },
+        {
+          "level": 3,
+          "id": "pearl_rooftop",
+          "name": "Level 3: Living Rooftop Garden",
+          "role": "Outdoor Chuppah Ceremony & Senior Quiet Sanctuary",
+          "standingCapacity": 200,
+          "seatedCapacity": 160,
+          "baseRate": 5000,
+          "acousticProfile": "Open-Air Garden (<60 dB)",
+          "accessibility": "Direct rooftop elevator",
+          "ledSkinPreset": "Sunset Amber & String Lights"
+        }
+      ],
+      "pricingPackages": [
+        {
+          "packageId": "pearl_full_3level",
+          "name": "Full 3-Level Exclusive Buyout (Main + Mezzanine + Rooftop)",
+          "maxGuestsSeated": 250,
+          "maxGuestsStanding": 600,
+          "basePrice": 14500,
+          "bestFor": "3-Level Weddings & Mid-Week Tech Summits"
+        }
+      ],
+      "includedPerks": [
+        "Built-in Meyer Sound & Rigging Truss",
+        "Custom Brass Bars & Lounge Furniture",
+        "Full Commercial Catering Kitchen"
+      ]
+    }
+  ]
+}

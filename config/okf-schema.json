@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Maestro AI — Ontology & Knowledge Framework (OKF v2.0)",
+  "version": "2.0.0",
+  "systemName": "Maestro AI — The Autonomous Executive Event Producer",
+  "coreEntities": {
+    "EventProject": {
+      "attributes": [
+        "projectID",
+        "targetDate",
+        "dayOfWeek",
+        "eventType",
+        "guestCount",
+        "aestheticConcept",
+        "budgetEnvelope",
+        "nonProfit501c3",
+        "lifecycleStatus"
+      ],
+      "lifecycleEnums": [
+        "1_AnchorDiscovery",
+        "1.5_StakeholderAlignment",
+        "2_SpatialAndVendorEngineering",
+        "3_RunOfShowAndRules",
+        "4_SoftHoldOrTourConfirmed"
+      ]
+    },
+    "VenueSpace": {
+      "attributes": [
+        "venueId",
+        "venueName",
+        "officialRentalUrl",
+        "architectureMaterial",
+        "loadInWindowHours",
+        "museumCloseTime",
+        "curatorialConstraints",
+        "levelsAndGalleries",
+        "pricingPackages",
+        "includedPerks"
+      ]
+    },
+    "StakeholderCircle": {
+      "attributes": [
+        "stakeholderID",
+        "name",
+        "role",
+        "contactChannel",
+        "phoneOrEmail",
+        "surveyStatus",
+        "responses",
+        "sentimentVector"
+      ],
+      "surveyQuestions": {
+        "wedding": [
+          {
+            "id": "q1_peak_moment",
+            "title": "1. The Peak Memory",
+            "prompt": "What is the single moment that must happen for you to smile and say, 'That was the most unforgettable wedding in the world'?"
+          },
+          {
+            "id": "q2_vibe",
+            "title": "2. The Pulse & Vibe",
+            "prompt": "Which combination best describes the atmosphere you envision? (A: Cultural Salon & Deep Conversation | B: Electric Jazz & Swing Speakeasy | C: Classic Black-Tie Banquet & Speeches)"
+          },
+          {
+            "id": "q3_music_boundaries",
+            "title": "3. Musical Green & Red Lines",
+            "prompt": "Which genre or track will get you flying onto the floor, and what is strictly off-limits?"
+          },
+          {
+            "id": "q4_hospitality_focus",
+            "title": "4. Culinary & Hospitality Priority",
+            "prompt": "What matters most for guest comfort — Michelin-level tasting surprises, zero-wait bar flow, or quiet acoustic lounges for seniors and deep conversation?"
+          },
+          {
+            "id": "q5_tradition_accessibility",
+            "title": "5. Heritage, Inclusion & Accessibility",
+            "prompt": "Is there a family tradition, LGBTQ+/multicultural nuance, or senior mobility/acoustic need we should honor with special care?"
+          }
+        ],
+        "corporate": [
+          {
+            "id": "q1_kpi",
+            "title": "1. Primary Executive KPI",
+            "prompt": "What is the #1 outcome this event must achieve — closing enterprise deals, team cohesion, or viral product-launch buzz?"
+          },
+          {
+            "id": "q2_takeaway",
+            "title": "2. Attendee Takeaway",
+            "prompt": "What is the exact sentence you want attendees saying on their way home across the Bay?"
+          },
+          {
+            "id": "q3_content_mix",
+            "title": "3. Keynote vs. Networking Ratio",
+            "prompt": "What is the ideal balance between stage keynotes/demos and interactive gallery networking?"
+          },
+          {
+            "id": "q4_production_style",
+            "title": "4. Production Aesthetic",
+            "prompt": "Should the Flexible LED Skins project futuristic Silicon Valley cyber-glass or warm, sustainable community design?"
+          },
+          {
+            "id": "q5_past_pitfalls",
+            "title": "5. Operational Red Lines",
+            "prompt": "Based on past company events, what bottleneck or friction must we eliminate at all costs?"
+          }
+        ]
+      }
+    },
+    "VendorEntity": {
+      "attributes": [
+        "vendorID",
+        "vendorName",
+        "primaryCategory",
+        "serviceTier",
+        "inHouseCapabilities",
+        "estimatedCostRange",
+        "directContact"
+      ]
+    },
+    "RunOfShowItem": {
+      "attributes": [
+        "timestamp",
+        "phase",
+        "title",
+        "responsibleVendor",
+        "zoneLocation",
+        "ruleTriggered",
+        "fallbackAction"
+      ]
+    }
+  },
+  "operationalInferenceRules": [
+    {
+      "ruleId": "RULE_1_MUSEUM_TURNAROUND",
+      "name": "Museum Turnaround & Rapid Load-In Rule",
+      "condition": "VenueSpace.isPublicMuseum == true && loadInWindowHours <= 2.5",
+      "actions": [
+        "Lock Load-In start strictly at Museum Close (17:00 PT).",
+        "Mandate Off-Site Pre-Rigging at Blueprint Studios & Argus HD warehouses 24h prior.",
+        "Deploy Jay's Small Moves rapid urban logistics fleet for 90-minute pier-to-gallery load-in."
+      ]
+    },
+    {
+      "ruleId": "RULE_2_ACOUSTIC_DAMPING",
+      "name": "Live Jazz & Glass/Steel Acoustic Damping Rule",
+      "condition": "VenueSpace.architectureMaterial CONTAINS 'Glass' OR 'Steel' OR 'Marble'",
+      "actions": [
+        "Mandate Argus HD Digital Signal Processing (DSP) & directional Line-Array calibration.",
+        "Deploy acoustic velvet draping by OrangePiel + luxury sound-absorbing carpets by The Rug Company.",
+        "Create a dedicated <65 dB Senior Acoustic Sanctuary in the Observatory Terrace.",
+        "Enforce mandatory 18:00 sharp Soundcheck prior to Doors Open."
+      ]
+    },
+    {
+      "ruleId": "RULE_3_HIGH_VOLUME_FLOW",
+      "name": "High-Volume Speakeasy Grazing & Zero-Queue Rule",
+      "condition": "EventProject.guestCount >= 150",
+      "actions": [
+        "Combine heavy Speakeasy Grazing Stations with synchronized seated courses by Paula LeDuc Fine Dining.",
+        "Deploy Double Espresso Subito artisan carts + 3 distributed Tonic Beverage mixology bars.",
+        "Activate The Caviar Co. VIP Lounge + Exploratorium 'Explainer' interactive science hosts."
+      ]
+    },
+    {
+      "ruleId": "RULE_4_STAKEHOLDER_MEDIATION",
+      "name": "Multi-Generational & Stakeholder Conflict Mediation Rule",
+      "condition": "StakeholderCircle.tensionDetected == true",
+      "actions": [
+        "Split spatial acoustic zones across the 3 Museum Levels: Seated Banquet & Warm Conversation in Moore East Gallery, High-Energy Jazz Speakeasy in Bechtel/Mezzanine, and Quiet Waterfront Sanctuary in Fisher Bay Observatory Terrace.",
+        "Apply step-free elevator routing and high-contrast spatial wayfinding for senior guests."
+      ]
+    }
+  ]
+}

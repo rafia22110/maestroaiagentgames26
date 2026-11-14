@@ -1,0 +1,650 @@
+:root {
+  --bg-void: #07090e;
+  --bg-glass: rgba(16, 20, 32, 0.82);
+  --bg-glass-heavy: rgba(12, 15, 24, 0.94);
+  --bg-card: rgba(24, 30, 46, 0.78);
+  --border-glass: rgba(255, 255, 255, 0.09);
+  --border-glow: rgba(56, 189, 248, 0.45);
+  --accent-rose: #f43f5e;
+  --accent-amber: #f59e0b;
+  --accent-cyan: #38bdf8;
+  --accent-emerald: #10b981;
+  --accent-violet: #8b5cf6;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-void);
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(56, 189, 248, 0.12), transparent 38%),
+    radial-gradient(circle at 88% 15%, rgba(244, 63, 94, 0.11), transparent 36%),
+    radial-gradient(circle at 50% 85%, rgba(139, 92, 246, 0.1), transparent 45%);
+  background-attachment: fixed;
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* ── Top Navigation Bar (Built for Agent Games Badge + Venue Switcher) ── */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 22px;
+  background: var(--bg-glass-heavy);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border-glass);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.brand-cluster {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-logo {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet), var(--accent-rose));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 1.1rem;
+  box-shadow: 0 0 22px rgba(56, 189, 248, 0.4);
+}
+
+.brand-titles h1 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-titles p {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.agent-games-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, rgba(244, 63, 94, 0.22), rgba(245, 158, 11, 0.22));
+  border: 1px solid rgba(244, 63, 94, 0.55);
+  color: #fda4af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.topbar-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ctrl-pill {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  color: var(--text-main);
+  padding: 7px 13px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ctrl-pill:hover {
+  border-color: var(--accent-cyan);
+  background: rgba(56, 189, 248, 0.12);
+}
+
+.ctrl-pill.mode-switch-active {
+  background: linear-gradient(135deg, var(--accent-violet), var(--accent-cyan));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.35);
+}
+
+.ctrl-pill.cta-hold {
+  background: linear-gradient(135deg, var(--accent-emerald), #059669);
+  border-color: transparent;
+  color: #051b11;
+  font-weight: 800;
+}
+
+/* ── Main Split-Screen Workspace ── */
+.workspace-split {
+  display: grid;
+  grid-template-columns: 430px 1fr;
+  flex: 1;
+  min-height: calc(100vh - 65px);
+}
+
+@media (max-width: 1080px) {
+  .workspace-split {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Left Pane: Maestro Conversational Agent ── */
+.chat-pane {
+  background: var(--bg-glass-heavy);
+  border-right: 1px solid var(--border-glass);
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 65px);
+  position: sticky;
+  top: 65px;
+}
+
+.portal-clue-banner {
+  padding: 14px 18px;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 27, 75, 0.75));
+  border-bottom: 1px solid var(--border-glass);
+  position: relative;
+  overflow: hidden;
+}
+
+.portal-clue-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 80% 50%, rgba(56, 189, 248, 0.2), transparent 65%);
+  pointer-events: none;
+}
+
+.portal-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent-cyan);
+  font-weight: 800;
+  margin-bottom: 3px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.portal-text {
+  font-size: 0.79rem;
+  color: #e2e8f0;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.chat-stream {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.msg {
+  max-width: 92%;
+  padding: 12px 15px;
+  border-radius: 14px;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  animation: msgAppear 0.22s ease;
+}
+
+@keyframes msgAppear {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.msg.bot {
+  align-self: flex-start;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-top-left-radius: 4px;
+}
+
+.msg.user {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  color: #fff;
+  border-top-right-radius: 4px;
+}
+
+.msg-meta {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+}
+
+.msg.bot strong {
+  color: var(--accent-cyan);
+}
+
+.msg-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.prompt-chip {
+  background: rgba(56, 189, 248, 0.11);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #bae6fd;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.prompt-chip:hover {
+  background: var(--accent-cyan);
+  color: #07090e;
+}
+
+.chat-composer {
+  padding: 12px 14px;
+  border-top: 1px solid var(--border-glass);
+  background: rgba(10, 13, 22, 0.95);
+}
+
+.composer-row {
+  display: flex;
+  gap: 8px;
+}
+
+.composer-input {
+  flex: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  color: var(--text-main);
+  padding: 10px 14px;
+  border-radius: 11px;
+  font-size: 0.86rem;
+  outline: none;
+}
+
+.composer-input:focus {
+  border-color: var(--accent-cyan);
+}
+
+.send-btn {
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet));
+  color: #fff;
+  border: none;
+  padding: 0 16px;
+  border-radius: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.voice-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  color: var(--text-main);
+  width: 40px;
+  border-radius: 11px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.voice-btn.listening {
+  border-color: var(--accent-rose);
+  background: rgba(244, 63, 94, 0.2);
+  animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+/* ── Right Pane: Live OKF Dynamic Producer Dashboard ── */
+.dashboard-pane {
+  padding: 20px 24px 60px;
+  overflow-y: auto;
+}
+
+/* Live Telemetry Strip (EventProject State) */
+.telemetry-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.stat-tile {
+  background: var(--bg-glass);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--border-glass);
+  border-radius: 14px;
+  padding: 13px 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-tile .lbl {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.stat-tile .val {
+  font-size: 1.22rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.stat-tile .sub {
+  font-size: 0.73rem;
+  color: var(--accent-cyan);
+  margin-top: 3px;
+}
+
+/* Dashboard Stage Tabs */
+.stage-nav {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border-glass);
+  padding-bottom: 12px;
+}
+
+.stage-tab {
+  padding: 9px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  color: var(--text-muted);
+  border-radius: 11px;
+  font-size: 0.83rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.stage-tab:hover {
+  color: var(--text-main);
+  border-color: var(--accent-cyan);
+}
+
+.stage-tab.active {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(139, 92, 246, 0.25));
+  border-color: var(--accent-cyan);
+  color: #fff;
+  box-shadow: 0 4px 18px rgba(56, 189, 248, 0.2);
+}
+
+.stage-view {
+  display: none;
+  animation: msgAppear 0.22s ease;
+}
+
+.stage-view.active {
+  display: block;
+}
+
+/* Glass Cards & Grids */
+.glass-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.glass-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.glass-card {
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass);
+  border-radius: 16px;
+  padding: 18px 20px;
+}
+
+.glass-card h3 {
+  font-size: 0.98rem;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--accent-cyan);
+}
+
+/* 3-Level Spatial Journey Cards (Active Theory + Amado LED Skins) */
+.level-portal-card {
+  background: linear-gradient(160deg, rgba(17, 24, 39, 0.92), rgba(9, 12, 20, 0.96));
+  border: 1px solid var(--border-glass);
+  border-radius: 16px;
+  padding: 18px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s;
+}
+
+.level-portal-card:hover {
+  border-color: var(--accent-cyan);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+
+.level-number {
+  font-size: 2.3rem;
+  font-weight: 900;
+  opacity: 0.14;
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  letter-spacing: -2px;
+}
+
+.led-skin-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(139, 92, 246, 0.18);
+  border: 1px solid rgba(139, 92, 246, 0.45);
+  color: #ddd6fe;
+  margin: 8px 0;
+  font-weight: 700;
+}
+
+/* Interactive Floorplan Blueprint */
+.blueprint-stage {
+  background-color: #080d18;
+  background-image:
+    linear-gradient(to right, rgba(56, 189, 248, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(56, 189, 248, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 18px;
+}
+
+/* Stakeholder Alignment & Micro-Survey */
+.stakeholder-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.badge-status {
+  font-size: 0.7rem;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.badge-status.completed { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+.badge-status.sent { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+
+.whatsapp-preview {
+  background: #0b141a;
+  border: 1px solid #1f2c34;
+  border-radius: 14px;
+  padding: 14px;
+  font-size: 0.82rem;
+  color: #e9edef;
+}
+
+.whatsapp-bubble {
+  background: #005c4b;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border-top-left-radius: 2px;
+  line-height: 1.48;
+  white-space: pre-wrap;
+}
+
+.tension-alert {
+  background: rgba(244, 63, 94, 0.1);
+  border-left: 4px solid var(--accent-rose);
+  padding: 12px 14px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-size: 0.83rem;
+}
+
+.resolution-box {
+  background: rgba(16, 185, 129, 0.1);
+  border-left: 4px solid var(--accent-emerald);
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 0.83rem;
+}
+
+/* Tables & Rules */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.data-table th {
+  text-align: left;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  text-transform: uppercase;
+}
+
+.data-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-glass);
+}
+
+.rule-code {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  background: rgba(7, 9, 14, 0.85);
+  border: 1px solid var(--border-glass);
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #a5f3fc;
+  margin-bottom: 10px;
+  white-space: pre-wrap;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 6, 12, 0.82);
+  backdrop-filter: blur(10px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 16px;
+}
+
+.modal-overlay.open {
+  display: flex;
+}
+
+.modal-box {
+  background: #121726;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  border-radius: 18px;
+  max-width: 580px;
+  width: 100%;
+  padding: 24px;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.75);
+}
+
+.form-row {
+  margin-bottom: 12px;
+}
+
+.form-row label {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.form-row input, .form-row select, .form-row textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border-glass);
+  background: #090c15;
+  color: var(--text-main);
+  font-size: 0.86rem;
+}

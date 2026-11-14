@@ -25,6 +25,8 @@
       <select id="venue-selector" class="ctrl-pill" title="Switch Active Venue Dataset">
         <option value="exploratorium_pier15">🏛️ The Exploratorium (Pier 15 Waterfront)</option>
         <option value="sfmoma">🏛️ SFMOMA (Evelyn &amp; Walter Haas Atrium)</option>
+        <option value="cjm_sf">🏛️ Contemporary Jewish Museum (CJM Blue Cube)</option>
+        <option value="de_young_museum">🏛️ de Young Museum (Wilsey Court &amp; Tower)</option>
         <option value="the_pearl_sf">🏛️ The Pearl (Dogpatch 3-Level)</option>
       </select>
 
@@ -273,16 +275,27 @@ THEN:
 
         <div class="glass-card">
           <h3>
-            <span>🤝 Bound Tier-1 San Francisco Vendor Entities (`VendorEntity` Catalog)</span>
-            <span style="font-size:0.74rem;color:var(--text-muted)">Pre-Vetted Museum Partners</span>
+            <span>🤝 San Francisco Tier-1 Vendor Ecosystem (`VendorEntity` Catalog · Clean Domains)</span>
+            <div style="display:flex;gap:8px;align-items:center">
+              <select id="vendor-cat-filter" class="ctrl-pill" style="padding:4px 10px;font-size:0.75rem">
+                <option value="ALL">All 9 Categories (Full Ecosystem)</option>
+                <option value="CORE">⭐ Core Bound Vendors for This Event</option>
+                <option value="1. Catering & Mixology">1. Catering, Mixology &amp; Coffee</option>
+                <option value="2. Floral & Botanicals">2. Floral Design &amp; Botanicals</option>
+                <option value="3. Furniture, Decor & Acoustics">3. Furniture, Chairs, Rugs &amp; Fabrication</option>
+                <option value="4. AV, DSP Sound & LED Skins">4. AV, DSP Sound &amp; Flexible LED Skins</option>
+                <option value="5. Live Jazz, Talent & Media">5. Live Jazz, Drone Shows &amp; Photography</option>
+                <option value="6. Logistics, Power & Engineering">6. Logistics, Power (C-10) &amp; Engineering</option>
+              </select>
+            </div>
           </h3>
           <table class="data-table">
             <thead>
               <tr>
                 <th>Vendor Name &amp; Category</th>
-                <th>In-House Capabilities</th>
-                <th>Direct Dispatch Contact</th>
-                <th>Allocated Budget</th>
+                <th>Specialty, Credentials &amp; Capabilities</th>
+                <th>SF Address &amp; Clean Domain (Copyable)</th>
+                <th>Est. Allocation / RFP</th>
               </tr>
             </thead>
             <tbody id="vendors-table-body"></tbody>

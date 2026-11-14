@@ -302,19 +302,66 @@ To craft an unforgettable evening that feels personal and effortless for you, he
   }
 
   function renderStage3(venue, pricing, ros) {
-    // Vendors Table
+    // 9-Category San Francisco Master Vendor Directory (Clean Domain Protocol)
     const vBody = document.getElementById("vendors-table-body");
-    vBody.innerHTML = window.MAESTRO_VENDORS_CATALOG.map(v => {
-      const est = v.costFormula(project.guestCount);
+    const catFilterEl = document.getElementById("vendor-cat-filter");
+    const selectedCat = catFilterEl ? catFilterEl.value : "ALL";
+    const fullDir = window.MAESTRO_FULL_VENDOR_DIRECTORY || window.MAESTRO_VENDORS_CATALOG || [];
+
+    const filteredVendors = selectedCat === "ALL"
+      ? fullDir
+      : fullDir.filter(v => v.cat === selectedCat || v.primaryCategory === selectedCat);
+
+    vBody.innerHTML = filteredVendors.map((v, idx) => {
+      const name = v.name || v.vendorName;
+      const cat = v.cat || v.primaryCategory;
+      const spec = v.spec || v.capabilities;
+      const addr = v.addr || v.contact || "San Francisco, CA";
+      const domain = v.domain || "exploratorium.edu";
+      const est = typeof v.costFormula === "function" ? v.costFormula(project.guestCount) : 0;
+
       return `
         <tr>
-          <td><strong>${escapeHtml(v.vendorName)}</strong><br><span style="font-size:0.72rem;color:var(--accent-cyan)">${escapeHtml(v.primaryCategory)}</span></td>
-          <td style="font-size:0.78rem;color:#cbd5e1">${escapeHtml(v.capabilities)}</td>
-          <td style="font-size:0.76rem;color:var(--text-muted)">${escapeHtml(v.contact)}</td>
-          <td style="font-weight:700;color:#34d399">${formatUSD(est)}</td>
+          <td>
+            <strong>${escapeHtml(name)}</strong><br>
+            <span style="font-size:0.71rem;color:var(--accent-cyan)">${escapeHtml(cat)}</span>
+          </td>
+          <td style="font-size:0.78rem;color:#cbd5e1">${escapeHtml(spec)}</td>
+          <td style="font-size:0.74rem;color:var(--text-muted)">📍 ${escapeHtml(addr)}</td>
+          <td>
+            <code style="background:rgba(16,185,129,0.14);color:#6ee7b7;padding:3px 7px;border-radius:6px;font-size:0.74rem;border:1px solid rgba(16,185,129,0.3);user-select:all">${escapeHtml(domain)}</code>
+          </td>
+          <td>
+            <div style="display:flex;align-items:center;gap:8px;justify-content:space-between">
+              <span style="font-weight:700;color:#34d399">${formatUSD(est)}</span>
+              <button type="button" class="btn-rfp-gen" data-vendor-name="${escapeHtml(name)}" data-vendor-cat="${escapeHtml(cat)}" data-vendor-domain="${escapeHtml(domain)}" data-vendor-spec="${escapeHtml(spec)}" data-vendor-est="${est}" style="background:rgba(56,189,248,0.16);color:#7dd3fc;border:1px solid rgba(56,189,248,0.35);border-radius:6px;padding:3px 8px;font-size:0.71rem;cursor:pointer;font-weight:700">📄 RFP</button>
+            </div>
+          </td>
         </tr>
       `;
     }).join("");
+
+    vBody.querySelectorAll(".btn-rfp-gen").forEach(btn => {
+      btn.onclick = () => {
+        const vName = btn.dataset.vendorName;
+        const vCat = btn.dataset.vendorCat;
+        const vDomain = btn.dataset.vendorDomain;
+        const vSpec = btn.dataset.vendorSpec;
+        const vEst = Number(btn.dataset.vendorEst || 0);
+        appendMessage(
+          "bot",
+          `📄 <strong>AUTO-GENERATED TECHNICAL RFP FOR ${escapeHtml(vName.toUpperCase())}</strong> (<code>${escapeHtml(vDomain)}</code>):<br><br>
+          • <strong>Category:</strong> ${escapeHtml(vCat)}<br>
+          • <strong>Venue & Date:</strong> ${escapeHtml(venue.venueName)} · ${project.targetDate} (${project.guestCount} Guests)<br>
+          • <strong>Scope & OKF Rule Compliance:</strong> ${escapeHtml(vSpec)} — <em>Must comply with ${venue.museumCloseTime} museum public closing and 90-minute synchronized dock load-in (24-hr off-site pre-rigging mandatory; zero open flames).</em><br>
+          • <strong>Target Allocation:</strong> <strong>${formatUSD(vEst)}</strong>`,
+          [
+            "Lock 14-Day Complimentary Soft Hold",
+            "Inspect 3-Level Floorplan & Senior Sanctuary"
+          ]
+        );
+      };
+    });
 
     // Run-of-Show Table
     const rosBody = document.getElementById("ros-table-body");
@@ -397,6 +444,10 @@ To craft an unforgettable evening that feels personal and effortless for you, he
     // 5. Detect venue switches
     if (lower.includes("sfmoma")) {
       project.venueId = "sfmoma";
+    } else if (lower.includes("academy") || lower.includes("cal academy")) {
+      project.venueId = "cal_academy";
+    } else if (lower.includes("de young") || lower.includes("deyoung")) {
+      project.venueId = "de_young";
     } else if (lower.includes("pearl")) {
       project.venueId = "the_pearl_sf";
     } else if (lower.includes("exploratorium") || lower.includes("pier 15")) {
@@ -511,6 +562,17 @@ To craft an unforgettable evening that feels personal and effortless for you, he
   document.querySelectorAll(".stage-tab").forEach(btn => {
     btn.onclick = () => activateTab(btn.dataset.view);
   });
+
+  // Vendor Category Filter (9-Category SF Master Directory)
+  const vendorCatFilterEl = document.getElementById("vendor-cat-filter");
+  if (vendorCatFilterEl) {
+    vendorCatFilterEl.onchange = () => {
+      const venue = window.MaestroOKFEngine.getVenue(project.venueId);
+      const pricing = window.MaestroOKFEngine.calculatePricing(project);
+      const ros = window.MaestroOKFEngine.generateRunOfShow(project);
+      renderStage3(venue, pricing, ros);
+    };
+  }
 
   // Venue Selector (Instant Config Switch)
   document.getElementById("venue-selector").onchange = (e) => {

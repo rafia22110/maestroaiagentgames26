@@ -1,0 +1,2636 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="artifact-type" content="narrative">
+<meta name="design-style" content="nocturne">
+<title>Maestro AI — מפיק אירועי העילית האוטונומי | מוסדות התרבות של סן פרנסיסקו</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..700;1,400..600&family=Frank+Ruhl+Libre:wght@400;500;700&family=Heebo:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@1.43.0/dist/umd/lucide.min.js"></script>
+<style>
+:root {
+  color-scheme: dark;
+
+  /* 1. Nocturne style tokens */
+  --background: #0a101d;
+  --surface-container-low: #0e1626;
+  --surface-container: #111b2e;
+  --surface-container-high: #17243c;
+
+  --on-surface: #f2ece1;
+  --on-surface-variant: #9ba8bf;
+
+  --outline: #384d73;
+  --outline-variant: #21304d;
+
+  --primary: #dfaa5b;
+  --on-primary: #0a101d;
+  --primary-container: #2b261c;
+  --on-primary-container: #f5dcb0;
+  --secondary: #687a99;
+  --tertiary: #7cc4e8;
+  --error: #f27474;
+  --on-error: #1a0606;
+
+  --data-1: #dfaa5b;
+  --data-2: #7cc4e8;
+  --data-3: #52d19c;
+  --data-4: #e07a5f;
+  --data-context: #4a5d80;
+
+  --font-headline: 'Frank Ruhl Libre', 'EB Garamond', serif;
+  --font-body: 'Heebo', sans-serif;
+  --font-label: 'Heebo', 'JetBrains Mono', monospace;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --rounded: 0.25rem;
+  --rounded-lg: 0.5rem;
+  --rounded-xl: 0.875rem;
+  --rounded-full: 9999px;
+
+  --hairline: 1px solid var(--outline-variant);
+  --hairline-strong: 1px solid var(--outline);
+  --hairline-brass: 1px solid color-mix(in srgb, var(--primary) 38%, transparent);
+  --hairline-sky: 1px solid color-mix(in srgb, var(--tertiary) 35%, transparent);
+  --panel-highlight: inset 0 1px 0 rgba(242, 236, 225, 0.06);
+  --glass-surface: rgba(17, 27, 46, 0.72);
+  --glass-surface-high: rgba(23, 36, 60, 0.86);
+  --brass-glow: radial-gradient(circle at 15% 15%, rgba(223, 170, 91, 0.11), transparent 48%), radial-gradient(circle at 85% 22%, rgba(124, 196, 232, 0.09), transparent 44%);
+  --ambient-shadow: 0 22px 55px rgba(4, 8, 16, 0.55);
+  --brass-aura: 0 0 28px rgba(223, 170, 91, 0.18);
+  --sky-aura: 0 0 24px rgba(124, 196, 232, 0.16);
+  --sky-tint: color-mix(in srgb, var(--tertiary) 12%, transparent);
+  --brass-tint: color-mix(in srgb, var(--primary) 14%, transparent);
+  --mint-tint: color-mix(in srgb, var(--data-3) 14%, transparent);
+
+  /* 3. Shared Foundation tokens */
+  --positive: #52d19c;
+  --warning: #e09f4f;
+  --focus: var(--primary);
+
+  --display-size: clamp(2.5rem, 1.5rem + 4vw, 4.5rem);
+  --headline-size: clamp(1.75rem, 1.2rem + 2vw, 2.6rem);
+  --subhead-size: clamp(1.15rem, 1.02rem + 0.55vw, 1.45rem);
+  --body-size: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --label-size: clamp(0.75rem, 0.72rem + 0.12vw, 0.85rem);
+
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms;
+  --dur-short: 240ms;
+  --dur-long: 480ms;
+}
+
+/* Base reset */
+*, *::before, *::after { box-sizing: border-box; }
+html, body {
+  overflow-x: clip;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background);
+  color: var(--on-surface);
+  font-family: var(--font-body);
+  font-size: var(--body-size);
+  line-height: 1.65;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+header { position: static !important; }
+button, input, select, textarea { font-family: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* Global backdrop & navigation bar */
+.top-studio-bar {
+  border-bottom: var(--hairline);
+  background: var(--surface-container-low);
+  padding: var(--space-md) var(--space-xl);
+}
+.top-bar-inner {
+  max-width: 1260px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+.brand-mark {
+  width: 38px;
+  height: 38px;
+  border: var(--hairline-brass);
+  border-radius: var(--rounded);
+  background: var(--brass-tint);
+  display: grid;
+  place-items: center;
+  color: var(--primary);
+  box-shadow: var(--panel-highlight);
+}
+.brand-title {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--on-surface);
+  letter-spacing: 0.08em;
+}
+.brand-sub {
+  font-size: var(--label-size);
+  color: var(--on-surface-variant);
+}
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-lg);
+}
+.nav-links a {
+  color: var(--on-surface-variant);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: var(--space-xs) 0;
+  border-bottom: 1px solid transparent;
+  transition: color var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out);
+}
+.nav-links a:hover {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.bar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  min-height: 44px;
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--rounded);
+  font-size: 0.925rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: var(--hairline-strong);
+  background: var(--surface-container);
+  color: var(--on-surface);
+  transition: background-color var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out), transform var(--dur-micro) var(--ease-out);
+}
+.btn:hover {
+  background: var(--surface-container-high);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+.btn:active { transform: translateY(0); }
+.btn-primary {
+  background: var(--primary);
+  color: var(--on-primary);
+  border-color: var(--primary);
+  font-weight: 600;
+}
+.btn-primary:hover {
+  background: var(--on-primary-container);
+  border-color: var(--on-primary-container);
+  box-shadow: var(--brass-aura);
+}
+.btn-jazz {
+  background: var(--glass-surface);
+  border: var(--hairline-sky);
+  color: var(--tertiary);
+  backdrop-filter: blur(12px);
+}
+.btn-jazz.is-playing {
+  background: var(--sky-tint);
+  border-color: var(--tertiary);
+  box-shadow: var(--sky-aura);
+}
+
+/* Equalizer bars */
+.eq-bars {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 14px;
+}
+.eq-bar {
+  width: 3px;
+  height: 4px;
+  background: currentColor;
+  border-radius: 1px;
+  transition: height var(--dur-micro) var(--ease-out);
+}
+.btn-jazz.is-playing .eq-bar:nth-child(1) { animation: eqWave 0.9s infinite ease-in-out; }
+.btn-jazz.is-playing .eq-bar:nth-child(2) { animation: eqWave 0.65s infinite ease-in-out 0.15s; }
+.btn-jazz.is-playing .eq-bar:nth-child(3) { animation: eqWave 0.8s infinite ease-in-out 0.3s; }
+.btn-jazz.is-playing .eq-bar:nth-child(4) { animation: eqWave 0.7s infinite ease-in-out 0.45s; }
+@keyframes eqWave {
+  0%, 100% { height: 4px; }
+  50% { height: 14px; }
+}
+
+/* Main layout containers */
+.page-section {
+  padding: var(--space-3xl) var(--space-xl);
+  position: relative;
+}
+.section-inner {
+  max-width: 1260px;
+  margin: 0 auto;
+}
+.section-inner * { min-width: 0; }
+
+.section-header {
+  max-width: 72ch;
+  margin-bottom: var(--space-2xl);
+}
+.kicker-line {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--label-size);
+  font-weight: 500;
+  color: var(--primary);
+  margin-bottom: var(--space-sm);
+}
+.kicker-rule {
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: var(--primary);
+}
+.section-title {
+  font-family: var(--font-headline);
+  font-size: var(--headline-size);
+  font-weight: 500;
+  line-height: 1.15;
+  margin: 0 0 var(--space-md) 0;
+  color: var(--on-surface);
+}
+.section-title em {
+  font-style: normal;
+  color: var(--primary);
+}
+.section-lede {
+  margin: 0;
+  color: var(--on-surface-variant);
+  font-size: var(--subhead-size);
+  line-height: 1.55;
+  max-width: 65ch;
+}
+
+/* 1. Hero Section */
+.hero-section {
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-3xl) var(--space-xl) var(--space-2xl);
+  background-color: var(--background);
+  background-image: var(--brass-glow);
+  border-bottom: var(--hairline);
+}
+#hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.72;
+}
+.hero-grid {
+  position: relative;
+  z-index: 2;
+  max-width: 1260px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.95fr);
+  gap: var(--space-2xl);
+  align-items: center;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--rounded);
+  border: var(--hairline-sky);
+  background: var(--sky-tint);
+  color: var(--tertiary);
+  font-size: var(--label-size);
+  margin-bottom: var(--space-lg);
+}
+.hero-display {
+  font-family: var(--font-headline);
+  font-size: var(--display-size);
+  font-weight: 500;
+  line-height: 1.08;
+  margin: 0 0 var(--space-md) 0;
+  color: var(--on-surface);
+}
+.hero-display .accent-brass {
+  color: var(--primary);
+  font-weight: 700;
+}
+.hero-deck {
+  font-size: var(--subhead-size);
+  color: var(--on-surface-variant);
+  max-width: 58ch;
+  margin: 0 0 var(--space-xl) 0;
+  line-height: 1.6;
+}
+.hero-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-2xl);
+}
+.hero-stats-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-lg);
+  padding-top: var(--space-lg);
+  border-top: var(--hairline);
+}
+.hero-stat-val {
+  font-family: var(--font-mono);
+  font-size: 1.55rem;
+  font-weight: 600;
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+}
+.hero-stat-label {
+  font-size: var(--label-size);
+  color: var(--on-surface-variant);
+  margin-top: var(--space-xs);
+}
+
+/* Active Theory inspired floating kinetic glass panel in Hero */
+.hero-kinetic-stage {
+  background: var(--glass-surface);
+  backdrop-filter: blur(18px);
+  border: var(--hairline-brass);
+  border-radius: var(--rounded-xl);
+  padding: var(--space-xl);
+  box-shadow: var(--panel-highlight), var(--ambient-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  transform-style: preserve-3d;
+  transition: transform var(--dur-long) var(--ease-out), border-color var(--dur-short) var(--ease-out);
+}
+.stage-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: var(--hairline);
+  padding-bottom: var(--space-md);
+}
+.stage-code {
+  font-family: var(--font-mono);
+  font-size: var(--label-size);
+  color: var(--tertiary);
+}
+.stage-pill {
+  font-size: var(--label-size);
+  padding: 2px var(--space-sm);
+  border-radius: var(--rounded);
+  background: var(--mint-tint);
+  color: var(--positive);
+  border: 1px solid color-mix(in srgb, var(--positive) 35%, transparent);
+}
+.act-timeline {
+  display: grid;
+  gap: var(--space-md);
+}
+.act-row {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr);
+  gap: var(--space-md);
+  align-items: start;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--surface-container-low);
+  border: var(--hairline);
+  border-radius: var(--rounded-lg);
+  transition: border-color var(--dur-short) var(--ease-out), background-color var(--dur-short) var(--ease-out);
+}
+.act-row:hover {
+  border-color: var(--primary);
+  background: var(--surface-container-high);
+}
+.act-time {
+  font-family: var(--font-mono);
+  font-size: var(--label-size);
+  color: var(--primary);
+  padding-top: 2px;
+}
+.act-title {
+  font-weight: 600;
+  color: var(--on-surface);
+  font-size: 0.95rem;
+}
+.act-desc {
+  font-size: var(--label-size);
+  color: var(--on-surface-variant);
+}
+
+/* 2. Floating Museum Venue Cards + Spatial Spotlight */
+.venues-section {
+  background: var(--surface-container-low);
+  border-bottom: var(--hairline);
+}
+.venues-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.15fr);
+  gap: var(--space-xl);
+  align-items: start;
+}
+.venue-cards-stack {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-lg);
+}
+.venue-card {
+  text-align: right;
+  background: var(--glass-surface);
+  backdrop-filter: blur(14px);
+  border: var(--hairline);
+  border-radius: var(--rounded-xl);
+  padding: var(--space-lg);
+  box-shadow: var(--panel-highlight), 0 14px 36px rgba(4, 8, 16, 0.42);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  transition: transform var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out), background-color var(--dur-short) var(--ease-out);
+}
+.venue-card:nth-child(2) { transform: translateY(14px); }
+.venue-card:nth-child(4) { transform: translateY(14px); }
+.venue-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--tertiary);
+  background: var(--glass-surface-high);
+  box-shadow: var(--panel-highlight), var(--sky-aura), var(--ambient-shadow);
+}
+.venue-card.is-selected {
+  border-color: var(--primary);
+  background: var(--surface-container-high);
+  box-shadow: var(--panel-highlight), var(--brass-aura), var(--ambient-shadow);
+}
+.venue-card.is-selected:nth-child(2),
+.venue-card.is-selected:nth-child(4) {
+  transform: translateY(8px);
+}
+.venue-tag-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-xs);
+}
+.venue-code {
+  font-family: var(--font-mono);
+  font-size: var(--label-size);
+  color: var(--tertiary);
+}
+.venue-district {
+  font-size: var(--label-size);
+  color: var(--on-surface-variant);
+}
+.venue-name {
+  font-family: var(--font-headline);
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--on-surface);
+  margin: var(--space-xs) 0 0 0;
+  line-height: 1.25;
+}
+.venue-sub {
+  font-size: 0.88rem;
+  color: var(--on-surface-variant);
+  margin: 0;
+}
+.venue-cap-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: auto;
+  padding-top: var(--space-md);
+  border-top: var(--hairline);
+}
+.cap-chip {
+  font-size: var(--label-size);
+  color: var(--on-surface);
+  background: var(--background);
+  border: var(--hairline);
+  padding: 2px var(--space-sm);
+  border-radius: var(--rounded);
+}
+
+/* Spatial Spotlight Inspector Panel */
+.spotlight-panel {
+  background: var(--surface-container);
+  border: var(--hairline-brass);
+  border-radius: var(--rounded-xl);
+  padding: var(--space-xl);
+  box-shadow: var(--panel-highlight), var(--ambient-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+.spotlight-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-md);
+  border-bottom: var(--hairline);
+  padding-bottom: var(--space-md);
+}
+.spotlight-title {
+  font-family: var(--font-headline);
+  font-size: 1.75rem;
+  margin: 0;
+  color: var(--on-surface);
+}
+.spotlight-meta {
+  font-size: var(--label-size);
+  color: var(--primary);
+  margin-top: var(--space-xs);
+}
+.trend-overlay-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+.trend-btn {
+  min-height: 38px;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--rounded);
+  border: var(--hairline);
+  background: var(--background);
+  color: var(--on-surface-variant);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: border-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out), background-color var(--dur-micro) var(--ease-out);
+}
+.trend-btn:hover {
+  border-color: var(--tertiary);
+  color: var(--on-surface);
+}
+.trend-btn.is-active {
+  background: var(--brass-tint);
+  border-color: var(--primary);
+  color: var(--primary);
+  font-weight: 600;
+}
+.blueprint-well {
+  background: var(--background);
+  border: var(--hairline);
+  border-radius: var(--rounded-lg);
+  padding: var(--space-md);
+  position: relative;
+}
+.blueprint-svg {
+  width: 100%;
+  height: auto;
+  min-height: 220px;
+  display: block;
+}
+.curatorial-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-md);
+}
+.curatorial-box {
+  background: var(--surface-container-low);
+  border: var(--hairline);
+  border-radius: var(--rounded-lg);
+  padding: var(--space-md);
+}
+.curatorial-box-title {
+  font-size: var(--label-size);
+  color: var(--tertiary);
+  font-weight: 600;
+  margin-bottom: var(--space-xs);
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+.curatorial-box-text {
+  font-size: 0.9rem;
+  color: var(--on-surface-variant);
+  margin: 0;
+  line-height: 1.5;
+}
+.spotlight-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding-top: var(--space-sm);
+}
+
+/* 3. Stakeholder Alignment Engine & 5-Question Micro-Survey */
+.alignment-section {
+  background: var(--background);
+  border-bottom: var(--hairline);
+}
+.alignment-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: var(--space-xl);
+  align-items: start;
+}
+.pulse-panel {
+  background: var(--surface-container);
+  border: var(--hairline);
+  border-radius: var(--rounded-xl);
+  padding: var(--space-xl);
+  box-shadow: var(--panel-highlight);
+}
+.stakeholder-switch {
+  display: inline-flex;
+  background: var(--background);
+  border: var(--hairline);
+  border-radius: var(--rounded);
+  padding: 3px;
+  gap: 4px;
+  margin-bottom: var(--space-lg);
+}
+.stakeholder-tab {
+  min-height: 38px;
+  padding: var(--space-xs) var(--space-md);
+  border: none;
+  border-radius: var(--rounded);
+  background: transparent;
+  color: var(--on-surface-variant);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out);
+}
+.stakeholder-tab.is-active {
+  background: var(--surface-container-high);
+  color: var(--primary);
+}
+.question-progress-bar {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-xs);
+  margin-bottom: var(--space-lg);
+}
+.q-step-pill {
+  height: 6px;
+  border-radius: var(--rounded-full);
+  background: var(--outline-variant);
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  transition: background-color var(--dur-short) var(--ease-out);
+}
+.q-step-pill.is-done { background: var(--tertiary); }
+.q-step-pill.is-current { background: var(--primary); }
+
+.survey-q-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-sm);
+}
+.survey-q-num {
+  font-family: var(--font-mono);
+  font-size: var(--label-size);
+  color: var(--primary);
+}
+.survey-q-category {
+  font-size: var(--label-size);
+  color: var(--tertiary);
+}
+.survey-q-title {
+  font-family: var(--font-headline);
+  font-size: 1.5rem;
+  margin: 0 0 var(--space-lg) 0;
+  color: var(--on-surface);
+  line-height: 1.3;
+}
+.survey-options {
+  display: grid;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+.survey-option-btn {
+  text-align: right;
+  width: 100%;
+  padding: var(--space-md) var(--space-lg);
+  background: var(--surface-container-low);
+  border: var(--hairline);
+  border-radius: var(--rounded-lg);
+  color: var(--on-surface);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: border-color var(--dur-short) var(--ease-out), background-color var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out);
+}
+.survey-option-btn:hover {
+  border-color: var(--tertiary);
+  background: var(--surface-container-high);
+}
+.survey-option-btn.is-chosen {
+  border-color: var(--primary);
+  background: var(--brass-tint);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--primary) 35%, transparent);
+}
+.opt-title {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--on-surface);
+}
+.opt-detail {
+  font-size: 0.875rem;
+  color: var(--on-surface-variant);
+}
+.survey-nav-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: var(--hairline);
+}
+
+/* Radar Panel */
+.radar-panel {
+  background: var(--glass-surface);
+  backdrop-filter: blur(16px);
+  border: var(--hairline-sky);
+  border-radius: var(--rounded-xl);
+  padding: var(--space-xl);
+  box-shadow: var(--panel-highlight), var(--ambient-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+.alignment-score-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  border-bottom: var(--hairline);
+  padding-bottom: var(--space-md);
+}
+.score-big {
+  font-family: var(--font-mono);
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--primary);
+  line-height: 1;
+}
+.score-label {
+  font-size: var(--label-size);
+  color: var(--on-surface-variant);
+}
+.radar-box {
+  background: var(--background);
+  border: var(--hairline);
+  border-radius: var(--rounded-lg);
+  padding: var(--space-md);
+  min-height: 310px;
+  display: grid;
+  place-items: center;
+}
+.radar-svg {
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  overflow: visible;
+}
+.radar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-lg);
+  font-size: var(--label-size);
+  color: var(--on-surface-variant);
+}
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+.legend-swatch {
+  width: 12px;
+  height: 3px;
+  border-radius: 2px;
+}
+.swatch-a { background: var(--data-1); }
+.swatch-b { background: var(--data-2); }
+
+.synthesis-box {
+  background: var(--surface-container-low);
+  border: var(--hairline);
+  border-radius: var(--rounded-lg);
+  padding: var(--space-md);
+}
+.synthesis-box h4 {
+  margin: 0 0 var(--space-xs) 0;
+  font-size: 0.95rem;
+  color: var(--primary);
+}
+.synthesis-box p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--on-surface-variant);
+}
+
+/* 4. Tier-1 Vendor Ecosystem */
+.vendors-section {
+  background: var(--surface-container-low);
+  border-bottom: var(--hairline);
+}
+.vendor-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+}
+.filter-chip {
+  min-height: 40px;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--rounded);
+  border: var(--hairline);
+  background: var(--surface-container);
+  color: var(--on-surface-variant);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: border-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out), background-color var(--dur-micro) var(--ease-out);
+}
+.filter-chip:hover {
+  border-color: var(--tertiary);
+  color: var(--on-surface);
+}
+.filter-chip.is-active {
+  background: var(--primary);
+  color: var(--on-primary);
+  border-color: var(--primary);
+  font-weight: 600;
+}
+.vendors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  gap: var(--space-lg);
+}
+.vendor-card {
+  background: var(--surface-container);
+  border: var(--hairline);
+  border-radius: var(--rounded-xl);
+  padding: var(--space-xl);
+  box-shadow: var(--panel-highlight);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  transition: transform var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out);
+}
+.vendor-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--outline);
+  box-shadow: var(--panel-highlight), var(--ambient-shadow);
+}
+.vendor-card.is-rostered {
+  border-color: var(--primary);
+  background: var(--surface-container-high);
+}
+.vendor-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-sm);
+}
+.vendor-cat {
+  font-size: var(--label-size);
+  color: var(--tertiary);
+  background: var(--sky-tint);
+  border: var(--hairline-sky);
+  padding: 2px var(--space-sm);
+  border-radius: var(--rounded);
+}
+.vendor-title {
+  font-family: var(--font-headline);
+  font-size: 1.4rem;
+  margin: 0;
+  color: var(--on-surface);
+}
+.vendor-desc {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--on-surface-variant);
+  line-height: 1.55;
+}
+.vendor-proof {
+  font-size: var(--label-size);
+  color: var(--on-surface);
+  background: var(--background);
+  border: var(--hairline);
+  border-radius: var(--rounded);
+  padding: var(--space-sm) var(--space-md);
+}
+.vendor-foot {
+  margin-top: auto;
+  padding-top: var(--space-md);
+  border-top: var(--hairline);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+/* Trends Showcase Banner */
+.trends-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  gap: var(--space-lg);
+  margin-top: var(--space-2xl);
+}
+.trend-tile {
+  background: var(--background);
+  border: var(--hairline);
+  border-radius: var(--rounded-lg);
+  padding: var(--space-lg);
+  border-top: 2px solid var(--primary);
+}
+.trend-tile h4 {
+  font-family: var(--font-headline);
+  font-size: 1.2rem;
+  margin: 0 0 var(--space-xs) 0;
+  color: var(--on-surface);
+}
+.trend-tile p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--on-surface-variant);
+}
+
+/* Footer */
+.site-footer {
+  background: var(--background);
+  padding: var(--space-2xl) var(--space-xl);
+  border-top: var(--hairline);
+  color: var(--on-surface-variant);
+  font-size: var(--label-size);
+}
+.footer-inner {
+  max-width: 1260px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+/* 5. Floating Maestro AI Concierge Widget */
+.concierge-launcher {
+  position: fixed;
+  bottom: var(--space-lg);
+  left: var(--space-lg);
+  z-index: 90;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  min-height: 52px;
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--rounded-full);
+  background: var(--primary);
+  color: var(--on-primary);
+  border: 1px solid var(--on-primary-container);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: var(--ambient-shadow), var(--brass-aura);
+  transition: transform var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out);
+}
+.concierge-launcher:hover {
+  transform: translateY(-2px);
+}
+.concierge-window {
+  position: fixed;
+  bottom: calc(var(--space-lg) + 64px);
+  left: var(--space-lg);
+  z-index: 95;
+  width: min(430px, calc(100vw - 2rem));
+  max-height: min(620px, calc(100vh - 110px));
+  background: var(--glass-surface-high);
+  backdrop-filter: blur(22px);
+  border: var(--hairline-brass);
+  border-radius: var(--rounded-xl);
+  box-shadow: var(--panel-highlight), var(--ambient-shadow);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+}
+.concierge-window.is-open {
+  display: flex;
+  animation: slideUpChat var(--dur-short) var(--ease-out);
+}
+@keyframes slideUpChat {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.chat-header {
+  padding: var(--space-md) var(--space-lg);
+  background: var(--surface-container-low);
+  border-bottom: var(--hairline);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+.chat-agent-id {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+.chat-status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--positive);
+}
+.chat-title {
+  font-weight: 600;
+  color: var(--on-surface);
+  font-size: 0.95rem;
+}
+.chat-sub {
+  font-size: 0.75rem;
+  color: var(--tertiary);
+}
+.chat-close-btn {
+  min-width: 36px;
+  min-height: 36px;
+  border-radius: var(--rounded);
+  border: var(--hairline);
+  background: transparent;
+  color: var(--on-surface-variant);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.chat-close-btn:hover { color: var(--on-surface); border-color: var(--primary); }
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-md) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.chat-msg {
+  max-width: 88%;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--rounded-lg);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.chat-msg.is-ai {
+  align-self: flex-start;
+  background: var(--surface-container);
+  border: var(--hairline);
+  color: var(--on-surface);
+}
+.chat-msg.is-user {
+  align-self: flex-end;
+  background: var(--primary-container);
+  border: var(--hairline-brass);
+  color: var(--on-primary-container);
+}
+.chat-quick-chips {
+  padding: var(--space-xs) var(--space-lg) var(--space-sm);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.quick-chip {
+  min-height: 34px;
+  padding: 4px var(--space-sm);
+  border-radius: var(--rounded);
+  border: var(--hairline-sky);
+  background: var(--sky-tint);
+  color: var(--tertiary);
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+.quick-chip:hover {
+  background: var(--surface-container-high);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.chat-input-form {
+  padding: var(--space-sm) var(--space-md) var(--space-md);
+  border-top: var(--hairline);
+  background: var(--surface-container-low);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.chat-input-label {
+  font-size: 0.75rem;
+  color: var(--on-surface-variant);
+}
+.chat-input-row {
+  display: flex;
+  align-items: end;
+  gap: var(--space-sm);
+}
+.chat-input {
+  flex: 1;
+  min-height: 44px;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--rounded);
+  border: var(--hairline-strong);
+  background: var(--background);
+  color: var(--on-surface);
+  font-size: 0.9rem;
+}
+.chat-send-btn {
+  min-height: 44px;
+  padding: 0 var(--space-md);
+  border-radius: var(--rounded);
+  border: none;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-weight: 600;
+  cursor: pointer;
+}
+.inline-toast {
+  font-size: 0.82rem;
+  color: var(--positive);
+  min-height: 1.2em;
+}
+
+/* Scroll reveal utility */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--dur-long) var(--ease-out), transform var(--dur-long) var(--ease-out);
+}
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 980px) {
+  .hero-grid, .venues-layout, .alignment-grid {
+    grid-template-columns: 1fr;
+  }
+  .venue-card:nth-child(2),
+  .venue-card:nth-child(4),
+  .venue-card.is-selected:nth-child(2),
+  .venue-card.is-selected:nth-child(4) {
+    transform: none;
+  }
+}
+@media (max-width: 640px) {
+  .top-studio-bar, .page-section, .hero-section {
+    padding-inline: var(--space-md);
+  }
+  .venue-cards-stack, .curatorial-grid, .hero-stats-strip {
+    grid-template-columns: 1fr;
+  }
+  .nav-links { display: none; }
+  .concierge-window {
+    left: var(--space-sm);
+    right: var(--space-sm);
+    width: auto;
+    bottom: 76px;
+  }
+  .concierge-launcher {
+    left: var(--space-md);
+    bottom: var(--space-md);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<header class="top-studio-bar">
+  <div class="top-bar-inner">
+    <div class="brand-lockup">
+      <div class="brand-mark" aria-hidden="true">
+        <i data-lucide="sparkles"></i>
+      </div>
+      <div>
+        <div class="brand-title"><bdi dir="ltr">MAESTRO AI</bdi></div>
+        <div class="brand-sub">מפיק אירועי העילית האוטונומי · סן פרנסיסקו</div>
+      </div>
+    </div>
+
+    <nav class="nav-links" aria-label="ניווט ראשי">
+      <a href="#venues-section">מוסדות התרבות</a>
+      <a href="#alignment-section">מנוע הסנכרון</a>
+      <a href="#vendors-section">נבחרת <bdi dir="ltr">Tier-1</bdi></a>
+    </nav>
+
+    <div class="bar-actions">
+      <button type="button" class="btn btn-jazz" id="header-jazz-btn" onclick="toggleJazzAudio()" aria-pressed="false">
+        <span class="eq-bars" aria-hidden="true">
+          <span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span>
+        </span>
+        <span id="header-jazz-label">ג'אז אמביינט: כבוי</span>
+      </button>
+      <button type="button" class="btn btn-primary" onclick="toggleConcierge(true)">
+        <i data-lucide="message-square" aria-hidden="true"></i>
+        <span>קונסיירז' הפקה</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- 1. Atmospheric Hero Section -->
+  <section class="hero-section" id="hero-section">
+    <canvas id="hero-canvas" aria-hidden="true"></canvas>
+    <div class="hero-grid">
+      <div>
+        <div class="hero-badge">
+          <i data-lucide="compass" aria-hidden="true"></i>
+          <span>הפקת גאלות ואקטיבציות · סן פרנסיסקו <bdi dir="ltr">2026–2027</bdi></span>
+        </div>
+        <h1 class="hero-display">
+          אמנות ההפקה <span class="accent-brass">האוטונומית</span> במוסדות התרבות של סן פרנסיסקו
+        </h1>
+        <p class="hero-deck">
+          <bdi dir="ltr">Maestro AI</bdi> מסנכרן בין חזון אמנותי, ארכיטקטורת חלל רב-מערכתית, דרישות אוצרות מחמירות ונבחרת ספקי <bdi dir="ltr">Tier-1</bdi> בארבעת המוסדות האייקוניים של העיר — תחת חוויית ג'אז נואר אינטימית.
+        </p>
+        <div class="hero-cta-row">
+          <button type="button" class="btn btn-primary" onclick="scrollToSection('alignment-section')">
+            <i data-lucide="sliders-horizontal" aria-hidden="true"></i>
+            <span>הפעל את מנוע הסנכרון</span>
+          </button>
+          <button type="button" class="btn btn-jazz" id="hero-jazz-btn" onclick="toggleJazzAudio()" aria-pressed="false">
+            <span class="eq-bars" aria-hidden="true">
+              <span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span>
+            </span>
+            <span id="hero-jazz-label">האזן לפסקול ג'אז נואר</span>
+          </button>
+          <button type="button" class="btn" onclick="scrollToSection('venues-section')">
+            <i data-lucide="building-2" aria-hidden="true"></i>
+            <span>סקור חללי מוזיאונים</span>
+          </button>
+        </div>
+
+        <div class="hero-stats-strip">
+          <div>
+            <div class="hero-stat-val"><bdi dir="ltr">4</bdi></div>
+            <div class="hero-stat-label">מוסדות תרבות מובילים ב-<bdi dir="ltr">SF</bdi></div>
+          </div>
+          <div>
+            <div class="hero-stat-val"><bdi dir="ltr">$369.65B</bdi></div>
+            <div class="hero-stat-label">היקף שוק האירועים הגלובלי ב-<bdi dir="ltr">2026</bdi> (<bdi dir="ltr">+13.18% CAGR</bdi>)</div>
+          </div>
+          <div>
+            <div class="hero-stat-val"><bdi dir="ltr">6</bdi></div>
+            <div class="hero-stat-label">שותפי <bdi dir="ltr">Tier-1</bdi> מאושרים בסן פרנסיסקו</div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="hero-kinetic-stage" id="hero-kinetic-card" aria-label="תסריט 4 מערכות הפקה">
+        <div class="stage-top-bar">
+          <span class="stage-code"><bdi dir="ltr">MULTI-ACT STORYTELLING // 2027</bdi></span>
+          <span class="stage-pill">סנכרון ארכיטקטוני חי</span>
+        </div>
+        <div class="act-timeline">
+          <div class="act-row">
+            <div class="act-time"><bdi dir="ltr">ACT I · 18:30</bdi></div>
+            <div>
+              <div class="act-title">קבלת פנים ביופילית ושקיעה</div>
+              <div class="act-desc">רביעיית ג'אז אקוסטית של <bdi dir="ltr">Entire Productions</bdi> לצד קיר חי או גן פסלים.</div>
+            </div>
+          </div>
+          <div class="act-row">
+            <div class="act-time"><bdi dir="ltr">ACT II · 19:45</bdi></div>
+            <div>
+              <div class="act-title">מליאת אמפיתיאטרון מעגלית</div>
+              <div class="act-desc">ישיבה קעורה ללא שורות נוקשות, קווי ראייה פתוחים ומערך שמע <bdi dir="ltr">K2 Line-Array</bdi> של <bdi dir="ltr">Argus HD</bdi>.</div>
+            </div>
+          </div>
+          <div class="act-row">
+            <div class="act-time"><bdi dir="ltr">ACT III · 20:45</bdi></div>
+            <div>
+              <div class="act-title">שולחנות מלכותיים באור נרות</div>
+              <div class="act-desc">מיצבים בוטניים פיסוליים משולבי <bdi dir="ltr">Blueprint Studios</bdi> ותפריט טעימות עונתי של <bdi dir="ltr">Paula LeDuc</bdi>.</div>
+            </div>
+          </div>
+          <div class="act-row">
+            <div class="act-time"><bdi dir="ltr">ACT IV · 22:30</bdi></div>
+            <div>
+              <div class="act-title">סלון לילה ומופע רחפנים שקט</div>
+              <div class="act-desc">עמעום דרייפרי דרמטי, אספקת כוח נקייה מ-<bdi dir="ltr">Brookline Electric</bdi> וסיום כוריאוגרפי בשמיים ללא רעש.</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 2. Interactive Floating Museum Venue Cards -->
+  <section class="page-section venues-section" id="venues-section">
+    <div class="section-inner">
+      <div class="section-header reveal-on-scroll">
+        <div class="kicker-line"><span class="kicker-rule"></span><span>פרק א׳ · זירות התרבות של סן פרנסיסקו</span></div>
+        <h2 class="section-title">מוסדות סמל ופרמטרים <em>אוצרותיים</em></h2>
+        <p class="section-lede">
+          הפקה במוזיאונים מובילים אינה אירוע מלון סטנדרטי: כל חלל מכתיב מגבלות לחות, שעות טעינה איגודיות, איסור להבה גלויה ורשימת ספקים מאושרים מראש. בחר מוסד כדי לבחון את פריסת החלל במדדי 2026–2027.
+        </p>
+      </div>
+
+      <div class="venues-layout">
+        <div class="venue-cards-stack" id="venue-cards-grid">
+          <!-- Rendered by JS -->
+        </div>
+
+        <div class="spotlight-panel" id="venue-spotlight" aria-live="polite">
+          <div class="spotlight-head">
+            <div>
+              <h3 class="spotlight-title" id="spot-title">טוען נתוני מוסד...</h3>
+              <div class="spotlight-meta" id="spot-meta"></div>
+            </div>
+            <div class="trend-overlay-bar" role="group" aria-label="תצוגת טרנד 2027 בתוכנית החלל">
+              <button type="button" class="trend-btn is-active" data-trend="amphitheater" onclick="setSpatialTrend('amphitheater')">אמפיתיאטרון מעגלי</button>
+              <button type="button" class="trend-btn" data-trend="majestic" onclick="setSpatialTrend('majestic')">שולחנות מלכותיים</button>
+              <button type="button" class="trend-btn" data-trend="botanical" onclick="setSpatialTrend('botanical')">מיצב בוטני פיסולי</button>
+              <button type="button" class="trend-btn" data-trend="acts" onclick="setSpatialTrend('acts')">זרימת 4 מערכות</button>
+            </div>
+          </div>
+
+          <div class="blueprint-well">
+            <svg class="blueprint-svg" id="spatial-svg" viewBox="0 0 640 280" role="img" aria-label="שרטוט ארכיטקטוני אינטראקטיבי של חלל המוזיאון">
+              <!-- Dynamic SVG spatial plan -->
+            </svg>
+          </div>
+
+          <div class="curatorial-grid">
+            <div class="curatorial-box">
+              <div class="curatorial-box-title"><i data-lucide="maximize-2" aria-hidden="true"></i><span>נתוני שטח וקיבולת</span></div>
+              <p class="curatorial-box-text" id="spot-capacity"></p>
+            </div>
+            <div class="curatorial-box">
+              <div class="curatorial-box-title"><i data-lucide="shield-alert" aria-hidden="true"></i><span>קווים אדומים אוצרותיים</span></div>
+              <p class="curatorial-box-text" id="spot-redlines"></p>
+            </div>
+            <div class="curatorial-box">
+              <div class="curatorial-box-title"><i data-lucide="utensils" aria-hidden="true"></i><span>מדיניות קייטרינג מאושר</span></div>
+              <p class="curatorial-box-text" id="spot-catering"></p>
+            </div>
+            <div class="curatorial-box">
+              <div class="curatorial-box-title"><i data-lucide="zap" aria-hidden="true"></i><span>אקוסטיקה, AV ותשתיות</span></div>
+              <p class="curatorial-box-text" id="spot-tech"></p>
+            </div>
+          </div>
+
+          <div class="spotlight-footer">
+            <span class="inline-toast" id="venue-lock-status"></span>
+            <div style="display:flex; gap: var(--space-sm); flex-wrap:wrap;">
+              <button type="button" class="btn" onclick="askConciergeAboutVenue()">
+                <i data-lucide="calendar" aria-hidden="true"></i>
+                <span>תאם סיור אוצרות</span>
+              </button>
+              <button type="button" class="btn btn-primary" onclick="lockSelectedVenue()">
+                <i data-lucide="check-circle-2" aria-hidden="true"></i>
+                <span>נעל מוסד בתדריך</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Stakeholder Alignment Engine -->
+  <section class="page-section alignment-section" id="alignment-section">
+    <div class="section-inner">
+      <div class="section-header reveal-on-scroll">
+        <div class="kicker-line"><span class="kicker-rule"></span><span>פרק ב׳ · כיול חזון ובעלי עניין</span></div>
+        <h2 class="section-title">מנוע הסנכרון: מדד התאמה <em>בזמן אמת</em></h2>
+        <p class="section-lede">
+          שני בעלי עניין — למשל יו״ר הוועד והמנהל הקריאטיבי, או בני הזוג והאוצרת הראשית — ממלאים 5 שאלות פעימה קצרות. המנוע מחשב פערים, מזהה קווים אדומים מוזיקליים וקולינריים, ומייצר מתווה אוטונומי מאוחד.
+        </p>
+      </div>
+
+      <div class="alignment-grid">
+        <div class="pulse-panel">
+          <div class="stakeholder-switch" role="tablist" aria-label="בחירת בעל עניין לעריכה">
+            <button type="button" class="stakeholder-tab is-active" id="tab-stakeholder-a" onclick="switchStakeholder('a')" role="tab" aria-selected="true">בעל עניין א׳ (מוביל חזון / לקוח)</button>
+            <button type="button" class="stakeholder-tab" id="tab-stakeholder-b" onclick="switchStakeholder('b')" role="tab" aria-selected="false">בעל עניין ב׳ (ועד / הנהלת מוזיאון)</button>
+          </div>
+
+          <div class="question-progress-bar" id="q-progress-bar" aria-label="התקדמות בשאלות הסקר">
+            <!-- 5 step pills -->
+          </div>
+
+          <div class="survey-q-header">
+            <span class="survey-q-num" id="survey-q-num">שאלה 01 מתוך 05</span>
+            <span class="survey-q-category" id="survey-q-cat"></span>
+          </div>
+          <h3 class="survey-q-title" id="survey-q-title"></h3>
+
+          <div class="survey-options" id="survey-options">
+            <!-- Options injected dynamically -->
+          </div>
+
+          <div class="survey-nav-row">
+            <button type="button" class="btn" id="prev-q-btn" onclick="stepQuestion(-1)">
+              <i data-lucide="arrow-right" aria-hidden="true"></i>
+              <span>הקודם</span>
+            </button>
+            <button type="button" class="btn" onclick="resetAlignmentDemo(this)">אפס תשובות</button>
+            <button type="button" class="btn btn-primary" id="next-q-btn" onclick="stepQuestion(1)">
+              <span>הבא</span>
+              <i data-lucide="arrow-left" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="radar-panel">
+          <div class="alignment-score-header">
+            <div>
+              <div class="score-label">מדד סנכרון משוקלל</div>
+              <div class="score-big" id="alignment-score-val"><bdi dir="ltr">88%</bdi></div>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="sendBriefToConcierge()">
+              <i data-lucide="sparkles" aria-hidden="true"></i>
+              <span>הפק תדריך ב-<bdi dir="ltr">Maestro</bdi></span>
+            </button>
+          </div>
+
+          <div class="radar-box">
+            <svg class="radar-svg" id="alignment-radar-svg" viewBox="0 0 380 310" role="img" aria-label="תרשים מכ״ם להשוואת סדרי עדיפויות בין שני בעלי עניין">
+              <!-- Dynamic Radar SVG -->
+            </svg>
+          </div>
+
+          <div class="radar-legend">
+            <span class="legend-item"><span class="legend-swatch swatch-a"></span><span>בעל עניין א׳ (חזון)</span></span>
+            <span class="legend-item"><span class="legend-swatch swatch-b"></span><span>בעל עניין ב׳ (ספי מוסד)</span></span>
+          </div>
+
+          <div class="synthesis-box" id="alignment-synthesis">
+            <!-- Dynamic synthesis -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Tier-1 Vendor Ecosystem & 2026-2027 Trends -->
+  <section class="page-section vendors-section" id="vendors-section">
+    <div class="section-inner">
+      <div class="section-header reveal-on-scroll">
+        <div class="kicker-line"><span class="kicker-rule"></span><span>פרק ג׳ · אקוסיסטם ההפקה</span></div>
+        <h2 class="section-title">נבחרת שותפי <bdi dir="ltr">Tier-1</bdi> <em>המאושרת</em></h2>
+        <p class="section-lede">
+          הבדל תהומי מפריד בין תיווך ספקים לבין יכולת ייצור, רישוי, תעודות ביטוח <bdi dir="ltr">(COI)</bdi> ומוכנות רכש מוסדית. להלן ששת עמודי התווך של <bdi dir="ltr">Maestro AI</bdi> בסן פרנסיסקו — סנן לפי תחום והרכב את צוות ההפקה שלך.
+        </p>
+      </div>
+
+      <div class="vendor-filters" role="group" aria-label="סינון ספקים לפי תחום">
+        <button type="button" class="filter-chip is-active" data-filter="all" onclick="filterVendors('all')">כל השותפים (6)</button>
+        <button type="button" class="filter-chip" data-filter="culinary" onclick="filterVendors('culinary')">קולינריה ואירוח</button>
+        <button type="button" class="filter-chip" data-filter="design" onclick="filterVendors('design')">עיצוב, ריהוט וייצור</button>
+        <button type="button" class="filter-chip" data-filter="technical" onclick="filterVendors('technical')">שידור, <bdi dir="ltr">AV</bdi> וחשמל</button>
+        <button type="button" class="filter-chip" data-filter="talent" onclick="filterVendors('talent')">ג'אז ובידור חי</button>
+      </div>
+
+      <div class="vendors-grid" id="vendors-grid">
+        <!-- Rendered by JS -->
+      </div>
+
+      <div class="trends-strip" aria-label="מגמות 2026–2027 בייצור אירועי יוקרה">
+        <article class="trend-tile">
+          <h4>אווירה לפני דקורציה</h4>
+          <p>עמעום תאורה רב-שכבתי, בדי דרייפרי זורמים ותאורת נרות מדורגת המאפשרת לאדריכלות המוזיאון לדבר.</p>
+        </article>
+        <article class="trend-tile">
+          <h4>מיצבים בוטניים פיסוליים</h4>
+          <p>צמחייה אורגנית הנצמדת לקווי הבניין והאבן של החלל, תוך שילוב כלי קרמיקה וזכוכית צבעונית.</p>
+        </article>
+        <article class="trend-tile">
+          <h4>ישיבת אמפיתיאטרון ומופע שקט</h4>
+          <p>סידורי קהל קעורים הקרובים למוקד האירוע, ומופעי רחפנים מתוכנתים המחליפים זיקוקים רועשים.</p>
+        </article>
+        <article class="trend-tile">
+          <h4>שולחנות מלכותיים אדריכליים</h4>
+          <p>מבני שולחנות מוארכים בהתאמה אישית, טקסטיל מוקפד בגזרה מדויקת ופלטות צבע אקספרסיביות כמו ורוד ופיסטוק.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>
+      <strong><bdi dir="ltr">MAESTRO AI</bdi></strong> — מערכת תצוגה וסימולציה לאירועי מוסדות תרבות בסן פרנסיסקו (<bdi dir="ltr">2026–2027</bdi>).
+    </div>
+    <div>
+      מקורות נתונים: דוחות שוק <bdi dir="ltr">Mordor Intelligence / TRADEMARK (2026)</bdi>, מדריכי <bdi dir="ltr">SFMOMA</bdi> והאקדמיה למדעים, תיקי ספקי <bdi dir="ltr">Paula LeDuc, McCalls, Blueprint Studios, Argus HD, Entire Productions</bdi> ודוח מגמות <bdi dir="ltr">Wezoree 2027</bdi>.
+    </div>
+  </div>
+</footer>
+
+<!-- 5. Floating Maestro AI Concierge Chat Widget -->
+<button type="button" class="concierge-launcher" id="concierge-launcher" onclick="toggleConcierge()" aria-expanded="false" aria-controls="concierge-window">
+  <i data-lucide="bot" aria-hidden="true"></i>
+  <span>שוחח עם <bdi dir="ltr">Maestro AI</bdi></span>
+</button>
+
+<aside class="concierge-window" id="concierge-window" aria-label="צ'אט קונסיירז' אוטונומי Maestro AI">
+  <div class="chat-header">
+    <div class="chat-agent-id">
+      <span class="chat-status-dot" aria-hidden="true"></span>
+      <div>
+        <div class="chat-title"><bdi dir="ltr">Maestro AI Concierge</bdi></div>
+        <div class="chat-sub" id="chat-context-badge">מכויל למוסד פעיל ולמנוע הסנכרון</div>
+      </div>
+    </div>
+    <button type="button" class="chat-close-btn" onclick="toggleConcierge(false)" aria-label="סגור חלון קונסיירז'">
+      <i data-lucide="x" aria-hidden="true"></i>
+    </button>
+  </div>
+
+  <div class="chat-messages" id="chat-messages" aria-live="polite">
+    <!-- Messages rendered dynamically -->
+  </div>
+
+  <div class="chat-quick-chips">
+    <button type="button" class="quick-chip" onclick="sendQuickPrompt('walkthrough')">תיאום סיור אוצרות במוזיאון</button>
+    <button type="button" class="quick-chip" onclick="sendQuickPrompt('proposal')">הפקת הצעה ותסריט 4 מערכות</button>
+    <button type="button" class="quick-chip" onclick="sendQuickPrompt('q4')">זמינות Q4 ותנאי <bdi dir="ltr">COI</bdi></button>
+    <button type="button" class="quick-chip" onclick="exportBriefFile()">ייצוא תדריך הפקה (<bdi dir="ltr">.txt</bdi>)</button>
+  </div>
+
+  <form class="chat-input-form" onsubmit="handleChatSubmit(event)">
+    <label for="chat-input-field" class="chat-input-label">פנייה ישירה למפיק האוטונומי (הזמנה, סיור או תמחור):</label>
+    <div class="chat-input-row">
+      <input type="text" id="chat-input-field" class="chat-input" autocomplete="off">
+      <button type="submit" class="chat-send-btn">שלח</button>
+    </div>
+  </form>
+</aside>
+
+<api-shim></api-shim>
+
+<script>
+// ==================== DATA MODELS (Backtick literals for safety) ====================
+const VENUES = [
+  {
+    id: `sfmoma`,
+    code: `SF-01 // SOMA`,
+    district: `רובע סומה, סן פרנסיסקו`,
+    name: `SFMOMA — המוזיאון לאמנות מודרנית`,
+    shortSub: `460,000 רגל רבוע על פני 7 קומות, מרפסת הפסלים ע״ש ווילסון והקיר החי הגדול בארה״ב.`,
+    cocktailCap: 1200,
+    galaCap: 450,
+    amphiCap: 320,
+    capacityNote: `שטח כולל של 460,000 רגל רבוע על 7 קומות (170,000 רגל רבוע תצוגה ו-45,000 רגל רבוע מרחבים ציבוריים בקומות 1–2). מרפסת הפסלים בקומה 3 מתאימה לעד 450 סועדים או 1,200 אורחי קוקטייל.`,
+    redLines: `איסור מוחלט על מזון, משקאות או להבה גלויה בתוך אולמות הגלריה. בקרת לחות קפדנית סביב 31,000+ עבודות צילום ואדריכלות. ימי ד׳ סגור לקהל — אופטימלי להקמות.`,
+    cateringNote: `McCalls Catering & Events מפעילה את Cafe 5 במוזיאון ונמצאת ברשימת הקייטרינג המאושרת לצד Global Gourmet. שילוב Paula LeDuc מותנה באישור לוגיסטי מיוחד.`,
+    techNote: `גישה נוחה מ-Montgomery St BART; טעינה דרך מסוף השירות ברחוב הווארד. Brookline Electric מנתבת כוח שקט למרפסת הקיר החי (4,399 רגל רבוע, 37 מיני צמחים).`
+  },
+  {
+    id: `calacademy`,
+    code: `SF-02 // GGP`,
+    district: `גולדן גייט פארק`,
+    name: `California Academy of Sciences`,
+    shortSub: `אקווריום שטיינהארט, פלנטריום מוריסון ויער גשם 4 קומות תחת גג חי בשטח 2.5 אקר.`,
+    cocktailCap: 2500,
+    galaCap: 600,
+    amphiCap: 400,
+    capacityNote: `אכסניה למעל 60,000 יצורים ומינים, עם השתלטות מלאה (Full Buyout) לעד 2,500 אורחי קוקטייל ברחבת הפיאצה והאקווריום, או 600 אורחים בגאלת ערב פרטית.`,
+    redLines: `חשיפה ביולוגית רגישה ביער הגשם ובמיכלי השונית: הגבלת דציבלים באזור האקווריום, איסור קונפטי וסיבי פלסטיק, והשגחת זואולוג בהקמות ערב (בפורמט NightLife 21+ 6–10 בערב או סגירה פרטית).`,
+    cateringNote: `McCalls Catering & Events ו-Global Gourmet מופיעות כספקיות מאושרות למוסד. דרישה קשיחה לכלים מתכלים ושימור קיימות בהתאמה למשימת הגג החי (87% צמחייה טבעית).`,
+    techNote: `Argus HD מתמחה בהקרנות 15K לומנס ובשידור רב-מצלמות ללא סינוור מערכות הדגים. חלונות טעינה מוגדרים דרך Concourse Drive עם צוותי חשמל שקטים.`
+  },
+  {
+    id: `deyoung`,
+    code: `SF-03 // GGP`,
+    district: `גולדן גייט פארק`,
+    name: `de Young Museum — מוזיאון דה יאנג`,
+    shortSub: `חצר ווילזי המרווחת, חזית הנחושת המחוררת ומגדל התצפית האייקוני מעל הפארק.`,
+    cocktailCap: 1500,
+    galaCap: 500,
+    amphiCap: 350,
+    capacityNote: `חצר הכניסה המקורה והאודיטוריום מאפשרים גמישות גבוהה בין מליאה קעורה לעד 350 משתתפים לבין סעודת שולחנות מלכותיים לעד 500 אורחים.`,
+    redLines: `מעטפת הנחושת והאוספים ההיסטוריים דורשים אישורי COI גבוהים במיוחד, איסור מוחלט על עיגון בקירות ופיקוח אוצרותי צמוד על תאורת UV בקרבת יצירות.`,
+    cateringNote: `McCalls Catering מפעילה את de Young Café ומשמשת קייטרינג מרכזי במתחם, לצד Global Gourmet כחלק מהרשימה המאושרת של מוסדות המוזיאונים לאמנויות יפות.`,
+    techNote: `ג׳אז חי אינטימי נדרש לאיזון אקוסטי בחצר האבן (שילוב סופגי תהודה של Blueprint Studios ומערכת PA מדויקת מבית Argus HD).`
+  },
+  {
+    id: `cjm`,
+    code: `SF-04 // YERBA BUENA`,
+    district: `ירבה בואנה / Mission St`,
+    name: `The Contemporary Jewish Museum (CJM)`,
+    shortSub: `מפגש היסטורי של תחנת כוח 1907 וקוביית הפלדה הכחולה של האדריכל דניאל ליבסקינד.`,
+    cocktailCap: 700,
+    galaCap: 280,
+    amphiCap: 220,
+    capacityNote: `חלל הלובי ההיסטורי והאולם הגבוה מארחים עד 700 אורחי קוקטייל או עד 280 סועדים בגאלה אינטימית באופי בוטיק-אדריכלי מובהק.`,
+    redLines: `שמירה על קירות הלבנים המקוריות והפלדה הכחולה ללא הברגה; הגבלות תפוסה קפדניות בחללי הגלריה העליונים והקפדה על שער כניסה אבטחתי מדורג.`,
+    cateringNote: `תמיכה מלאה בתפריטי גלאט/כשרות לפי דרישה לצד שירות גורמה עונתי מותאם, בתיאום קייטרינג מאושר ובקרת מטבחי קצה.`,
+    techNote: `קירות הלבנים והזכוכית מזמינים שילוב של רביעיית ג'אז נואר (Entire Productions) עם בדי דרייפרי אקוסטיים וחיבורי כוח ייעודיים מ-Brookline Electric.`
+  }
+];
+
+const SPATIAL_TRENDS = {
+  amphitheater: {
+    label: `ישיבת אמפיתיאטרון מעגלית`,
+    note: `קשתות ישיבה קעורות החובקות את הבמה המרכזית — כל אורח יושב במרחק אינטימי מההופעה.`
+  },
+  majestic: {
+    label: `שולחנות מלכותיים אדריכליים`,
+    note: `מבני שולחן רציפים באורך מלא, בדי פשתן מדויקים ופלטת ורוד-פיסטוק או מונוכרום נרות.`
+  },
+  botanical: {
+    label: `מיצב בוטני פיסולי`,
+    note: `צמחייה מקומית המשולבת בקווי האדריכלות של המוזיאון במקום קשתות פרחים סימטריות.`
+  },
+  acts: {
+    label: `זרימת 4 מערכות`,
+    note: `מעבר תאורה ואקוסטיקה מדורג: שקיעה בגן הפסלים ← מליאה ← סעודת נרות ← סלון לילה.`
+  }
+};
+
+const SURVEY_QUESTIONS = [
+  {
+    id: `vibe`,
+    category: `אווירה וארכיטקטורה`,
+    title: `איזו חתימה ויזואלית תגדיר את חלל המוזיאון?`,
+    axisLabel: `ארכיטקטורת חלל`,
+    options: [
+      { id: `quiet_mono`, title: `מונוכרום שקט ("Luxury Local")`, detail: `פשתן טקסטורלי, משי, תאורה מרוככת וחללים נושמים ללא עודף קישוט.`, scores: [95, 70, 85, 65, 90] },
+      { id: `pink_pistachio`, title: `פיסול בוטני בצבעוניות ורוד ופיסטוק`, detail: `יציאה מהלבן המסורתי עם מיצבים אורגניים, קרמיקה ונרות גבוהים.`, scores: [82, 85, 78, 88, 75] },
+      { id: `kinetic_noir`, title: `תיאטרון תאורה דינמי ודרייפרי`, detail: `בדי משי זורמים עם עמעום מדויק המשתנה מאור בין ערביים לאפלת מועדון.`, scores: [75, 95, 72, 92, 80] }
+    ]
+  },
+  {
+    id: `music`,
+    category: `קווים אדומים מוזיקליים`,
+    title: `מהו הקו האדום והכיוון האקוסטי של הערב?`,
+    axisLabel: `איזון מוזיקלי`,
+    options: [
+      { id: `jazz_quartet`, title: `ג'אז נואר חי (קונטרבס, סקסופון ופסנתר)`, detail: `רביעייה אוצרית של Entire Productions; איסור מוחלט על DJ רועש במהלך הקוקטייל.`, scores: [92, 95, 80, 75, 88] },
+      { id: `headliner_fusion`, title: `אמן בינלאומי + תזמורת קאמרית`, detail: `הופעת שיא באמפיתיאטרון מעגלי עם בידוד אקוסטי ושליטה של Argus HD.`, scores: [80, 88, 85, 95, 82] },
+      { id: `ambient_vinyl`, title: `אמביינט אלקטרוני מבוקר דציבלים`, detail: `סאונד עוטף המותאם לרישות שיח ולגלריות ללא זעזוע תדרים נמוכים.`, scores: [88, 78, 75, 82, 90] }
+    ]
+  },
+  {
+    id: `culinary`,
+    category: `סטנדרט קולינרי`,
+    title: `איזה תפריט יניע את החוויה הקולינרית?`,
+    axisLabel: `איכות קולינרית`,
+    options: [
+      { id: `paula_tasting`, title: `ארוחת טעימות אישית (Paula LeDuc / Chef Capra)`, detail: `רכיבים אורגניים מקומיים, שירות מלכותי בישיבה וחיבור יינות בוטיק מעמק נאפה.`, scores: [90, 80, 98, 84, 86] },
+      { id: `mccalls_museum`, title: `מערך מוזיאלי עתיר היקף (McCalls Catering)`, detail: `קייטרינג מוסמך Green Business עם רשיון ישיר ל-SFMOMA, דה יאנג והאקדמיה.`, scores: [85, 82, 92, 80, 95] },
+      { id: `interactive_chef`, title: `שולחן אינטראקטיבי בהגשה משותפת`, detail: `תחנות הכנת קינוחים ומנות גמר מול האורחים כחלופה לעוגה מסורתית.`, scores: [78, 88, 86, 94, 78] }
+    ]
+  },
+  {
+    id: `memory`,
+    category: `זיכרון הליבה (Core Memory)`,
+    title: `מהו הרגע היחיד שהאורחים יזכרו שנה לאחר מכן?`,
+    axisLabel: `אימפקט רגשי`,
+    options: [
+      { id: `silent_drones`, title: `מופע רחפנים כוריאוגרפי שקט`, detail: `סיפור מוארים בשמי סן פרנסיסקו מעל הגג החי או הפארק ללא רעש זיקוקים.`, scores: [84, 82, 80, 98, 85] },
+      { id: `four_acts`, title: `מסע תיאטרלי בן 4 מערכות מדורגות`, detail: `שינוי תפאורה, תאורה ופסקול בכל חלל של המוזיאון לאורך הערב.`, scores: [94, 90, 88, 92, 90] },
+      { id: `intimate_salon`, title: `סלון מייסדים אינטימי (40–80 אורחים)`, detail: `הסטת התקציב מאורחים נוספים אל עומק איכות בלתי מתפשרת לכל אורח.`, scores: [96, 86, 95, 84, 88] }
+    ]
+  },
+  {
+    id: `seating`,
+    category: `סידור קהל וקצב`,
+    title: `כיצד יתחבר הקהל למבנה השולחנות והלו״ז?`,
+    axisLabel: `הנדסת זרימה`,
+    options: [
+      { id: `curved_amphi`, title: `ישיבת אמפיתיאטרון מעגלית + לו״ז גמיש`, detail: `ביטול השורות הישרות וביטול חלוקת הזמן הנוקשה לדקות לטובת קצב טבעי.`, scores: [92, 85, 84, 90, 96] },
+      { id: `majestic_long`, title: `שולחנות מלכותיים רציפים באדריכלות פתוחה`, detail: `שולחנות ארוכים של Blueprint Studios המעצימים את עומק האולם.`, scores: [88, 84, 90, 86, 92] },
+      { id: `lounge_fluid`, title: `איי לאונג' מודולריים ותנועה חופשית`, detail: `פינות ישיבה חמות וקוקטייל מתמשך ללא מעבר נוקשה להושבה.`, scores: [80, 90, 78, 88, 88] }
+    ]
+  }
+];
+
+const VENDORS = [
+  {
+    id: `paula_leduc`,
+    name: `Paula LeDuc Fine Catering & Events`,
+    category: `culinary`,
+    categoryLabel: `קולינריה ועילית`,
+    desc: `מוסד קולינרי והפקתי מצפון קליפורניה הפועל מאימריוויל מאז 1980 בהובלת השף דניאל קאפרה. תפריטים עונתיים בני-קיימא ברמת מלונאות 5 כוכבים.`,
+    proof: `ניסיון מוכח עבור Cartier, Tiffany & Co., Apple, Salesforce, Stripe, האופרה והבלט של SF.`,
+    compat: `אידיאלי לארוחות טעימות, גאלות CJM והפקות יוקרה בקליפורניה.`
+  },
+  {
+    id: `mccalls`,
+    name: `McCalls Catering & Events`,
+    category: `culinary`,
+    categoryLabel: `קייטרינג מוסדי מאושר`,
+    desc: `מבוססת ברחוב בריאנט 1798 ב-SF מעל 45 שנה ומוסמכת כעסק ירוק (SF Green Business). מפעילה את בתי הקפה המובילים במוסדות התרבות.`,
+    proof: `שותפה מאושרת ובלעדית ב-SFMOMA (Cafe 5), de Young, האקדמיה למדעים, City Hall ו-Pier 27 עד 2,000+ אורחים.`,
+    compat: `חובה לתפעול חלק ברשימות הקייטרינג המאושרות של SFMOMA, דה יאנג ו-Cal Academy.`
+  },
+  {
+    id: `blueprint`,
+    name: `Blueprint Studios`,
+    category: `design`,
+    categoryLabel: `השכרות יוקרה וייצור`,
+    desc: `אולפן עיצוב, ריהוט בוטיק (קולקציית 2026) ומפעל ייצור מותאם אישית בבריזביין/SF, עם אדריכלי חלל, מעצבי 3D/AutoCAD ומחלקת פרחים פיסולית.`,
+    proof: `20 שנות יצירה לגאלות, כנסים ומיצבים; כולל חטיבות Vident, Hensley ו-Eijent.`,
+    compat: `אחראית על שולחנות מלכותיים, ספות לאונג' מוקפדות, דרייפרי וקירות מיצב ללא קידוח.`
+  },
+  {
+    id: `argus_hd`,
+    name: `Argus HD`,
+    category: `technical`,
+    categoryLabel: `AV, שידור והקרנה`,
+    desc: `חברת הפקה טכנית מדרום סן פרנסיסקו (מאז 2014) עם אחריות קצה לקצה: מערכות שמע K2 Line-Array, מסכי LED, מצלמות IMAG ואולפן ירוק היברידי.`,
+    proof: `מפיקה עבור OpenAI, Google, Salesforce, Microsoft, PagerDuty (SF Mint) ו-Skydio (Fort Mason) בתמחור קבוע מראש.`,
+    compat: `שליטה מלאה בכללי האיגודים, תעודות COI ומגבלות תאורה/שמע במוזיאונים.`
+  },
+  {
+    id: `entire`,
+    name: `Entire Productions`,
+    category: `talent`,
+    categoryLabel: `הזמנת ג'אז ובידור`,
+    desc: `חברת הפקה וניהול אמנותי בראשות נטשה מילר ב-SF (מאז 2000), המתמחה בבוקינג הרכבי ג'אז, אמני במה ותהליכי הפקה אוטונומיים מבוססי AI.`,
+    proof: `זכתה 5 פעמים ברשימת Inc. 5000 (צמיחה של 216%), מוסמכת WBENC; משרתת את Apple, Google, Meta ו-LinkedIn.`,
+    compat: `מתאימה אישית רביעיות ג'אז נואר או מופעי שיא תחת בקרת דציבלים אוצרותית.`
+  },
+  {
+    id: `brookline`,
+    name: `Brookline Electric`,
+    category: `technical`,
+    categoryLabel: `תשתיות כוח ושקט`,
+    desc: `מומחית חיווט זמני שקט והפצת מתח מבוקרת למבנים היסטוריים ומוזיאונים בסן פרנסיסקו, ללא עומס על תשתיות המתח העדינות של המוסד.`,
+    proof: `חיבורים בלתי נראים למערכי תאורה ארכיטקטונית, גנרטורים שקטים ומטבחי קצה.`,
+    compat: `תשתית קריטית לבידוד עומסי תאורה ושמע ממעגלי האבטחה ובקרת האקלים של המוזיאון.`
+  }
+];
+
+// ==================== APPLICATION STATE ====================
+let appState = {
+  selectedVenueId: `sfmoma`,
+  spatialTrend: `amphitheater`,
+  activeStakeholder: `a`,
+  currentQuestionIndex: 0,
+  answersA: { vibe: `quiet_mono`, music: `jazz_quartet`, culinary: `paula_tasting`, memory: `four_acts`, seating: `curved_amphi` },
+  answersB: { vibe: `quiet_mono`, music: `jazz_quartet`, culinary: `mccalls_museum`, memory: `four_acts`, seating: `majestic_long` },
+  vendorFilter: `all`,
+  rosteredVendors: [`mccalls`, `blueprint`, `argus_hd`, `entire`],
+  chatOpen: false,
+  chatHistory: []
+};
+
+let jazzAudioCtx = null;
+let jazzPlaying = false;
+let jazzLoopTimer = null;
+
+// ==================== WEB AUDIO AMBIENT JAZZ SYNTHESIZER ====================
+function toggleJazzAudio() {
+  if (jazzPlaying) {
+    stopJazzAudio();
+  } else {
+    startJazzAudio();
+  }
+  updateJazzButtons();
+}
+
+function startJazzAudio() {
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    if (!jazzAudioCtx) {
+      jazzAudioCtx = new AudioCtx();
+    }
+    if (jazzAudioCtx.state === 'suspended') {
+      jazzAudioCtx.resume();
+    }
+    jazzPlaying = true;
+    playJazzProgression();
+    jazzLoopTimer = setInterval(playJazzProgression, 8000);
+  } catch (e) {
+    jazzPlaying = false;
+  }
+}
+
+function stopJazzAudio() {
+  jazzPlaying = false;
+  if (jazzLoopTimer) {
+    clearInterval(jazzLoopTimer);
+    jazzLoopTimer = null;
+  }
+  if (jazzAudioCtx && jazzAudioCtx.state === 'running') {
+    jazzAudioCtx.suspend();
+  }
+}
+
+function playJazzProgression() {
+  if (!jazzPlaying || !jazzAudioCtx) return;
+  const now = jazzAudioCtx.currentTime;
+  // Smooth nocturnal jazz ii-V-I-VI voicings (Dm9, G13, Cmaj9, A7alt)
+  const chords = [
+    [146.83, 261.63, 329.63, 349.23, 440.00],
+    [196.00, 246.94, 329.63, 349.23, 440.00],
+    [130.81, 246.94, 293.66, 329.63, 392.00],
+    [110.00, 207.65, 261.63, 311.13, 392.00]
+  ];
+  chords.forEach(function(notes, idx) {
+    const start = now + idx * 2.0;
+    notes.forEach(function(freq, nIdx) {
+      const osc = jazzAudioCtx.createOscillator();
+      const gain = jazzAudioCtx.createGain();
+      const filter = jazzAudioCtx.createBiquadFilter();
+      osc.type = nIdx === 0 ? 'triangle' : 'sine';
+      osc.frequency.setValueAtTime(freq, start);
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(950, start);
+      gain.gain.setValueAtTime(0.0001, start);
+      gain.gain.exponentialRampToValueAtTime(nIdx === 0 ? 0.045 : 0.022, start + 0.35);
+      gain.gain.exponentialRampToValueAtTime(0.0001, start + 1.95);
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(jazzAudioCtx.destination);
+      osc.start(start);
+      osc.stop(start + 2.0);
+    });
+  });
+}
+
+function updateJazzButtons() {
+  const hBtn = document.getElementById('header-jazz-btn');
+  const mBtn = document.getElementById('hero-jazz-btn');
+  const hLbl = document.getElementById('header-jazz-label');
+  const mLbl = document.getElementById('hero-jazz-label');
+  if (hBtn) {
+    hBtn.classList.toggle('is-playing', jazzPlaying);
+    hBtn.setAttribute('aria-pressed', jazzPlaying ? 'true' : 'false');
+  }
+  if (mBtn) {
+    mBtn.classList.toggle('is-playing', jazzPlaying);
+    mBtn.setAttribute('aria-pressed', jazzPlaying ? 'true' : 'false');
+  }
+  if (hLbl) hLbl.textContent = jazzPlaying ? `ג'אז אמביינט: פעיל` : `ג'אז אמביינט: כבוי`;
+  if (mLbl) mLbl.textContent = jazzPlaying ? `פסקול ג'אז נואר מתנגן` : `האזן לפסקול ג'אז נואר`;
+}
+
+// ==================== HERO AMBIENT PARTICLE CANVAS ====================
+let heroAnimId = null;
+function initHeroCanvas() {
+  const canvas = document.getElementById('hero-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  function resizeCanvas() {
+    canvas.width = canvas.offsetWidth || 1200;
+    canvas.height = canvas.offsetHeight || 640;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  const particles = [];
+  for (let i = 0; i < 48; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: 0.8 + Math.random() * 1.9,
+      vx: (Math.random() - 0.5) * 0.25,
+      vy: (Math.random() - 0.5) * 0.25,
+      brass: i % 3 === 0
+    });
+  }
+
+  function renderFrame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0) p.x = canvas.width;
+      if (p.x > canvas.width) p.x = 0;
+      if (p.y < 0) p.y = canvas.height;
+      if (p.y > canvas.height) p.y = 0;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.brass ? 'rgba(223, 170, 91, 0.45)' : 'rgba(124, 196, 232, 0.35)';
+      ctx.fill();
+
+      for (let j = i + 1; j < particles.length; j++) {
+        const q = particles[j];
+        const dx = p.x - q.x;
+        const dy = p.y - q.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 130) {
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          ctx.strokeStyle = 'rgba(124, 196, 232, ' + ((1 - dist / 130) * 0.14).toFixed(3) + ')';
+          ctx.lineWidth = 0.7;
+          ctx.stroke();
+        }
+      }
+    }
+    heroAnimId = requestAnimationFrame(renderFrame);
+  }
+  if (heroAnimId) cancelAnimationFrame(heroAnimId);
+  renderFrame();
+}
+
+// ==================== SECTION 2: VENUES & SPATIAL SVG ====================
+function renderVenueCards() {
+  const grid = document.getElementById('venue-cards-grid');
+  if (!grid) return;
+  grid.innerHTML = VENUES.map(function(v) {
+    const selected = v.id === appState.selectedVenueId ? 'is-selected' : '';
+    return `
+      <button type="button" class="venue-card ${selected}" onclick="selectVenue('${v.id}')" aria-pressed="${v.id === appState.selectedVenueId}">
+        <div class="venue-tag-row">
+          <span class="venue-code"><bdi dir="ltr">${v.code}</bdi></span>
+          <span class="venue-district">${v.district}</span>
+        </div>
+        <h3 class="venue-name">${v.name}</h3>
+        <p class="venue-sub">${v.shortSub}</p>
+        <div class="venue-cap-row">
+          <span class="cap-chip">קוקטייל: <bdi dir="ltr">${v.cocktailCap}</bdi></span>
+          <span class="cap-chip">גאלה: <bdi dir="ltr">${v.galaCap}</bdi></span>
+        </div>
+      </button>
+    `;
+  }).join('');
+}
+
+function selectVenue(id) {
+  appState.selectedVenueId = id;
+  renderVenueCards();
+  renderVenueSpotlight();
+  updateConciergeContextBadge();
+  persistState();
+}
+
+function setSpatialTrend(trendKey) {
+  appState.spatialTrend = trendKey;
+  const btns = document.querySelectorAll('.trend-btn');
+  btns.forEach(function(b) {
+    b.classList.toggle('is-active', b.getAttribute('data-trend') === trendKey);
+  });
+  renderSpatialSvg();
+  persistState();
+}
+
+function renderVenueSpotlight() {
+  const venue = VENUES.find(function(v) { return v.id === appState.selectedVenueId; }) || VENUES[0];
+  const titleEl = document.getElementById('spot-title');
+  const metaEl = document.getElementById('spot-meta');
+  const capEl = document.getElementById('spot-capacity');
+  const redEl = document.getElementById('spot-redlines');
+  const catEl = document.getElementById('spot-catering');
+  const techEl = document.getElementById('spot-tech');
+
+  if (titleEl) titleEl.textContent = venue.name;
+  if (metaEl) metaEl.textContent = `${venue.district} · קיבולת אמפיתיאטרון ${venue.amphiCap} · גאלה ${venue.galaCap}`;
+  if (capEl) capEl.textContent = venue.capacityNote;
+  if (redEl) redEl.textContent = venue.redLines;
+  if (catEl) catEl.textContent = venue.cateringNote;
+  if (techEl) techEl.textContent = venue.techNote;
+
+  const btns = document.querySelectorAll('.trend-btn');
+  btns.forEach(function(b) {
+    b.classList.toggle('is-active', b.getAttribute('data-trend') === appState.spatialTrend);
+  });
+  renderSpatialSvg();
+}
+
+function renderSpatialSvg() {
+  const svg = document.getElementById('spatial-svg');
+  if (!svg) return;
+  const venue = VENUES.find(function(v) { return v.id === appState.selectedVenueId; }) || VENUES[0];
+  const trend = SPATIAL_TRENDS[appState.spatialTrend] || SPATIAL_TRENDS.amphitheater;
+
+  let overlayMarkup = '';
+  if (appState.spatialTrend === 'amphitheater') {
+    overlayMarkup = `
+      <circle cx="320" cy="78" r="26" fill="rgba(223,170,91,0.16)" stroke="var(--primary)" stroke-width="1.5"/>
+      <text x="320" y="82" text-anchor="middle" fill="var(--primary)" font-size="11" font-family="Heebo">במה ומוקד ג'אז</text>
+      <path d="M 190 135 A 150 95 0 0 0 450 135" fill="none" stroke="var(--tertiary)" stroke-width="2" stroke-dasharray="5 4"/>
+      <path d="M 150 165 A 195 120 0 0 0 490 165" fill="none" stroke="var(--tertiary)" stroke-width="2" stroke-dasharray="5 4"/>
+      <path d="M 115 195 A 235 145 0 0 0 525 195" fill="none" stroke="var(--primary)" stroke-width="1.5"/>
+      <text x="320" y="212" text-anchor="middle" fill="var(--on-surface)" font-size="12" font-family="Heebo">שורות אמפיתיאטרון קעורות · קו ראייה 100% (${venue.amphiCap} מושבים)</text>
+    `;
+  } else if (appState.spatialTrend === 'majestic') {
+    overlayMarkup = `
+      <rect x="120" y="88" width="400" height="28" rx="4" fill="rgba(223,170,91,0.18)" stroke="var(--primary)" stroke-width="1.5"/>
+      <rect x="120" y="142" width="400" height="28" rx="4" fill="rgba(223,170,91,0.18)" stroke="var(--primary)" stroke-width="1.5"/>
+      <circle cx="165" cy="102" r="4" fill="var(--tertiary)"/><circle cx="245" cy="102" r="4" fill="var(--tertiary)"/><circle cx="325" cy="102" r="4" fill="var(--tertiary)"/><circle cx="405" cy="102" r="4" fill="var(--tertiary)"/><circle cx="475" cy="102" r="4" fill="var(--tertiary)"/>
+      <circle cx="165" cy="156" r="4" fill="var(--tertiary)"/><circle cx="245" cy="156" r="4" fill="var(--tertiary)"/><circle cx="325" cy="156" r="4" fill="var(--tertiary)"/><circle cx="405" cy="156" r="4" fill="var(--tertiary)"/><circle cx="475" cy="156" r="4" fill="var(--tertiary)"/>
+      <text x="320" y="205" text-anchor="middle" fill="var(--on-surface)" font-size="12" font-family="Heebo">שולחנות מלכותיים אדריכליים מבית Blueprint Studios · ${venue.galaCap} סועדים</text>
+    `;
+  } else if (appState.spatialTrend === 'botanical') {
+    overlayMarkup = `
+      <path d="M 90 215 Q 130 90 210 120 T 320 90 T 440 125 T 550 205" fill="none" stroke="var(--positive)" stroke-width="3"/>
+      <circle cx="145" cy="130" r="18" fill="rgba(82,209,156,0.18)" stroke="var(--positive)" stroke-width="1.2"/>
+      <circle cx="320" cy="92" r="24" fill="rgba(224,122,95,0.22)" stroke="var(--data-4)" stroke-width="1.2"/>
+      <circle cx="490" cy="138" r="18" fill="rgba(82,209,156,0.18)" stroke="var(--positive)" stroke-width="1.2"/>
+      <text x="320" y="205" text-anchor="middle" fill="var(--on-surface)" font-size="12" font-family="Heebo">מיצב בוטני פיסולי הזורם עם שלד האבן והפלדה של המוזיאון</text>
+    `;
+  } else {
+    overlayMarkup = `
+      <rect x="65" y="75" width="115" height="90" rx="6" fill="rgba(124,196,232,0.12)" stroke="var(--tertiary)" stroke-width="1.2"/>
+      <text x="122" y="122" text-anchor="middle" fill="var(--tertiary)" font-size="11" font-family="Heebo">מערכה I · שקיעה</text>
+      <rect x="200" y="75" width="115" height="90" rx="6" fill="rgba(223,170,91,0.14)" stroke="var(--primary)" stroke-width="1.2"/>
+      <text x="257" y="122" text-anchor="middle" fill="var(--primary)" font-size="11" font-family="Heebo">מערכה II · אמפי</text>
+      <rect x="335" y="75" width="115" height="90" rx="6" fill="rgba(224,122,95,0.14)" stroke="var(--data-4)" stroke-width="1.2"/>
+      <text x="392" y="122" text-anchor="middle" fill="var(--on-surface)" font-size="11" font-family="Heebo">מערכה III · סעודה</text>
+      <rect x="470" y="75" width="115" height="90" rx="6" fill="rgba(82,209,156,0.12)" stroke="var(--positive)" stroke-width="1.2"/>
+      <text x="527" y="122" text-anchor="middle" fill="var(--positive)" font-size="11" font-family="Heebo">מערכה IV · רחפנים</text>
+      <text x="320" y="205" text-anchor="middle" fill="var(--on-surface)" font-size="12" font-family="Heebo">כוריאוגרפיית תאורה ואקוסטיקה מדורגת בין אגפי המוסד</text>
+    `;
+  }
+
+  svg.innerHTML = `
+    <defs>
+      <pattern id="bp-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+        <path d="M 24 0 L 0 0 0 24" fill="none" stroke="var(--outline-variant)" stroke-width="0.6"/>
+      </pattern>
+    </defs>
+    <rect x="0" y="0" width="640" height="280" fill="url(#bp-grid)" rx="6"/>
+    <rect x="24" y="20" width="592" height="240" fill="none" stroke="var(--outline)" stroke-width="1.2" rx="4"/>
+    <text x="42" y="42" fill="var(--tertiary)" font-size="11" font-family="JetBrains Mono">${venue.code} // ${trend.label}</text>
+    ${overlayMarkup}
+    <text x="320" y="244" text-anchor="middle" fill="var(--on-surface-variant)" font-size="11" font-family="Heebo">${trend.note}</text>
+  `;
+}
+
+function lockSelectedVenue() {
+  const venue = VENUES.find(function(v) { return v.id === appState.selectedVenueId; }) || VENUES[0];
+  const statusEl = document.getElementById('venue-lock-status');
+  if (statusEl) {
+    statusEl.textContent = `המוסד "${venue.name}" ננעל בתדריך האוטונומי וסונכרן עם הקונסיירז'.`;
+  }
+  updateConciergeContextBadge();
+  persistState();
+}
+
+function askConciergeAboutVenue() {
+  const venue = VENUES.find(function(v) { return v.id === appState.selectedVenueId; }) || VENUES[0];
+  toggleConcierge(true);
+  addChatMessage(`התעניין בסיור אוצרות והיכרות עם המגבלות של ${venue.name}`, 'user');
+  setTimeout(function() {
+    addChatMessage(
+      `מעולה. עבור ${venue.name} (${venue.district}) זמינים חלונות סיור פרטיים עם צוות התפעול שלנו בימי שלישי וחמישי בבוקר. נבחן מקרוב את ${venue.techNote} איזה תאריך יעד עומד על הפרק?`,
+      'ai'
+    );
+  }, 260);
+}
+
+// ==================== SECTION 3: STAKEHOLDER ALIGNMENT ENGINE ====================
+function switchStakeholder(who) {
+  appState.activeStakeholder = who;
+  const tabA = document.getElementById('tab-stakeholder-a');
+  const tabB = document.getElementById('tab-stakeholder-b');
+  if (tabA) {
+    tabA.classList.toggle('is-active', who === 'a');
+    tabA.setAttribute('aria-selected', who === 'a' ? 'true' : 'false');
+  }
+  if (tabB) {
+    tabB.classList.toggle('is-active', who === 'b');
+    tabB.setAttribute('aria-selected', who === 'b' ? 'true' : 'false');
+  }
+  renderSurveyQuestion();
+  persistState();
+}
+
+function jumpToQuestion(idx) {
+  appState.currentQuestionIndex = idx;
+  renderSurveyQuestion();
+  persistState();
+}
+
+function stepQuestion(delta) {
+  const next = appState.currentQuestionIndex + delta;
+  if (next >= 0 && next < SURVEY_QUESTIONS.length) {
+    appState.currentQuestionIndex = next;
+    renderSurveyQuestion();
+    persistState();
+  }
+}
+
+function chooseSurveyOption(qId, optId) {
+  if (appState.activeStakeholder === 'a') {
+    appState.answersA[qId] = optId;
+  } else {
+    appState.answersB[qId] = optId;
+  }
+  renderSurveyQuestion();
+  renderAlignmentRadar();
+  persistState();
+}
+
+function resetAlignmentDemo(btn) {
+  if (btn.dataset.armed !== 'true') {
+    btn.dataset.armed = 'true';
+    btn.textContent = 'לחץ שוב לאיפוס';
+    return;
+  }
+  btn.dataset.armed = 'false';
+  btn.textContent = 'אפס תשובות';
+  appState.answersA = { vibe: `quiet_mono`, music: `jazz_quartet`, culinary: `paula_tasting`, memory: `four_acts`, seating: `curved_amphi` };
+  appState.answersB = { vibe: `quiet_mono`, music: `jazz_quartet`, culinary: `mccalls_museum`, memory: `four_acts`, seating: `majestic_long` };
+  appState.currentQuestionIndex = 0;
+  renderSurveyQuestion();
+  renderAlignmentRadar();
+  persistState();
+}
+
+function renderSurveyQuestion() {
+  const idx = appState.currentQuestionIndex;
+  const q = SURVEY_QUESTIONS[idx];
+  const activeAnswers = appState.activeStakeholder === 'a' ? appState.answersA : appState.answersB;
+  const chosenId = activeAnswers[q.id];
+
+  const bar = document.getElementById('q-progress-bar');
+  if (bar) {
+    bar.innerHTML = SURVEY_QUESTIONS.map(function(item, i) {
+      const cls = i === idx ? 'is-current' : (activeAnswers[item.id] ? 'is-done' : '');
+      return `<button type="button" class="q-step-pill ${cls}" onclick="jumpToQuestion(${i})" aria-label="שאלה ${i + 1}"></button>`;
+    }).join('');
+  }
+
+  const numEl = document.getElementById('survey-q-num');
+  const catEl = document.getElementById('survey-q-cat');
+  const titleEl = document.getElementById('survey-q-title');
+  const optsEl = document.getElementById('survey-options');
+  const prevBtn = document.getElementById('prev-q-btn');
+  const nextBtn = document.getElementById('next-q-btn');
+
+  if (numEl) numEl.textContent = `שאלה 0${idx + 1} מתוך 05`;
+  if (catEl) catEl.textContent = q.category;
+  if (titleEl) titleEl.textContent = q.title;
+  if (prevBtn) prevBtn.disabled = idx === 0;
+  if (nextBtn) nextBtn.disabled = idx === SURVEY_QUESTIONS.length - 1;
+
+  if (optsEl) {
+    optsEl.innerHTML = q.options.map(function(opt) {
+      const chosen = opt.id === chosenId ? 'is-chosen' : '';
+      return `
+        <button type="button" class="survey-option-btn ${chosen}" onclick="chooseSurveyOption('${q.id}', '${opt.id}')" aria-pressed="${opt.id === chosenId}">
+          <span class="opt-title">${opt.title}</span>
+          <span class="opt-detail">${opt.detail}</span>
+        </button>
+      `;
+    }).join('');
+  }
+}
+
+function computeAxisVector(answersMap) {
+  // Returns 5 normalized axis scores (0..100)
+  const totals = [0, 0, 0, 0, 0];
+  SURVEY_QUESTIONS.forEach(function(q) {
+    const sel = q.options.find(function(o) { return o.id === answersMap[q.id]; }) || q.options[0];
+    for (let i = 0; i < 5; i++) {
+      totals[i] += sel.scores[i];
+    }
+  });
+  return totals.map(function(t) { return Math.round(t / SURVEY_QUESTIONS.length); });
+}
+
+function computeAlignmentScore() {
+  const vecA = computeAxisVector(appState.answersA);
+  const vecB = computeAxisVector(appState.answersB);
+  let diffSum = 0;
+  for (let i = 0; i < 5; i++) {
+    diffSum += Math.abs(vecA[i] - vecB[i]);
+  }
+  const avgDiff = diffSum / 5;
+  return Math.max(55, Math.min(99, Math.round(100 - avgDiff * 1.35)));
+}
+
+function renderAlignmentRadar() {
+  const svg = document.getElementById('alignment-radar-svg');
+  const scoreEl = document.getElementById('alignment-score-val');
+  const synthEl = document.getElementById('alignment-synthesis');
+
+  const vecA = computeAxisVector(appState.answersA);
+  const vecB = computeAxisVector(appState.answersB);
+  const score = computeAlignmentScore();
+
+  if (scoreEl) scoreEl.innerHTML = `<bdi dir="ltr">${score}%</bdi>`;
+
+  if (svg) {
+    const cx = 190;
+    const cy = 155;
+    const maxR = 105;
+    const labels = SURVEY_QUESTIONS.map(function(q) { return q.axisLabel; });
+
+    function polarPoint(angleIdx, pct) {
+      const angle = (-Math.PI / 2) + (angleIdx * (2 * Math.PI / 5));
+      const r = (pct / 100) * maxR;
+      return [cx + Math.cos(angle) * r, cy + Math.sin(angle) * r];
+    }
+
+    let rings = '';
+    [25, 50, 75, 100].forEach(function(level) {
+      const pts = [];
+      for (let i = 0; i < 5; i++) {
+        const pt = polarPoint(i, level);
+        pts.push(pt[0].toFixed(1) + ',' + pt[1].toFixed(1));
+      }
+      rings += `<polygon points="${pts.join(' ')}" fill="none" stroke="var(--outline-variant)" stroke-width="1"/>`;
+    });
+
+    let axes = '';
+    let axisTexts = '';
+    for (let i = 0; i < 5; i++) {
+      const outer = polarPoint(i, 100);
+      const lblPt = polarPoint(i, 124);
+      axes += `<line x1="${cx}" y1="${cy}" x2="${outer[0].toFixed(1)}" y2="${outer[1].toFixed(1)}" stroke="var(--outline-variant)" stroke-width="1"/>`;
+      axisTexts += `<text x="${lblPt[0].toFixed(1)}" y="${lblPt[1].toFixed(1)}" text-anchor="middle" dominant-baseline="middle" fill="var(--on-surface-variant)" font-size="11.5" font-family="Heebo">${labels[i]}</text>`;
+    }
+
+    const polyA = vecA.map(function(v, i) {
+      const p = polarPoint(i, v);
+      return p[0].toFixed(1) + ',' + p[1].toFixed(1);
+    }).join(' ');
+
+    const polyB = vecB.map(function(v, i) {
+      const p = polarPoint(i, v);
+      return p[0].toFixed(1) + ',' + p[1].toFixed(1);
+    }).join(' ');
+
+    svg.innerHTML = `
+      ${rings}
+      ${axes}
+      <polygon points="${polyB}" fill="rgba(124,196,232,0.18)" stroke="var(--data-2)" stroke-width="2"/>
+      <polygon points="${polyA}" fill="rgba(223,170,91,0.2)" stroke="var(--data-1)" stroke-width="2.2"/>
+      ${axisTexts}
+    `;
+  }
+
+  if (synthEl) {
+    const venue = VENUES.find(function(v) { return v.id === appState.selectedVenueId; }) || VENUES[0];
+    const culChoiceA = appState.answersA.culinary;
+    const culChoiceB = appState.answersB.culinary;
+    const culRec = (culChoiceA === 'paula_tasting' && culChoiceB !== 'mccalls_museum')
+      ? `Paula LeDuc Fine Catering (תפריט טעימות של השף דניאל קאפרה)`
+      : `McCalls Catering (מאושרת מוסדית ב-${venue.name}) בשילוב בקרת שף מדויקת`;
+    const musicChoice = appState.answersA.music === 'jazz_quartet' ? `רביעיית ג'אז נואר (Entire Productions)` : `הרכב במה ובידוד תדרים (Argus HD + Entire)`;
+
+    synthEl.innerHTML = `
+      <h4>סינתזה אוטונומית של Maestro AI</h4>
+      <p>
+        מוסד מומלץ: <strong>${venue.name}</strong> · מסגרת מוזיקלית: <strong>${musicChoice}</strong> · קולינריה מאוחדת: <strong>${culRec}</strong>.
+        רמת הסנכרון עומדת על <bdi dir="ltr">${score}%</bdi> — מוכן לתרגום להצעת מחיר מפורטת.
+      </p>
+    `;
+  }
+}
+
+function sendBriefToConcierge() {
+  const venue = VENUES.find(function(v) { return v.id === appState.selectedVenueId; }) || VENUES[0];
+  const score = computeAlignmentScore();
+  toggleConcierge(true);
+  addChatMessage(`הפק תדריך מאוחד על בסיס מדד סנכרון ${score}% עבור ${venue.name}.`, 'user');
+  setTimeout(function() {
+    addChatMessage(
+      `התדריך עובד. סנכרון בעלי העניין עומד על ${score}% עבור ${venue.name}. הצוות המוצע כולל את McCalls / Paula LeDuc בקולינריה, Blueprint Studios בייצור השולחנות, Argus HD בשידור ו-Entire Productions בג'אז החי. תוכל להוריד כעת קובץ תדריך או לתאם סיור פיזי.`,
+      'ai'
+    );
+  }, 260);
+}
+
+// ==================== SECTION 4: VENDOR ECOSYSTEM ====================
+function filterVendors(cat) {
+  appState.vendorFilter = cat;
+  const chips = document.querySelectorAll('.filter-chip');
+  chips.forEach(function(c) {
+    c.classList.toggle('is-active', c.getAttribute('data-filter') === cat);
+  });
+  renderVendors();
+  persistState();
+}
+
+function toggleVendorRoster(vendorId) {
+  const idx = appState.rosteredVendors.indexOf(vendorId);
+  if (idx >= 0) {
+    appState.rosteredVendors.splice(idx, 1);
+  } else {
+    appState.rosteredVendors.push(vendorId);
+  }
+  renderVendors();
+  updateConciergeContextBadge();
+  persistState();
+}
+
+function renderVendors() {
+  const grid = document.getElementById('vendors-grid');
+  if (!grid) return;
+  const list = VENDORS.filter(function(v) {
+    return appState.vendorFilter === 'all' || v.category === appState.vendorFilter;
+  });
+  grid.innerHTML = list.map(function(v) {
+    const rostered = appState.rosteredVendors.indexOf(v.id) >= 0;
+    return `
+      <article class="vendor-card ${rostered ? 'is-rostered' : ''}">
+        <div class="vendor-top">
+          <h3 class="vendor-title"><bdi dir="ltr">${v.name}</bdi></h3>
+          <span class="vendor-cat">${v.categoryLabel}</span>
+        </div>
+        <p class="vendor-desc">${v.desc}</p>
+        <div class="vendor-proof"><strong>ראיה מוסדית:</strong> ${v.proof}</div>
+        <div class="vendor-foot">
+          <span style="font-size:0.82rem; color:var(--on-surface-variant);">${v.compat}</span>
+          <button type="button" class="btn ${rostered ? 'btn-primary' : ''}" onclick="toggleVendorRoster('${v.id}')">
+            ${rostered ? 'בנבחרת שלך' : 'צרף לנבחרת'}
+          </button>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+// ==================== SECTION 5: FLOATING MAESTRO AI CONCIERGE ====================
+function toggleConcierge(forceState) {
+  const win = document.getElementById('concierge-window');
+  const launcher = document.getElementById('concierge-launcher');
+  const nextState = typeof forceState === 'boolean' ? forceState : !appState.chatOpen;
+  appState.chatOpen = nextState;
+  if (win) win.classList.toggle('is-open', nextState);
+  if (launcher) launcher.setAttribute('aria-expanded', nextState ? 'true' : 'false');
+  updateConciergeContextBadge();
+  if (nextState && appState.chatHistory.length === 0) {
+    const venue = VENUES.find(function(v) { return v.id === appState.selectedVenueId; }) || VENUES[0];
+    addChatMessage(
+      `שלום. אני Maestro AI, מפיק העילית האוטונומי שלך. כרגע התדריך מכויל אל ${venue.name} עם ${appState.rosteredVendors.length} ספקי Tier-1 נבחרים. כיצד תרצה להתקדם — סיור אוצרות, הצעה תקציבית או ייצוא תסריט?`,
+      'ai'
+    );
+  }
+  persistState();
+}
+
+function updateConciergeContextBadge() {
+  const badge = document.getElementById('chat-context-badge');
+  const venue = VENUES.find(function(v) { return v.id === appState.selectedVenueId; }) || VENUES[0];
+  const score = computeAlignmentScore();
+  if (badge) {
+    badge.textContent = `${venue.code} · סנכרון ${score}% · ${appState.rosteredVendors.length} ספקים`;
+  }
+}
+
+function addChatMessage(text, sender) {
+  appState.chatHistory.push({ text: text, sender: sender });
+  renderChatMessages();
+  persistState();
+}
+
+function renderChatMessages() {
+  const box = document.getElementById('chat-messages');
+  if (!box) return;
+  box.innerHTML = appState.chatHistory.map(function(m) {
+    return `<div class="chat-msg ${m.sender === 'ai' ? 'is-ai' : 'is-user'}">${escapeHtml(m.text)}</div>`;
+  }).join('');
+  box.scrollTop = box.scrollHeight;
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function sendQuickPrompt(kind) {
+  const venue = VENUES.find(function(v) { return v.id === appState.selectedVenueId; }) || VENUES[0];
+  const score = computeAlignmentScore();
+  if (kind === 'walkthrough') {
+    addChatMessage(`בקש חלונות זמינים לסיור פיזי ב-${venue.name}.`, 'user');
+    setTimeout(function() {
+      addChatMessage(
+        `שוריינו עבורך 3 חלונות סיור פרטיים ב-${venue.name}: יום ג׳ 09:30, יום ד׳ 11:00 (יום סגור לקהל ב-SFMOMA — גישה מלאה לבמות), או יום ה׳ 16:00. המפיק המקומי ומהנדס Brookline Electric ילוו את הבדיקה.`,
+        'ai'
+      );
+    }, 240);
+  } else if (kind === 'proposal') {
+    addChatMessage(`הפק הצעת תסריט 4 מערכות מותאמת למדד הסנכרון (${score}%).`, 'user');
+    setTimeout(function() {
+      const rosterNames = appState.rosteredVendors.map(function(id) {
+        const found = VENDORS.find(function(v) { return v.id === id; });
+        return found ? found.name : id;
+      }).join(', ');
+      addChatMessage(
+        `מתווה הפקה אישי עבור ${venue.name}: מערכה I (ג'אז אקוסטי + מיצבים בוטניים), מערכה II (אמפיתיאטרון מעגלי ל-${venue.amphiCap} איש), מערכה III (שולחנות מלכותיים של Blueprint), מערכה IV (רחפנים שקטים). צוות נבחר: ${rosterNames}. מסגרת תקציב הפקה מומלצת למוזיאון ב-SF: $250K–$500K+.`,
+        'ai'
+      );
+    }, 260);
+  } else if (kind === 'q4') {
+    addChatMessage(`בדוק עומסי Q4, תעודות COI וכשירות ספקים מאושרים.`, 'user');
+    setTimeout(function() {
+      addChatMessage(
+        `אזהרת Q4 פעילה: אולמות המפרץ נתפסים 9–12 חודשים מראש. לכל 6 השותפים בנבחרת (McCalls, Paula LeDuc, Blueprint, Argus HD, Entire, Brookline) קיימות תעודות COI מוסדיות ותיאום איגודים מלא.`,
+        'ai'
+      );
+    }, 240);
+  }
+}
+
+function handleChatSubmit(ev) {
+  ev.preventDefault();
+  const input = document.getElementById('chat-input-field');
+  if (!input) return;
+  const val = input.value.trim();
+  if (!val) return;
+  input.value = '';
+  addChatMessage(val, 'user');
+  const venue = VENUES.find(function(v) { return v.id === appState.selectedVenueId; }) || VENUES[0];
+  setTimeout(function() {
+    addChatMessage(
+      `קיבלתי: "${val}". כחלק מתדריך ההפקה של ${venue.name}, סנכרנתי את הבקשה מול דרישות האוצרות וצוותי Blueprint Studios ו-Argus HD. ניתן ללחוץ על "ייצוא תדריך הפקה" לשמירת המסמך המלא.`,
+      'ai'
+    );
+  }, 280);
+}
+
+function exportBriefFile() {
+  const venue = VENUES.find(function(v) { return v.id === appState.selectedVenueId; }) || VENUES[0];
+  const score = computeAlignmentScore();
+  const rosterNames = appState.rosteredVendors.map(function(id) {
+    const found = VENDORS.find(function(v) { return v.id === id; });
+    return found ? found.name : id;
+  }).join('\n- ');
+
+  const content = [
+    `MAESTRO AI — תדריך הפקה אוטונומי למוסדות סן פרנסיסקו`,
+    `========================================================`,
+    `מוסד נבחר: ${venue.name} (${venue.district})`,
+    `מדד סנכרון בעלי עניין: ${score}%`,
+    `תצורת חלל מועדפת (2026-2027): ${SPATIAL_TRENDS[appState.spatialTrend].label}`,
+    ``,
+    `נתוני קיבולת ואוצרות:`,
+    `- ${venue.capacityNote}`,
+    `- קווים אדומים: ${venue.redLines}`,
+    `- קייטרינג מאושר: ${venue.cateringNote}`,
+    ``,
+    `נבחרת שותפי Tier-1 שנבחרה:`,
+    `- ${rosterNames || 'טרם נבחרו ספקים'}`
+  ].join('\n');
+
+  if (window.notebookAppApi && typeof window.notebookAppApi.triggerFileDownload === 'function') {
+    window.notebookAppApi.triggerFileDownload({
+      content: content,
+      contentType: 'text/plain',
+      encoding: 'UTF-8',
+      filename: `maestro-ai-sf-brief-${venue.id}.txt`
+    });
+    addChatMessage(`קובץ התדריך עבור ${venue.name} יורד כעת למכשירך.`, 'ai');
+  } else {
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `maestro-ai-sf-brief-${venue.id}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    addChatMessage(`קובץ התדריך עבור ${venue.name} הורד בהצלחה.`, 'ai');
+  }
+}
+
+// ==================== UTILITIES & PERSISTENCE ====================
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function initScrollReveals() {
+  const els = document.querySelectorAll('.reveal-on-scroll');
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(function(e) { e.classList.add('is-visible'); });
+    return;
+  }
+  const obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  els.forEach(function(e) { obs.observe(e); });
+}
+
+function initHeroTilt() {
+  const card = document.getElementById('hero-kinetic-card');
+  if (!card) return;
+  card.addEventListener('mousemove', function(e) {
+    const rect = card.getBoundingClientRect();
+    const rx = ((e.clientY - rect.top) / rect.height - 0.5) * -5;
+    const ry = ((e.clientX - rect.left) / rect.width - 0.5) * 5;
+    card.style.transform = `perspective(900px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+  });
+  card.addEventListener('mouseleave', function() {
+    card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg)';
+  });
+}
+
+async function persistState() {
+  try {
+    if (window.notebookAppApi && typeof window.notebookAppApi.setAppState === 'function') {
+      await window.notebookAppApi.setAppState({
+        selectedVenueId: appState.selectedVenueId,
+        spatialTrend: appState.spatialTrend,
+        activeStakeholder: appState.activeStakeholder,
+        currentQuestionIndex: appState.currentQuestionIndex,
+        answersA: appState.answersA,
+        answersB: appState.answersB,
+        vendorFilter: appState.vendorFilter,
+        rosteredVendors: appState.rosteredVendors,
+        chatHistory: appState.chatHistory.slice(-14)
+      });
+    }
+  } catch (e) {
+    // Graceful fallback if outside host
+  }
+}
+
+async function initApp() {
+  try {
+    if (window.notebookAppApi && typeof window.notebookAppApi.getAppState === 'function') {
+      const saved = await window.notebookAppApi.getAppState();
+      if (saved && typeof saved === 'object') {
+        if (saved.selectedVenueId) appState.selectedVenueId = saved.selectedVenueId;
+        if (saved.spatialTrend) appState.spatialTrend = saved.spatialTrend;
+        if (saved.activeStakeholder) appState.activeStakeholder = saved.activeStakeholder;
+        if (typeof saved.currentQuestionIndex === 'number') appState.currentQuestionIndex = saved.currentQuestionIndex;
+        if (saved.answersA) appState.answersA = saved.answersA;
+        if (saved.answersB) appState.answersB = saved.answersB;
+        if (saved.vendorFilter) appState.vendorFilter = saved.vendorFilter;
+        if (Array.isArray(saved.rosteredVendors)) appState.rosteredVendors = saved.rosteredVendors;
+        if (Array.isArray(saved.chatHistory)) appState.chatHistory = saved.chatHistory;
+      }
+    }
+  } catch (e) {
+    // Ignore storage read error
+  }
+
+  renderVenueCards();
+  renderVenueSpotlight();
+  switchStakeholder(appState.activeStakeholder);
+  renderAlignmentRadar();
+  filterVendors(appState.vendorFilter);
+  renderChatMessages();
+  updateConciergeContextBadge();
+  initHeroCanvas();
+  initHeroTilt();
+  initScrollReveals();
+
+  if (window.lucide && typeof window.lucide.createIcons === 'function') {
+    window.lucide.createIcons();
+  }
+  if (window.notebookAppApi && typeof window.notebookAppApi.notifyAppReady === 'function') {
+    window.notebookAppApi.notifyAppReady();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initApp);
+</script>
+</body>
+</html>

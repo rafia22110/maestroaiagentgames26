@@ -1,0 +1,17 @@
+# Build artefacts (regenerate with `python3 build.py`)
+Exploratorium_Events_UI_bundle.zip
+
+# Node
+node_modules/
+npm-debug.log*
+.env
+.env.local
+
+# Local tooling
+.DS_Store
+.vercel
+*.log
+
+# OS / editor
+.vscode/
+.idea/

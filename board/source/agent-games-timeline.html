@@ -1,0 +1,2690 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Games 2026 — לוח תכנון מאסטר, צ'קליסט ולוח משבצות אינטראקטיבי</title>
+<style>
+:root {
+  --bg: #0b0d13;
+  --bg-grad: radial-gradient(circle at 15% 10%, rgba(244,63,94,0.12), transparent 35%),
+             radial-gradient(circle at 85% 80%, rgba(79,140,255,0.12), transparent 40%),
+             #0b0d13;
+  --card: rgba(24, 28, 40, 0.85);
+  --card-solid: #181c28;
+  --card2: rgba(34, 40, 56, 0.92);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --accent: #f43f5e;
+  --accent2: #f97316;
+  --green: #10b981;
+  --yellow: #f59e0b;
+  --blue: #3b82f6;
+  --purple: #8b5cf6;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --line: #262d40;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background: var(--bg-grad);
+  background-attachment: fixed;
+  color: var(--text);
+  min-height: 100vh;
+  padding: 24px 18px 60px;
+  line-height: 1.5;
+}
+
+.container {
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
+/* ── Header ── */
+header {
+  text-align: center;
+  margin-bottom: 22px;
+  background: var(--card);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 24px 20px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+}
+
+header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+  background: linear-gradient(90deg, #fff, #cbd5e1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+header .sub {
+  color: var(--muted);
+  font-size: 0.96rem;
+}
+
+.badge-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.route-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  box-shadow: 0 4px 15px rgba(244,63,94,0.3);
+}
+
+.info-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--card2);
+  border: 1px solid var(--glass-border);
+  color: var(--text);
+  border-radius: 999px;
+  font-size: 0.83rem;
+}
+
+/* ── Top Dashboard Grid (Countdown + Master Progress) ── */
+.top-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 820px) {
+  .top-grid { grid-template-columns: 1fr; }
+}
+
+.panel-card {
+  background: var(--card);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.panel-title {
+  font-size: 0.84rem;
+  color: var(--muted);
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.countdown-boxes {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  gap: 8px;
+}
+
+.countdown-boxes .unit {
+  flex: 1;
+  background: var(--card2);
+  border-radius: 12px;
+  padding: 10px 8px;
+  border: 1px solid var(--glass-border);
+}
+
+.countdown-boxes .num {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.countdown-boxes .label {
+  font-size: 0.76rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* Progress Master */
+.master-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.master-pct {
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: var(--green);
+}
+
+.master-count {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.progress-bar-lg {
+  height: 12px;
+  background: var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.progress-fill-lg {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue), var(--green));
+  width: 0%;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 999px;
+}
+
+.phase-mini-bars {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.phase-mini {
+  background: var(--card2);
+  padding: 6px 8px;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid var(--glass-border);
+}
+
+.phase-mini strong {
+  display: block;
+  color: var(--text);
+  font-size: 0.85rem;
+}
+
+/* ── Navigation Tabs ── */
+.tab-nav {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 12px;
+}
+
+.tab-btn {
+  padding: 10px 18px;
+  border: 1px solid var(--glass-border);
+  background: var(--card);
+  color: var(--muted);
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tab-btn:hover {
+  color: var(--text);
+  border-color: var(--blue);
+  transform: translateY(-1px);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--blue), var(--purple));
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 6px 20px rgba(59,130,246,0.35);
+}
+
+.tab-btn.tab-whiteboard-btn {
+  border-color: rgba(16,185,129,0.45);
+  color: #34d399;
+}
+
+.tab-btn.tab-whiteboard-btn.active {
+  background: linear-gradient(135deg, #059669, #3b82f6);
+  color: #fff;
+}
+
+.tab-panel {
+  display: none;
+  animation: fadeIn 0.2s ease;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Filter & Controls Bar ── */
+.controls-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+  background: var(--card);
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+}
+
+.filter-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--card2);
+  color: var(--muted);
+  font-size: 0.82rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.filter-btn.active, .filter-btn:hover {
+  background: var(--blue);
+  color: #fff;
+  border-color: var(--blue);
+}
+
+.action-btn {
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  background: var(--card2);
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.action-btn:hover {
+  border-color: var(--blue);
+  background: rgba(59,130,246,0.15);
+}
+
+.action-btn.danger:hover {
+  border-color: var(--accent);
+  color: #fb7185;
+  background: rgba(244,63,94,0.12);
+}
+
+.action-btn.primary {
+  background: linear-gradient(135deg, var(--blue), var(--purple));
+  border-color: transparent;
+  color: #fff;
+}
+
+/* ── Master Checklist (4 Columns / Phases) ── */
+.board-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(295px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+.col-card {
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.col-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.col-header h3 {
+  font-size: 0.98rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.col-sub {
+  font-size: 0.77rem;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.col-badge {
+  background: var(--card2);
+  border: 1px solid var(--glass-border);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 70px;
+}
+
+.task-item {
+  background: var(--card2);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 0.86rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.task-item:hover {
+  border-color: rgba(59,130,246,0.6);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+}
+
+.task-item.done {
+  border-color: rgba(16,185,129,0.4);
+  background: rgba(16, 185, 129, 0.07);
+}
+
+.task-item.in-progress {
+  border-color: rgba(245,158,11,0.55);
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.task-top-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.task-check-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  border: 2px solid var(--muted);
+  background: rgba(11,13,19,0.6);
+  color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-size: 0.9rem;
+  font-weight: 900;
+  transition: all 0.15s;
+  margin-top: 1px;
+}
+
+.task-check-btn:hover {
+  border-color: var(--green);
+  transform: scale(1.08);
+}
+
+.task-item.done .task-check-btn {
+  background: var(--green);
+  border-color: var(--green);
+  color: #0b0d13;
+}
+
+.task-body {
+  flex: 1;
+  cursor: pointer;
+}
+
+.task-title {
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+  line-height: 1.35;
+}
+
+.task-item.done .task-title {
+  text-decoration: line-through;
+  color: #6ee7b7;
+}
+
+.task-desc {
+  font-size: 0.79rem;
+  color: var(--muted);
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+
+.task-note-box {
+  margin-top: 6px;
+  padding: 6px 8px;
+  background: rgba(11,13,19,0.55);
+  border-right: 3px solid var(--yellow);
+  border-radius: 6px;
+  font-size: 0.76rem;
+  color: #fde68a;
+}
+
+.task-actions-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.task-meta {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.tag {
+  font-size: 0.68rem;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+  background: var(--line);
+  color: var(--muted);
+}
+
+.tag.critical { background: rgba(244,63,94,0.2); color: #fb7185; }
+.tag.core { background: rgba(59,130,246,0.2); color: #60a5fa; }
+.tag.design { background: rgba(139,92,246,0.2); color: #a78bfa; }
+.tag.inclusion { background: rgba(16,185,129,0.2); color: #34d399; }
+.tag.submit { background: rgba(245,158,11,0.2); color: #fbbf24; }
+
+.task-btns {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.mini-btn {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.mini-btn:hover {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+
+.mini-btn.status-toggle.done {
+  background: rgba(16,185,129,0.2);
+  border-color: var(--green);
+  color: #34d399;
+}
+
+.mini-btn.del:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.add-task-btn {
+  margin-top: 12px;
+  background: rgba(59,130,246,0.08);
+  border: 1px dashed rgba(59,130,246,0.5);
+  color: #60a5fa;
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: 0.2s;
+}
+
+.add-task-btn:hover {
+  border-color: var(--blue);
+  background: rgba(59,130,246,0.18);
+  color: #fff;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   WHITEBOARD / GRID STUDIO (לשונית לוח לבן / משבצות אינטראקטיבי)
+══════════════════════════════════════════════════════════════ */
+.wb-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  background: var(--card);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+}
+
+.wb-tool-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.wb-color-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid rgba(255,255,255,0.25);
+  transition: transform 0.15s;
+}
+
+.wb-color-dot:hover, .wb-color-dot.active {
+  transform: scale(1.2);
+  border-color: #fff;
+}
+
+.wb-viewport {
+  position: relative;
+  width: 100%;
+  height: 760px;
+  border-radius: 18px;
+  border: 2px solid var(--glass-border);
+  overflow: auto;
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.45), 0 16px 40px rgba(0,0,0,0.4);
+  transition: background 0.25s;
+  user-select: none;
+}
+
+.wb-viewport.fullscreen {
+  position: fixed;
+  inset: 0;
+  height: 100vh;
+  z-index: 900;
+  border-radius: 0;
+}
+
+/* Grid Background Themes */
+.wb-viewport.theme-dark-grid {
+  background-color: #0d111a;
+  background-image:
+    linear-gradient(to right, rgba(59, 130, 246, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(59, 130, 246, 0.12) 1px, transparent 1px),
+    linear-gradient(to right, rgba(59, 130, 246, 0.24) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(59, 130, 246, 0.24) 1px, transparent 1px);
+  background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
+}
+
+.wb-viewport.theme-light-grid {
+  background-color: #f8fafc;
+  background-image:
+    linear-gradient(to right, rgba(15, 23, 42, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.08) 1px, transparent 1px),
+    linear-gradient(to right, rgba(59, 130, 246, 0.22) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(59, 130, 246, 0.22) 1px, transparent 1px);
+  background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
+}
+
+.wb-viewport.theme-dots {
+  background-color: #111520;
+  background-image: radial-gradient(rgba(148, 163, 184, 0.32) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+.wb-viewport.theme-white-clean {
+  background-color: #ffffff;
+  background-image: radial-gradient(rgba(15, 23, 42, 0.16) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+.wb-canvas-stage {
+  position: relative;
+  width: 2400px;
+  height: 1600px;
+  transform-origin: top right;
+}
+
+#wb-draw-canvas {
+  position: absolute;
+  inset: 0;
+  width: 2400px;
+  height: 1600px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+#wb-draw-canvas.drawing-active {
+  pointer-events: auto;
+  cursor: crosshair;
+}
+
+.wb-drop-hint {
+  position: sticky;
+  bottom: 14px;
+  right: 14px;
+  left: 14px;
+  margin: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(10px);
+  color: #e2e8f0;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  border: 1px solid rgba(255,255,255,0.12);
+  z-index: 30;
+  pointer-events: none;
+}
+
+.wb-viewport.drag-over {
+  border-color: var(--green);
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.35);
+}
+
+/* Whiteboard Sticky Notes & File Cards */
+.wb-node {
+  position: absolute;
+  min-width: 220px;
+  min-height: 140px;
+  border-radius: 14px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  resize: both;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.18);
+  transition: box-shadow 0.15s;
+}
+
+.wb-node:hover, .wb-node:focus-within {
+  box-shadow: 0 16px 38px rgba(0,0,0,0.55);
+}
+
+/* Sticky Note Color Variants */
+.wb-node.note-yellow { background: #fef08a; color: #1e293b; border-color: #facc15; }
+.wb-node.note-pink   { background: #fecdd3; color: #1e293b; border-color: #fb7185; }
+.wb-node.note-blue   { background: #bae6fd; color: #0f172a; border-color: #38bdf8; }
+.wb-node.note-green  { background: #bbf7d0; color: #0f172a; border-color: #4ade80; }
+.wb-node.note-purple { background: #e9d5ff; color: #1e1b4b; border-color: #c084fc; }
+.wb-node.note-dark   {
+  background: rgba(24, 28, 40, 0.94);
+  color: #f1f5f9;
+  border: 1px solid rgba(59,130,246,0.45);
+  backdrop-filter: blur(12px);
+}
+
+.wb-node-header {
+  padding: 8px 12px;
+  cursor: move;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0,0,0,0.08);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.wb-node.note-dark .wb-node-header {
+  background: rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.wb-node-status {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  cursor: pointer;
+  background: rgba(0,0,0,0.12);
+}
+
+.wb-node.note-dark .wb-node-status {
+  background: rgba(59,130,246,0.25);
+  color: #93c5fd;
+}
+
+.wb-node-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.wb-icon-btn {
+  border: none;
+  background: rgba(0,0,0,0.12);
+  color: inherit;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wb-icon-btn:hover {
+  background: rgba(244,63,94,0.85);
+  color: #fff;
+}
+
+.wb-node-title {
+  padding: 8px 12px 4px;
+  font-weight: 800;
+  font-size: 0.95rem;
+  border: none;
+  background: transparent;
+  color: inherit;
+  width: 100%;
+  outline: none;
+}
+
+.wb-node-body {
+  padding: 4px 12px 12px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: auto;
+}
+
+.wb-node-textarea {
+  width: 100%;
+  flex: 1;
+  min-height: 75px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  resize: none;
+  outline: none;
+}
+
+.wb-file-preview {
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(0,0,0,0.2);
+  max-height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wb-file-preview img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: contain;
+  cursor: zoom-in;
+  display: block;
+}
+
+.wb-file-preview video,
+.wb-file-preview audio {
+  width: 100%;
+  max-height: 200px;
+}
+
+.wb-text-snippet {
+  font-family: Consolas, monospace;
+  font-size: 0.76rem;
+  background: rgba(11,13,19,0.82);
+  color: #e2e8f0;
+  padding: 8px;
+  border-radius: 8px;
+  max-height: 160px;
+  overflow: auto;
+  white-space: pre-wrap;
+  user-select: text;
+}
+
+.wb-csv-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.74rem;
+  background: rgba(11,13,19,0.85);
+  color: #f1f5f9;
+}
+
+.wb-csv-table th, .wb-csv-table td {
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 4px 6px;
+  text-align: right;
+}
+
+.wb-csv-table th {
+  background: rgba(59,130,246,0.25);
+}
+
+/* ── Submission Gate Simulator (Tab 3) ── */
+.gate-banner {
+  background: linear-gradient(135deg, rgba(244,63,94,0.15), rgba(249,115,22,0.15));
+  border: 1px solid rgba(244,63,94,0.35);
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.gate-status-badge {
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+
+.gate-status-badge.locked {
+  background: rgba(244,63,94,0.2);
+  color: #fb7185;
+  border: 1px solid #f43f5e;
+}
+
+.gate-status-badge.ready {
+  background: rgba(16,185,129,0.2);
+  color: #34d399;
+  border: 1px solid #10b981;
+}
+
+.gate-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.gate-card {
+  background: var(--card);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  padding: 18px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.gate-card.verified {
+  border-color: var(--green);
+  background: rgba(16,185,129,0.08);
+}
+
+.gate-card h4 {
+  font-size: 0.98rem;
+  margin-bottom: 4px;
+  color: var(--text);
+}
+
+.gate-card p {
+  font-size: 0.83rem;
+  color: var(--muted);
+}
+
+/* ── Timeline & 72h Sprint Schedule ── */
+.timeline {
+  position: relative;
+  padding-right: 32px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  right: 11px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--accent), var(--blue), var(--green));
+  border-radius: 3px;
+}
+
+.phase-box {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin-bottom: 14px;
+}
+
+.phase-box .dot {
+  position: absolute;
+  right: -28px;
+  top: 22px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid var(--bg);
+}
+
+.phase-box.active-now .dot {
+  background: var(--yellow);
+  box-shadow: 0 0 0 5px rgba(245,158,11,0.25);
+}
+
+.phase-box .date {
+  font-size: 0.82rem;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.info-card {
+  background: var(--card);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.info-card h4 {
+  font-size: 1.02rem;
+  color: var(--blue);
+  margin-bottom: 12px;
+}
+
+.info-card ul { list-style: none; }
+
+.info-card li {
+  font-size: 0.86rem;
+  color: var(--muted);
+  margin-bottom: 8px;
+  padding-right: 16px;
+  position: relative;
+}
+
+.info-card li::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 7px;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+.info-card li strong { color: var(--text); }
+
+.venue-card {
+  background: var(--card);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  padding: 18px;
+  transition: 0.2s;
+  cursor: pointer;
+  position: relative;
+}
+
+.venue-card:hover, .venue-card.selected {
+  border-color: var(--green);
+  box-shadow: 0 8px 25px rgba(16,185,129,0.15);
+}
+
+.venue-card.selected::after {
+  content: "✓ האולם הנבחר";
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: var(--green);
+  color: #0b0d13;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.venue-card h4 { font-size: 1rem; color: var(--text); margin-bottom: 4px; }
+.venue-card .v-sub { font-size: 0.78rem; color: var(--accent); font-weight: 600; margin-bottom: 10px; }
+.venue-card p { font-size: 0.82rem; color: var(--muted); margin-bottom: 8px; }
+
+/* Judging & Tables */
+.crit-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.crit-label { flex: 1.4; font-size: 0.86rem; font-weight: 600; }
+.crit-bar { flex: 2; height: 10px; background: var(--line); border-radius: 5px; overflow: hidden; }
+.crit-fill { height: 100%; border-radius: 5px; }
+.crit-pct { font-size: 0.85rem; font-weight: 700; color: var(--text); width: 42px; text-align: left; }
+
+.prize-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.prize-table th { background: var(--card2); padding: 10px 12px; text-align: right; font-size: 0.78rem; color: var(--muted); }
+.prize-table td { padding: 10px 12px; border-bottom: 1px solid var(--line); }
+
+/* ── Custom In-Page Modal (Replaces blocked browser prompt/confirm) ── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 7, 12, 0.78);
+  backdrop-filter: blur(8px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.modal-backdrop.open {
+  display: flex;
+}
+
+.modal-card {
+  background: #181c28;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 18px;
+  width: 100%;
+  max-width: 520px;
+  padding: 22px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.65);
+}
+
+.modal-card h3 {
+  margin-bottom: 14px;
+  font-size: 1.15rem;
+}
+
+.form-field {
+  margin-bottom: 12px;
+}
+
+.form-field label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: #0f131d;
+  color: var(--text);
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+  border-color: var(--blue);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+/* Lightbox for Image Zoom */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.88);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+  padding: 24px;
+  cursor: zoom-out;
+}
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 94vw; max-height: 90vh; border-radius: 12px; }
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  background: var(--green);
+  color: #0b0d13;
+  font-weight: 800;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s;
+  z-index: 1500;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+.toast.show { opacity: 1; }
+
+footer {
+  text-align: center;
+  margin-top: 36px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+footer a { color: var(--blue); text-decoration: none; margin: 0 8px; font-weight: 600; }
+footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <header>
+    <h1>🎮 Agent Games 2026 — לוח תכנון מאסטר, צ'קליסט וסטודיו משבצות</h1>
+    <p class="sub">Main Street Edition · Wedding Venues Track · צ'קליסט אינטראקטיבי + לוח לבן/משבצות לעיצוב, פתקים וקבצים</p>
+    <div class="badge-row">
+      <span class="route-badge">💍 מסלול: Wedding Venues (tthezgqmvrrh)</span>
+      <span class="info-pill">✅ הרשמה מאושרת (Vlad Yanch, 6.11.2026)</span>
+      <span class="info-pill">⚖️ שופטים: Vlad Yanch (CEO) & Eugene Sorokin (CTO)</span>
+      <span class="info-pill" id="selected-venue-pill">🏛️ אולם נבחר: The Exploratorium (Pier 15)</span>
+      <a href="maestro-ai-live-bot/index.html" target="_blank" style="background:linear-gradient(135deg,#0ea5e9,#10b981);color:#04111d;text-decoration:none;font-weight:900;padding:6px 14px;border-radius:999px;font-size:0.84rem;box-shadow:0 4px 16px rgba(16,185,129,0.35)">🚀 פתח את הבוט החי באנגלית (Maestro AI Live Bot — OKF v2.5) ↗</a>
+    </div>
+  </header>
+
+  <!-- Top Dashboard: Countdown + Master Progress -->
+  <div class="top-grid">
+    <div class="panel-card">
+      <div class="panel-title">
+        <span>⏳ ספירה לאחור להזנקת ההאקתון (4.12 בשעה 22:00)</span>
+        <span style="color:var(--accent);font-weight:700">72 Hours Window</span>
+      </div>
+      <div class="countdown-boxes">
+        <div class="unit"><div class="num" id="cd-days">--</div><div class="label">ימים</div></div>
+        <div class="unit"><div class="num" id="cd-hours">--</div><div class="label">שעות</div></div>
+        <div class="unit"><div class="num" id="cd-mins">--</div><div class="label">דקות</div></div>
+        <div class="unit"><div class="num" id="cd-secs">--</div><div class="label">שניות</div></div>
+      </div>
+    </div>
+
+    <div class="panel-card">
+      <div class="panel-title">
+        <span>📊 מד התקדמות צ'קליסט כולל</span>
+        <span id="master-count" class="master-count">0 מתוך 0 הושלמו</span>
+      </div>
+      <div class="master-stats">
+        <div class="master-pct" id="master-pct">0%</div>
+        <div style="font-size:0.8rem;color:var(--muted)" id="save-indicator">💾 נשמר אוטומטית</div>
+      </div>
+      <div class="progress-bar-lg">
+        <div class="progress-fill-lg" id="master-fill"></div>
+      </div>
+      <div class="phase-mini-bars">
+        <div class="phase-mini">לפני התחרות<strong id="mini-before">0/0</strong></div>
+        <div class="phase-mini">במהלך (72ש')<strong id="mini-during">0/0</strong></div>
+        <div class="phase-mini">סיום והגשה<strong id="mini-submit">0/0</strong></div>
+        <div class="phase-mini">אחרי וצמיחה<strong id="mini-post">0/0</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <div class="tab-nav">
+    <button class="tab-btn active" data-tab="tab-checklist">✅ צ'קליסט מאסטר (לחיצה לסימון וי / עריכה)</button>
+    <button class="tab-btn tab-whiteboard-btn" data-tab="tab-whiteboard">🎨 לוח לבן / משבצות (רעיונות, פתקים וקבצים)</button>
+    <button class="tab-btn" data-tab="tab-gate">🔒 שער הגשה הרמטי (6 תנאי סף)</button>
+    <button class="tab-btn" data-tab="tab-schedule">⏱️ תוכנית 72 שעות ויעדי 2027</button>
+    <button class="tab-btn" data-tab="tab-venues">🏛️ ה-Exploratorium + אולמות, בידול ו-UI</button>
+    <button class="tab-btn" data-tab="tab-judging">⚖️ קריטריוני שיפוט ופרסים</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TAB 1: MASTER CHECKLIST BOARD
+  ════════════════════════════════════════════════════════════ -->
+  <div class="tab-panel active" id="tab-checklist">
+    <div class="controls-bar">
+      <div class="filter-group">
+        <button class="filter-btn active" data-filter="all">הצג הכל</button>
+        <button class="filter-btn" data-filter="pending">רק משימות פתוחות</button>
+        <button class="filter-btn" data-filter="done">✅ רק משימות שבוצעו</button>
+        <button class="filter-btn" data-filter="critical">🔥 קריטי בלבד</button>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="action-btn primary" id="btn-open-add-modal">+ הוסף משימה חדשה</button>
+        <button class="action-btn" id="btn-export-json">💾 ייצוא גיבוי (JSON)</button>
+        <button class="action-btn" id="btn-import-json">📂 ייבוא גיבוי</button>
+        <input type="file" id="import-json-input" accept=".json" style="display:none">
+        <button class="action-btn danger" id="btn-reset">↺ איפוס לברירת מחדל</button>
+      </div>
+    </div>
+
+    <div class="board-grid">
+      <!-- Column 1: Before -->
+      <div class="col-card">
+        <div class="col-header">
+          <h3>🟢 1. הכנות לפני התחרות</h3>
+          <span class="col-badge" id="badge-before">0/0</span>
+        </div>
+        <p class="col-sub">עכשיו ← 4 בדצמבר 22:00 (לחץ על המשימה או על התיבה כדי לסמן ✓ בוצע)</p>
+        <div class="task-list" data-col="before"></div>
+        <button class="add-task-btn" data-add-col="before">+ הוסף משימת הכנה</button>
+      </div>
+
+      <!-- Column 2: During -->
+      <div class="col-card">
+        <div class="col-header">
+          <h3>🔥 2. במהלך התחרות (72 שעות)</h3>
+          <span class="col-badge" id="badge-during">0/0</span>
+        </div>
+        <p class="col-sub">4 בדצמבר 22:00 ← 7 בדצמבר 16:00 (פיתוח סוכן, הכלה, מודולריות ו-QA)</p>
+        <div class="task-list" data-col="during"></div>
+        <button class="add-task-btn" data-add-col="during">+ הוסף משימת פיתוח</button>
+      </div>
+
+      <!-- Column 3: Submission -->
+      <div class="col-card">
+        <div class="col-header">
+          <h3>📤 3. סיום והגשה (Deadline)</h3>
+          <span class="col-badge" id="badge-submit">0/0</span>
+        </div>
+        <p class="col-sub">7 בדצמבר עד 22:00 (יעד פנימי: 19:00 · וידאו דמו, פוסט חובה וטופס)</p>
+        <div class="task-list" data-col="submit"></div>
+        <button class="add-task-btn" data-add-col="submit">+ הוסף משימת הגשה</button>
+      </div>
+
+      <!-- Column 4: Post -->
+      <div class="col-card">
+        <div class="col-header">
+          <h3>🚀 4. אחרי ההגשה ומוניטיזציה</h3>
+          <span class="col-badge" id="badge-post">0/0</span>
+        </div>
+        <p class="col-sub">8 בדצמבר ← 2027 (באזז אורגני, פנייה לאולם ויעדי 4.1–4.5)</p>
+        <div class="task-list" data-col="post"></div>
+        <button class="add-task-btn" data-add-col="post">+ הוסף משימת המשך</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TAB 2: INTERACTIVE WHITEBOARD / GRID STUDIO
+  ════════════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-whiteboard">
+    <div class="wb-toolbar">
+      <div class="wb-tool-group">
+        <button class="action-btn primary" id="wb-add-note">+ פתק חדש (Sticky Note)</button>
+        <div style="display:flex;gap:5px;align-items:center;padding:0 6px" title="בחר צבע לפתק הבא">
+          <span class="wb-color-dot active" data-color="note-yellow" style="background:#fef08a"></span>
+          <span class="wb-color-dot" data-color="note-pink" style="background:#fecdd3"></span>
+          <span class="wb-color-dot" data-color="note-blue" style="background:#bae6fd"></span>
+          <span class="wb-color-dot" data-color="note-green" style="background:#bbf7d0"></span>
+          <span class="wb-color-dot" data-color="note-purple" style="background:#e9d5ff"></span>
+          <span class="wb-color-dot" data-color="note-dark" style="background:#1e293b"></span>
+        </div>
+        <button class="action-btn" id="wb-upload-btn">📎 העלה קבצים ללוח (תמונות / MD / CSV / וידאו / PDF)</button>
+        <input type="file" id="wb-file-input" multiple style="display:none">
+      </div>
+
+      <div class="wb-tool-group">
+        <button class="action-btn" id="wb-toggle-draw">✏️ ציור חופשי: כבוי</button>
+        <input type="color" id="wb-pen-color" value="#f43f5e" title="צבע עט" style="width:30px;height:30px;border:none;background:none;cursor:pointer">
+        <button class="action-btn" id="wb-clear-draw" title="נקה ציורים">🧹 נקה קווים</button>
+
+        <select id="wb-theme-select" class="action-btn" style="background:var(--card2)">
+          <option value="theme-dark-grid">🟦 משבצות כהה (Blueprint)</option>
+          <option value="theme-light-grid">⬜ לוח לבן משבצות (Whiteboard)</option>
+          <option value="theme-dots">⚫ לוח נקודות (Miro Dark)</option>
+          <option value="theme-white-clean">📄 לוח לבן נקודות</option>
+        </select>
+
+        <button class="action-btn" id="wb-zoom-out" title="הקטן">➖</button>
+        <span id="wb-zoom-label" style="font-size:0.8rem;min-width:44px;text-align:center">100%</span>
+        <button class="action-btn" id="wb-zoom-in" title="הגדל">➕</button>
+        <button class="action-btn" id="wb-fullscreen-btn">⛶ מסך מלא</button>
+      </div>
+    </div>
+
+    <div class="wb-viewport theme-dark-grid" id="wb-viewport">
+      <div class="wb-canvas-stage" id="wb-stage">
+        <canvas id="wb-draw-canvas" width="2400" height="1600"></canvas>
+        <div id="wb-nodes-layer"></div>
+      </div>
+      <div class="wb-drop-hint">
+        💡 <strong>טיפ:</strong> גרור לכאן כל קובץ מהמחשב (תמונות, קובצי Markdown, טבלאות CSV, וידאו, PDF) או הדבק תמונה עם <code>Ctrl+V</code> · לחץ כפול על כל מקום ריק בלוח ליצירת פתק חדש!
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TAB 3: SUBMISSION GATE SIMULATOR (6 IRON REQUIREMENTS)
+  ════════════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-gate">
+    <div class="gate-banner">
+      <div>
+        <h3 style="font-size:1.2rem;margin-bottom:4px">🛡️ סימולטור שער הגשה הרמטי (7 בדצמבר עד 22:00 שעון ישראל)</h3>
+        <p style="font-size:0.88rem;color:var(--muted)">כל 6 תנאי הסף הבאים הם חובה מוחלטת לפי תקנון Agentplace. לחץ על כל כרטיסייה כדי לאמת אותה.</p>
+      </div>
+      <div class="gate-status-badge locked" id="gate-status-badge">⛔ חסרים תנאי סף להגשה (0/6)</div>
+    </div>
+
+    <div class="gate-grid" id="gate-grid"></div>
+
+    <div class="info-card">
+      <h4>🎬 תבנית תסריט מנצח לסרטון הדמו (30–90 שניות, מומלץ 60–75 שניות)</h4>
+      <ul>
+        <li><strong>00:00–00:10 (The Hook & Problem):</strong> הצגת האתר השמרני של האולם בסן פרנסיסקו עם טופס "צור קשר" מת (זמן המתנה ממוצע 48 שעות, אפס שקיפות מחירים ואפס גמישות).</li>
+        <li><strong>00:10–00:35 (Inclusive Wedding Flow):</strong> הסוכן בפעולה! לקוח שואל על חתונה ל-150 איש, מבקש נגישות מלאה לסבים/סבתות (Senior Accessibility) והתאמה לקהילה הגאה. הסוכן בונה הצעה חיה ומדויקת.</li>
+        <li><strong>00:35–00:55 (The Modular Twist & Multi-Level UI):</strong> בלחיצה אחת — מעבר מחתונה רומנטית לכנס הייטק באמצע השבוע (Mid-week Corporate Event) עם הדמיית מעטפת ה-Flexible LED Skins ומעבר בין 3 המפלסים.</li>
+        <li><strong>00:55–01:15 (Actionable Conversion):</strong> הסוכן אוסף שם, אימייל וטלפון, ומבצע סגירה מלאה: הזמנת סיור באולם (Venue Tour) או שליחת הצעת מחיר מותאמת אישית.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TAB 4: 72-HOUR SPRINT SCHEDULE & 2027 MILESTONES
+  ════════════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-schedule">
+    <div class="grid-2">
+      <div class="info-card">
+        <h4>⚡ חלוקת 72 שעות הבנייה בתחרות (Sprint Plan)</h4>
+        <ul>
+          <li><strong>שעות 0–4 (שישי 4.12, 22:00–02:00) — Kickoff & Setup:</strong> קבלת קוד הפרומו במייל, מימוש 100% הנחה + מודל Luna, לחיצה על Remix לתבנית החתונות והזנת האתר של האולם הנבחר.</li>
+          <li><strong>שעות 4–28 (שבת 5.12) — Core Agent & Real Data:</strong> הטמעת בסיס הידע המלא (מחירונים, קיבולת, חבילות, נהלים), בניית זרימת האבחון והתמחור השקוף עד לסגירת סיור/הצעה.</li>
+          <li><strong>שעות 28–52 (ראשון 6.12) — Differentiation, Platform & UI:</strong> הוספת שכבת ההכלה (LGBTQ+ / POC / גיל שלישי), מודולריות עסקית לאמצע השבוע, חיבור Search/Skills/Voice ועיצוב Obsidian Glass.</li>
+          <li><strong>שעות 52–64 (שני 7.12, בוקר–צהריים) — QA & Stress Testing:</strong> בדיקת 10 תסריטי קצה (אפס מבוי סתום!), אימות מחירים, בדיקת מובייל ודסקטופ.</li>
+          <li><strong>שעות 64–69 (שני 7.12, 14:00–19:00) — Video, Post & Submit:</strong> הקלטת סרטון הדמו (60 שניות), פרסום פוסט ב-X/LinkedIn עם <code>#AgentGames @agentplace_io</code> והגשה 3 שעות לפני הדדליין!</li>
+        </ul>
+
+        <h4 style="margin-top:22px">📈 שלב 4: תוכנית צמיחה ומוניטיזציה (דצמבר 2026 ← מאי 2027)</h4>
+        <table class="prize-table" style="margin-top:8px">
+          <tr><th>תת-שלב</th><th>חלון זמן</th><th>יעד מרכזי</th></tr>
+          <tr><td><strong>4.1 Productize</strong></td><td>20–25.12</td><td>הפיכת הסוכן למוצר רחב (White-Label License)</td></tr>
+          <tr><td><strong>4.2 Outreach</strong></td><td>27.12–9.1</td><td>5 פניות חודשיות · יעד: 2 יועצים/לקוחות בתשלום עד 8.1</td></tr>
+          <tr><td><strong>4.3 Community</strong></td><td>ינואר+</td><td>פוסט שבועי ב-LinkedIn + Thread ב-X</td></tr>
+          <tr><td><strong>4.4 Team & Scaling</strong></td><td>Q1–Q2 2027</td><td>צוות · 5 לקוחות משלמים · סטטוס שותף Agentplace</td></tr>
+          <tr><td><strong>4.5 Milestones</strong></td><td>ינואר ← מאי</td><td>לקוח ראשון (ינואר 2027) ← 5 סוכנים רצים (מאי 2027)</td></tr>
+        </table>
+      </div>
+
+      <div class="info-card">
+        <h4>📅 ציר הזמנים המלא (נובמבר 2026 ← רבעון 2, 2027)</h4>
+        <div class="timeline" style="margin-top:10px">
+          <div class="phase-box active-now">
+            <div class="dot"></div>
+            <div class="date">עכשיו ← 3 בדצמבר 2026</div>
+            <h3>שלב 0: בחירת אולם, מודיעין והכנת תשתית</h3>
+            <p>בחירת אולם מתוך ה-5 בסן פרנסיסקו, הצטרפות לדיסקורד, והכנת כל הטקסטים והעיצוב מראש.</p>
+          </div>
+          <div class="phase-box">
+            <div class="dot"></div>
+            <div class="date">2 בדצמבר 2026</div>
+            <h3>הדרכה חיה (Live Walkthrough)</h3>
+            <p>צפייה בהדגמה רשמית של בניית סוכן מתבנית ללקוח משלם ושאילת שאלות.</p>
+          </div>
+          <div class="phase-box">
+            <div class="dot"></div>
+            <div class="date">4 בדצמבר 22:00 ← 7 בדצמבר 22:00</div>
+            <h3>חלון ההאקתון (72 שעות בנייה והגשה)</h3>
+            <p>קבלת קוד פרומו אישי, בניית הסוכן ב-Agentplace, צילום דמו, פוסט והגשה.</p>
+          </div>
+          <div class="phase-box">
+            <div class="dot"></div>
+            <div class="date">9–10 בדצמבר 2026</div>
+            <h3>הכרזת Shortlist (9.12) והכרזת הזוכים (10.12)</h3>
+            <p>קבלת תעודת לינקדאין + מכתב המלצה מהמנכ"ל. הסרת תג התחרות מותרת אחרי 10.12.</p>
+          </div>
+          <div class="phase-box">
+            <div class="dot"></div>
+            <div class="date">דצמבר 2026 ← מאי 2027</div>
+            <h3>Productize, Outreach & Scaling (שלבים 4.1–4.5)</h3>
+            <p>הצגת הסוכן לבעלי האולם בסן פרנסיסקו והתרחבות ל-5 אולמות משלמים עד מאי 2027.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TAB 5: EXPLORATORIUM + 5 SF VENUES, SOCIETAL GAP & DESIGN VISION
+  ════════════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-venues">
+    <h3 style="margin-bottom:12px">🏛️ הלוקיישן הנבחר לתחרות + חמשת אולמות ההשוואה בסן פרנסיסקו (לחץ לבחירה)</h3>
+    <div class="grid-3" id="venues-grid"></div>
+
+    <div class="info-card" style="margin-bottom:20px;border-color:rgba(16,185,129,0.45)">
+      <h4>🔬 תיק מודיעין מלא לסוכן (Knowledge Base): The Exploratorium — Pier 15 Waterfront Galleries (exploratorium.edu/rentals)</h4>
+      <div class="grid-2" style="margin-bottom:0;margin-top:10px">
+        <ul>
+          <li><strong>מיצוב במסלול החתונות (Main Street Framing):</strong> מחלקת האירועים והחתונות <code>Exploratorium Pier 15 — Waterfront Wedding & Event Galleries</code>. פותר את הכאב של אתר ה-Rentals הנוכחי (טבלאות מבלבלות, PDF וטופס <code><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c2a7b4a7acb6b182a7bab2aeadb0a3b6adb0abb7afeca7a6b7">[email&#160;protected]</a></code>).</li>
+          <li><strong>מפלס/שלב 1 — Bechtel Central Gallery:</strong> גלריית אור, אופטיקה, ראייה וסאונד אינטראקטיבי (מתאים לקבלת פנים חווייתית ואירועי ענק עד 1,200+ בכל המתחם).</li>
+          <li><strong>מפלס/שלב 2 — Moore East Gallery & Mezzanine:</strong> חלל דו-מפלסי (קומת קרקע + מזנין עילי) המשקיף למפרץ עם תערוכות מדעי החיים ומזג אוויר. <strong>קיבולת:</strong> עד 450 בעמידה / 150 בישיבה.</li>
+          <li><strong>מפלס/שלב 3 — Fisher Bay Observatory Gallery & Terrace:</strong> קוביית זכוכית ופלדה בקומה העליונה + מרפסת פתוחה מעל המפרץ וגשר ה-Bay Bridge. <strong>קיבולת:</strong> עד 200 בעמידה / 150 בישיבה / ~100 לטקס + ארוחה.</li>
+        </ul>
+        <ul>
+          <li><strong>תמחור אמת (Base Rental Pricing):</strong> גלריה בודדת (כגון Observatory & Terrace): <strong>$9,500–$12,000+</strong> (ועד $15,000 בעונות שיא) · חבילת חתונה משולבת (<strong>Observatory + East Gallery Bundle</strong>): החל מ-<strong>$16,500+</strong> · <strong>15% הנחה</strong> לעמותות 501(c)(3).</li>
+          <li><strong>הטבות מובנות בחבילת החתונה (Wedding Perks):</strong> צוות <strong>"Explainers"</strong> שמפעיל מיצגים לאורחים, חדר התארגנות לזוג (Get-ready classroom), שעה צילומים פרטיים במוזיאון, תאורת LED ומערכת סאונד מובנית, אבטחה וניקיון, ומנוי שנתי זוגי (Dual Explorers Membership).</li>
+          <li><strong>זמני אירוע ונהלי סגירה (Actionable Conversion):</strong> חלון ערב טיפוסי 16:00/17:30 עד 00:30/01:00. הסוכן מציע ללקוח שתי פעולות סגירה אמיתיות: <strong>תיאום סיור (Venue Tour)</strong> או נעילת <strong>Soft Hold לשבועיים בחינם ללא מקדמה</strong> (ומקדמה של 50% בעת חתימה).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="info-card">
+        <h4>🎯 נקודת הבידול המנצחת: הפער החברתי והמודולרי (Societal & Modularity Gap)</h4>
+        <ul>
+          <li><strong>הבעיה בשוק סן פרנסיסקו:</strong> האולמות מציגים קו היסטורי שמרני, "לבן" ומקובע — אפס ייצוג לקהילות מגוונות (POC), התעלמות מקהילת הלהטב"ק (בבירה העולמית שלה!), אפס התייחסות לגיל השלישי, וקיבוע על חתונות בלבד.</li>
+          <li><strong>התאמה גאה ורב-תרבותית (LGBTQ+ & POC):</strong> הסוכן מתאים שפה ניטרלית ומכילה, תפריטים רב-תרבותיים וחיבור לספקים מגוונים.</li>
+          <li><strong>נגישות רב-דורית (Senior Accessibility):</strong> מענה מובנה לאורחים מבוגרים — מסלולים ללא מדרגות, מעליות, אזורי ישיבה שקטים ("מפלט אקוסטי") ותאורת התמצאות.</li>
+          <li><strong>מודולריות עסקית (Mid-Week Revenue):</strong> מעבר מיידי מחתונה בסופ"ש לכנס טכנולוגי, הרצאה או השקת מוצר באמצע השבוע — מכפיל את פוטנציאל ההכנסות של בעל האולם!</li>
+        </ul>
+      </div>
+
+      <div class="info-card">
+        <h4>🎨 החזון העיצובי והטכנולוגי (Active Theory + Amado Concept)</h4>
+        <ul>
+          <li><strong>מסע רב-מפלסי (3 Levels):</strong> מפלס 1: קבלת פנים ושורשים חומריים ← מפלס 2: מנהרת זמן ומעבר ← מפלס 3: לב האירוע (חופה / כנס).</li>
+          <li><strong>Flexible LED Skins (בהשראת Amado):</strong> מעטפת מסכי לד גמישים העוטפים עמודים ומפלסים ומשנים את ארכיטקטורת החלל בזמן אמת לפי סוג האירוע.</li>
+          <li><strong>Dark Obsidian Glass & Deep Void:</strong> רקע כהה מוחלט (<code>#0b0d13</code>) עם כרטיסיות זכוכית חיה, שבירת אור ורמזי וידאו (Portal Clues) שיוצרים מתח פסיכולוגי וסקרנות.</li>
+          <li><strong>Spatial Typography:</strong> טיפוגרפיה מרחבית שמשמשת כשער כניסה פיזי אל המפלס הבא.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TAB 6: JUDGING CRITERIA & PRIZES
+  ════════════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-judging">
+    <div class="grid-2">
+      <div class="info-card">
+        <h4>⚖️ משקולות השיפוט הרשמיות (ציון 1–5 משוקלל)</h4>
+        <div style="margin-top:16px">
+          <div class="crit-row">
+            <div class="crit-label">1. מוכן לעסק אמיתי מחר בבוקר (Ready for Real Business)</div>
+            <div class="crit-bar"><div class="crit-fill" style="width:100%;background:var(--accent)"></div></div>
+            <div class="crit-pct">25%</div>
+          </div>
+          <div class="crit-row">
+            <div class="crit-label">2. התנהגות סוכנותית (שאלה ← המלצה ← תמחור ← סגירה)</div>
+            <div class="crit-bar"><div class="crit-fill" style="width:100%;background:var(--accent2)"></div></div>
+            <div class="crit-pct">25%</div>
+          </div>
+          <div class="crit-row">
+            <div class="crit-label">3. עיצוב וחוויית משתמש (התאמה למותג + מובייל ודסקטופ)</div>
+            <div class="crit-bar"><div class="crit-fill" style="width:80%;background:var(--blue)"></div></div>
+            <div class="crit-pct">20%</div>
+          </div>
+          <div class="crit-row">
+            <div class="crit-label">4. שימוש ביכולות Agentplace (חיפוש, Skills, סוכנים, קול)</div>
+            <div class="crit-bar"><div class="crit-fill" style="width:60%;background:var(--green)"></div></div>
+            <div class="crit-pct">15%</div>
+          </div>
+          <div class="crit-row">
+            <div class="crit-label">5. אמינות ובטיחות (אפס מבוי סתום, דיוק מחירים ומדיניות)</div>
+            <div class="crit-bar"><div class="crit-fill" style="width:60%;background:var(--yellow)"></div></div>
+            <div class="crit-pct">15%</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <h4>🏆 טבלת הפרסים הרשמית</h4>
+        <table class="prize-table">
+          <tr><th>קטגוריה / דירוג</th><th>פרס</th></tr>
+          <tr><td>🥇 מקום 1 כללי</td><td><strong>iPad Pro 11" (512GB)</strong> + ראיון אישי עם מייסדי Agentplace</td></tr>
+          <tr><td>🥈 מקום 2 כללי</td><td><strong>AirPods Pro 3</strong></td></tr>
+          <tr><td>🥉 מקום 3 כללי</td><td><strong>$300 קרדיטים ל-Agentplace</strong></td></tr>
+          <tr><td>💍 הטוב ביותר במסלול חתונות</td><td><strong>$150 קרדיטים ל-Agentplace</strong></td></tr>
+          <tr><td>📢 Most Buzzworthy (באזז אורגני)</td><td><strong>$150 קרדיטים</strong> (הפוסט עם החשיפה האורגנית הגבוהה ביותר)</td></tr>
+          <tr><td>📄 כל מי שמגיש סוכן עובד</td><td>תעודת LinkedIn + מכתב המלצה מהמנכ"ל + עמוד בגלריה הציבורית</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <a href="https://tthezgqmvrrh.run.agentplace.io/" target="_blank">💍 תבנית מסלול חתונות</a> ·
+    <a href="https://discord.gg/DUscgNMuva" target="_blank">💬 דיסקורד התחרות</a> ·
+    <a href="https://luma.com/vg2hvdre" target="_blank">📅 עמוד האירוע ב-Luma</a> ·
+    <a href="https://agentplace.io/templates" target="_blank">🧩 כל התבניות ב-Agentplace</a>
+  </footer>
+
+</div>
+
+<!-- ── Add/Edit Task Modal (Works everywhere without browser prompt) ── -->
+<div class="modal-backdrop" id="task-modal">
+  <div class="modal-card">
+    <h3 id="modal-title">עריכת / הוספת משימה</h3>
+    <div class="form-field">
+      <label>שלב / עמודה</label>
+      <select id="m-col">
+        <option value="before">🟢 1. הכנות לפני התחרות</option>
+        <option value="during">🔥 2. במהלך התחרות (72 שעות)</option>
+        <option value="submit">📤 3. סיום והגשה</option>
+        <option value="post">🚀 4. אחרי ההגשה ומוניטיזציה</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label>כותרת המשימה</label>
+      <input type="text" id="m-text" placeholder="לדוגמה: נרשמתי לתחרות ואישרתי מייל...">
+    </div>
+    <div class="form-field">
+      <label>פירוט המשימה</label>
+      <textarea id="m-desc" rows="2" placeholder="הסבר קצר או קישור..."></textarea>
+    </div>
+    <div class="form-field">
+      <label>הערות אישיות / סטטוס ביצוע (למשל: נרשמתי בוצע, ממתין לקוד...)</label>
+      <textarea id="m-note" rows="2" placeholder="כתוב כאן כל הערה או עדכון שתרצה שיופיע בצהוב על הכרטיסייה..."></textarea>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="form-field">
+        <label>תגית</label>
+        <input type="text" id="m-tag" value="קריטי">
+      </div>
+      <div class="form-field">
+        <label>סוג / צבע תגית</label>
+        <select id="m-type">
+          <option value="critical">🔥 קריטי (אדום)</option>
+          <option value="core">🔵 ליבה (כחול)</option>
+          <option value="inclusion">🟢 בידול והכלה (ירוק)</option>
+          <option value="design">🟣 עיצוב ו-UI (סגול)</option>
+          <option value="submit">🟡 הגשה ובאזז (צהוב)</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-field" style="display:flex;align-items:center;gap:8px;margin-top:4px">
+      <input type="checkbox" id="m-done" style="width:18px;height:18px;accent-color:var(--green)">
+      <label for="m-done" style="margin:0;color:var(--text);font-weight:700;cursor:pointer">✅ סמן משימה זו כ"בוצע"</label>
+    </div>
+    <div class="modal-actions">
+      <button class="action-btn" id="m-cancel">ביטול</button>
+      <button class="action-btn primary" id="m-save">💾 שמור משימה</button>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox for full-screen image view -->
+<div class="lightbox" id="lightbox">
+  <img id="lightbox-img" src="" alt="תצוגה מוגדלת">
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="1fafbc169e967bae77e35573-text/javascript">
+// ── 0. Safe Clone & Safe Storage Helpers (Works on file:// and embedded previews) ──
+function safeClone(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}
+
+const STORAGE_KEY = "agent_games_2026_master_v5";
+let memoryFallback = null;
+
+function safeLoadState(defaultObj) {
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+    // Migrate custom notes/tasks from v4 if present while applying Exploratorium defaults
+    const oldRaw = window.localStorage.getItem("agent_games_2026_master_v4");
+    if (oldRaw) {
+      const oldState = JSON.parse(oldRaw);
+      const merged = safeClone(defaultObj);
+      merged.selectedVenue = "The Exploratorium (Pier 15 Waterfront Galleries)";
+      if (oldState.wbDrawingDataUrl) merged.wbDrawingDataUrl = oldState.wbDrawingDataUrl;
+      if (oldState.wbTheme) merged.wbTheme = oldState.wbTheme;
+      return merged;
+    }
+  } catch (err) {
+    console.warn("localStorage read fallback:", err);
+  }
+  return safeClone(defaultObj);
+}
+
+function safeSaveState(data) {
+  memoryFallback = data;
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    const ind = document.getElementById("save-indicator");
+    if (ind) ind.textContent = "💾 נשמר (" + new Date().toLocaleTimeString("he-IL", {hour:"2-digit", minute:"2-digit", second:"2-digit"}) + ")";
+  } catch (err) {
+    console.warn("localStorage write fallback (saving in IndexedDB):", err);
+  }
+  saveToIndexedDB(data);
+}
+
+// IndexedDB for large files/images on the whiteboard
+function openDB() {
+  return new Promise((resolve, reject) => {
+    if (!window.indexedDB) return reject("No IndexedDB");
+    const req = indexedDB.open("AgentGames2026DB", 1);
+    req.onupgradeneeded = (e) => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains("boardState")) {
+        db.createObjectStore("boardState");
+      }
+    };
+    req.onsuccess = (e) => resolve(e.target.result);
+    req.onerror = (e) => reject(e);
+  });
+}
+
+function saveToIndexedDB(data) {
+  openDB().then(db => {
+    const tx = db.transaction("boardState", "readwrite");
+    tx.objectStore("boardState").put(data, "main_v5");
+  }).catch(() => {});
+}
+
+function loadFromIndexedDB() {
+  return openDB().then(db => {
+    return new Promise((resolve) => {
+      const tx = db.transaction("boardState", "readonly");
+      const req = tx.objectStore("boardState").get("main_v5");
+      req.onsuccess = () => resolve(req.result || null);
+      req.onerror = () => resolve(null);
+    });
+  }).catch(() => null);
+}
+
+// ── 1. Countdown Timer ──
+const KICKOFF_DATE = new Date("2026-12-04T22:00:00+02:00");
+function updateCountdown() {
+  const now = new Date();
+  let diff = KICKOFF_DATE - now;
+  if (diff < 0) diff = 0;
+  document.getElementById("cd-days").textContent  = Math.floor(diff / 86400000);
+  document.getElementById("cd-hours").textContent = String(Math.floor((diff % 86400000) / 3600000)).padStart(2, '0');
+  document.getElementById("cd-mins").textContent  = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+  document.getElementById("cd-secs").textContent  = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// ── 2. Default Master Checklist & Whiteboard State ──
+const DEFAULT_STATE = {
+  selectedVenue: "The Exploratorium (Pier 15 Waterfront Galleries)",
+  filter: "all",
+  wbTheme: "theme-dark-grid",
+  wbZoom: 1,
+  wbDrawingDataUrl: null,
+  gate: [false, false, false, false, false, false],
+  tasks: {
+    before: [
+      { id: "b1", text: "אימות מייל הרשמה מ-Vlad Yanch (6.11) והוספת חלון התחרות ליומן", desc: "4 בדצמבר 22:00 עד 7 בדצמבר 22:00 שעון ישראל", note: "נרשמתי — אושר במייל מוולד יאנץ'", tag: "לוגיסטיקה", type: "core", done: true },
+      { id: "b2", text: "הצטרפות לשרת הדיסקורד הרשמי (discord.gg/DUscgNMuva)", desc: "מעקב אחר ערוץ ההכרזות והיכרות עם מתמודדים", note: "", tag: "קריטי", type: "critical", done: false },
+      { id: "b3", text: "בחירה סופית של לוקיישן דגל בסן פרנסיסקו לשדרוג", desc: "נבחר: The Exploratorium (Pier 15 Waterfront Galleries) — exploratorium.edu/rentals", note: "בוצע! נבחר ה-Exploratorium ב-Pier 15 (התאמה מושלמת ל-3 מפלסים, אור, מדע ואירועי חתונה/הייטק)", tag: "קריטי", type: "critical", done: true },
+      { id: "b4", text: "פתיחת תבנית המסלול (tthezgqmvrrh) ובדיקת זרימת ה-Remix", desc: "הבנת מבנה הפרומפטים והכלים בתבנית הרשמית לפני ההזנקה", note: "", tag: "תבנית", type: "core", done: false },
+      { id: "b5", text: "בניית Knowledge Base מלא באנגלית עבור ה-Exploratorium (Pier 15)", desc: "Observatory ($9.5k-$12k+, 200 standing/150 seated), East Gallery (450 standing/150 seated), Bundle ($16.5k+), Explainers, Soft Hold לשבועיים", note: "נתוני האמת כבר רוכזו בלשונית האולמות ולוח המשבצות!", tag: "קריטי", type: "critical", done: false },
+      { id: "b6", text: "כתיבת תסריטי שיחה ומודול הכלה (LGBTQ+ / POC / גיל שלישי)", desc: "התאמת שפה מכילה, מסלולי מעליות נגישים ב-Pier 15 ו'מפלט אקוסטי' שקט ב-Observatory Terrace למבוגרים", note: "", tag: "בידול", type: "inclusion", done: false },
+      { id: "b7", text: "אפיון מודולריות עסקית לאמצע השבוע (Mid-Week Corporate Switch)", desc: "מעבר מיידי מחתונה ב-Observatory לכנס הייטק / השקה ב-Kanbar Forum וגלריות המוזיאון + 15% הנחת עמותות", note: "", tag: "בידול", type: "inclusion", done: false },
+      { id: "b8", text: "הכנת נכסי וידאו ו-UI/UX (Active Theory + Amado Multi-Level)", desc: "רקע Deep Void, כרטיסיות Dark Obsidian Glass, רמזי וידאו של גלריות האור והמפרץ ומסכי LED גמישים", note: "", tag: "עיצוב", type: "design", done: false },
+      { id: "b9", text: "השתתפות בהדרכה החיה ב-2 בדצמבר (Live Walkthrough)", desc: "להכין 3 שאלות מראש על חיבור Skills, קול והטמעת UI מותאם", note: "", tag: "למידה", type: "core", done: false }
+    ],
+    during: [
+      { id: "d1", text: "מימוש קוד הפרומו האישי במייל (4.12 בשעה 22:00)", desc: "100% הנחה ב-Agentplace + מודל Luna חינם (אסור לשתף את הקוד!)", note: "", tag: "קריטי", type: "critical", done: false },
+      { id: "d2", text: "לחיצה על Remix this agent והזנת exploratorium.edu/rentals", desc: "יצירת ליבת הסוכן על בסיס מחלקת האירועים והחתונות של ה-Exploratorium באנגלית", note: "", tag: "ליבת סוכן", type: "core", done: false },
+      { id: "d3", text: "הטמעת בסיס הידע המלא של ה-Exploratorium (חבילות, תמחור ונהלים)", desc: "Observatory vs. East Gallery Bundle, הטבות Explainers וצילומים, ומענה מדויק (25% מהציון: מוכן לעסק אמיתי)", note: "", tag: "קריטי", type: "critical", done: false },
+      { id: "d4", text: "בניית זרימת המרה מלאה (שאלה ← המלצה ← הצעת מחיר ← סגירה)", desc: "איסוף שם, אימייל, סוג אירוע והובלה לסיור ב-Pier 15 או נעילת Soft Hold לשבועיים (25% מהציון)", note: "", tag: "קריטי", type: "critical", done: false },
+      { id: "d5", text: "שילוב Adaptive Inclusive Concierge + מודולריות לכנסים", desc: "הפעלת התאמה רב-דורית ('מפלט אקוסטי' מהמיצגים), להטב\"ק ומעבר חכם מחתונה לכנס הייטק", note: "", tag: "בידול", type: "inclusion", done: false },
+      { id: "d6", text: "הפעלת יכולות Agentplace מתקדמות (Search, Skills, Voice, Agents)", desc: "חיפוש חי, מחשבון תקציב גלריות, שיחה קולית וסוכנים מחוברים (15% מהציון + בונוס)", note: "", tag: "פלטפורמה", type: "core", done: false },
+      { id: "d7", text: "הלבשת עיצוב 3 המפלסים (Obsidian Glass + LED Skins) ובדיקת מובייל", desc: "Bechtel Light Gallery ← Moore East Mezzanine ← Fisher Bay Observatory (20% מהציון)", note: "", tag: "עיצוב", type: "design", done: false },
+      { id: "d8", text: "בדיקות QA ובטיחות: אפס מבוי סתום (No Dead Ends)", desc: "בדיקת 10 מקרי קצה, מניעת הזיות מחירים ושמירה על שיחה בטוחה (15% מהציון)", note: "", tag: "QA", type: "critical", done: false }
+    ],
+    submit: [
+      { id: "s1", text: "וידוא שהתג 'Built for Agent Games' מופיע על הסוכן המפורסם", desc: "חובה להשאיר את התג פעיל עד הכרזת הזוכים ב-10 בדצמבר", note: "", tag: "חובה", type: "submit", done: false },
+      { id: "s2", text: "בדיקת הקישור הציבורי של הסוכן בחלון גלישה בסתר (Incognito)", desc: "לוודא שהסוכן פתוח לכולם, נטען מהר ועובד ללא תקלות", note: "", tag: "חובה", type: "submit", done: false },
+      { id: "s3", text: "הקלטה ועריכה של סרטון הדגמה (Demo Video) באורך 30–90 שניות", desc: "מומלץ 60–75 שניות: האתר הישן של ה-Exploratorium ← שיחה חיה ← מודולריות לכנס ← סגירת סיור/Soft Hold", note: "", tag: "חובה", type: "submit", done: false },
+      { id: "s4", text: "כתיבת תקציר של 3–5 משפטים באנגלית לטופס ההגשה", desc: "מיצוב: Exploratorium Pier 15 Waterfront Wedding & Event Galleries + מה הסוכן עושה + במה אנחנו הכי גאים", note: "", tag: "חובה", type: "submit", done: false },
+      { id: "s5", text: "פרסום פוסט ציבורי ב-X או ב-LinkedIn עם תיוגים מחייבים", desc: "חובה לכלול #AgentGames ו-@agentplace_io (בלי פוסט = אין הגשה!)", note: "", tag: "קריטי", type: "critical", done: false },
+      { id: "s6", text: "סימון תיבת ההסכמה (Consent Checkbox) ושליחת טופס ההגשה עד 19:00", desc: "3 שעות מרווח ביטחון לפני נעילת ההגשות ב-22:00 + צילום מסך לאישור", note: "", tag: "קריטי", type: "critical", done: false }
+    ],
+    post: [
+      { id: "p1", text: "קידום אורגני של הפוסט ב-3+ קהילות לזכייה ב-Most Buzzworthy ($150)", desc: "8–9 בדצמבר: שיתוף הפוסט וגיוס תגובות אמיתיות ללא שינוי הסוכן שננעל", note: "", tag: "באזז", type: "submit", done: false },
+      { id: "p2", text: "בדיקת הכרזת ה-Shortlist (9 בדצמבר) והזוכים (10 בדצמבר)", desc: "שיתוף תעודת ה-LinkedIn הרשמית ומכתב ההמלצה ממנכ\"ל Agentplace", note: "", tag: "תוצאות", type: "core", done: false },
+      { id: "p3", text: "4.1 Productize (20–25.12): הפיכת הסוכן למוצר רחב (רישיון White-Label)", desc: "אריזת ה-'Inclusive Event Concierge' לשכפול מהיר לאולמות נוספים (כגון The Pearl ו-One Sansome)", note: "", tag: "4.1 מוצר", type: "core", done: false },
+      { id: "p4", text: "4.2 Outreach (27.12–9.1): פנייה ל-events@exploratorium.edu + 5 אולמות", desc: "יעד מדיד: סגירת 2 יועצים/לקוחות בתשלום עד 8 בינואר 2027", note: "", tag: "4.2 מכירות", type: "inclusion", done: false },
+      { id: "p5", text: "4.3–4.5 Scaling (Q1–Q2 2027): קהילה, צוות ו-5 לקוחות משלמים", desc: "פוסט שבועי ב-LinkedIn/X · לקוח ראשון בינואר ← 5 סוכנים רצים במאי 2027", note: "", tag: "4.5 צמיחה", type: "design", done: false }
+    ]
+  },
+  wbNodes: [
+    {
+      id: "wb_exp_kb",
+      type: "note",
+      color: "note-blue",
+      status: "מאושר ✅",
+      title: "🏛️ הלוקיישן הנבחר: The Exploratorium (Pier 15)",
+      text: "אתר: exploratorium.edu/rentals\n• Observatory & Terrace: 200 עמידה / 150 ישיבה ($9.5k–$12k+)\n• Moore East Gallery + Mezzanine: 450 עמידה / 150 ישיבה\n• Bundle חתונה משולב: $16,500+\n• כולל: צוות Explainers, שעה צילומים, חדר התארגנות, תאורת LED, ו-Soft Hold לשבועיים חינם!",
+      x: 50,
+      y: 50,
+      w: 350,
+      h: 250
+    },
+    {
+      id: "wb_1",
+      type: "note",
+      color: "note-dark",
+      status: "רעיון עיצובי 🎨",
+      title: "מסע 3 המפלסים ב-Exploratorium",
+      text: "1. מפלס 1 (Bechtel Light & Sound Gallery): קבלת פנים בין מיצגי אור ואופטיקה\n2. מפלס 2 (Moore East & Mezzanine): מעבר דו-מפלסי ומנהרת זמן\n3. מפלס 3 (Fisher Bay Observatory): קוביית זכוכית ומרפסת מעל גשר ה-Bay Bridge לחופה/אירוע שיא!",
+      x: 430,
+      y: 50,
+      w: 340,
+      h: 250
+    },
+    {
+      id: "wb_2",
+      type: "note",
+      color: "note-yellow",
+      status: "לבחינה 🔍",
+      title: "מודולריות: חתונה ⇄ כנס הייטק (Kanbar Forum)",
+      text: "איך מציגים לשופטים מעבר חי בין חתונה לכנס הייטק?\nכפתור 'Switch Space Mode' שמעביר מחתונה ב-Observatory להשקת מוצר/כנס הייטק ב-Kanbar Forum + East Gallery, כולל חישוב 15% הנחה לעמותות (501c3)!",
+      x: 800,
+      y: 50,
+      w: 330,
+      h: 250
+    },
+    {
+      id: "wb_3",
+      type: "note",
+      color: "note-green",
+      status: "נקודת בידול 💡",
+      title: "נגישות רב-דורית ('מפלט אקוסטי' במוזיאון)",
+      text: "• במוזיאון אינטראקטיבי עם מיצגים רועשים, סבים וסבתות חייבים אזור שקט!\n• הסוכן מתכנן אוטומטית מסלול מעליות נגיש למזנין + אזור ישיבה אקוסטי שקט ב-Observatory Terrace\n• שפה מכילה וניטרלית מגדרית (LGBTQ+ & POC)",
+      x: 120,
+      y: 330,
+      w: 360,
+      h: 210
+    },
+    {
+      id: "wb_4",
+      type: "note",
+      color: "note-pink",
+      status: "משימה פתוחה 📌",
+      title: "אזור חופשי לקבצים ורעיונות",
+      text: "גרור לכאן תמונות של ה-Exploratorium (Pier 15), צילומי מסך, קובצי MD או CSV כדי לבחון אותם על הלוח!",
+      x: 520,
+      y: 330,
+      w: 350,
+      h: 210
+    }
+  ]
+};
+
+const GATE_ITEMS = [
+  { title: "1. קישור לסוכן מפורסם ועובד (Published Working Agent)", desc: "הסוכן באוויר, מדבר אנגלית, מבוסס על עסק אמיתי ונבדק בגלישה בסתר." },
+  { title: "2. סרטון הדגמה באורך 30–90 שניות (Demo Video)", desc: "מציג את הסוכן בפעולה מרגע השאלה ועד להצעת מחיר וסגירת סיור/הצעה." },
+  { title: "3. פוסט ציבורי ב-X או LinkedIn (No Post = No Submission)", desc: "כולל את ההאשטאג #AgentGames ותיוג @agentplace_io (או @agentplace-io בלינקדאין)." },
+  { title: "4. תקציר של 3–5 משפטים באנגלית (3–5 Sentences Summary)", desc: "מפרט לאיזה עסק הסוכן נבנה, מה העבודה שהוא מבצע, ובמה אנחנו הכי גאים." },
+  { title: "5. סימון תיבת ההסכמה (Consent Checkbox)", desc: "אישור ל-Agentplace להציג את הסוכן בגלריה הציבורית ובחומרי שיווק עם קרדיט." },
+  { title: "6. תג 'Built for Agent Games' פעיל על הסוכן", desc: "התג חייב להישאר על הסוכן ברציפות עד הכרזת הזוכים ב-10 בדצמבר." }
+];
+
+const VENUES_DATA = [
+  {
+    name: "The Exploratorium (Pier 15 Waterfront Galleries)",
+    style: "Interactive Science, Light & Glass Waterfront Museum",
+    url: "exploratorium.edu/rentals",
+    clue: "אלומות אור, אופטיקה והשתקפויות המפרץ מתמזגות עם קירות הזכוכית של ה-Fisher Bay Observatory מול אורות ה-Bay Bridge.",
+    fit: "הבחירה המנצחת (#1): גלריות אור וצליל חיות (Bechtel), חלל דו-מפלסי (Moore East + Mezzanine) וקוביית זכוכית על המפרץ (Observatory). אידיאלי לחתונות ($9.5k–$16.5k+) ולכנסי הייטק!"
+  },
+  {
+    name: "The Pearl (Dogpatch)",
+    style: "Modern Industrial Chic & Rooftop Garden",
+    url: "thepearlsf.com/private-events",
+    clue: "טיימלאפס של שקיעה מעל המפרץ המתחלפת באור נרות מרצד על שולחנות עץ אלון כהה.",
+    fit: "אידיאלי למסע 3 המפלסים (קומת קרקע תעשייתית ← גלריה/מנהרה ← גג פתוח) ולמודולריות של כנסי טכנולוגיה והשקות."
+  },
+  {
+    name: "The Conservatory at One Sansome",
+    style: "Neo-Futuristic Light-Filled Glass Atrium",
+    url: "onesansome.com/the-conservatory",
+    clue: "השתקפויות שמיים דרך כיפת זכוכית מודרנית עם צלליות אלגנטיות ונרות צפים במים.",
+    fit: "מתאים במיוחד לשפת העיצוב של Dark Obsidian Glass ואירועי חברות יוקרתיים במרכז ה-Financial District."
+  },
+  {
+    name: "James Leary Flood Mansion",
+    style: "Gilded Age Classical Elegance & Marble Grandeur",
+    url: "thefloodmansion.org/events",
+    clue: "אלומת שקיעה פוגעת בעמודי שיש רומיים ויוצרת נצנוץ פריזמטי על כוסיות שמפניה.",
+    fit: "ניגודיות דרמטית בין ארכיטקטורה היסטורית שמרנית לבין קונסיירז' AI מכיל, מודרני ורב-דורי."
+  },
+  {
+    name: "Golden Gate Club (The Presidio)",
+    style: "Historic Coastal Estate & Scenic Panorama",
+    url: "presidio.gov/venues/golden-gate-club",
+    clue: "ערפל המפרץ מתגלגל באיטיות בין ענפי הברוש אל תוך זוהר חם של אש בקמין.",
+    fit: "חלונות פנורמיים למפרץ ואלקטרז; מעולה לשילוב חתונות טבע יוקרתיות וכנסים אקזקוטיביים."
+  },
+  {
+    name: "Log Cabin (Presidio Bluffs)",
+    style: "Rustic Pacific Luxury & Skyline View",
+    url: "presidio.gov/venues/log-cabin",
+    clue: "להבות אש מרקדות בבורות האש החיצוניים כשברקע מנצנצים אורות קו הרקיע של סן פרנסיסקו.",
+    fit: "אווירה חמה ואינטימית עם מדשאה רחבה מול קו הרקיע של העיר."
+  }
+];
+
+let state = safeLoadState(DEFAULT_STATE);
+if (!state.wbNodes) state.wbNodes = safeClone(DEFAULT_STATE.wbNodes);
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(showToast._timer);
+  showToast._timer = setTimeout(() => t.classList.remove("show"), 2200);
+}
+
+// ── 3. Render Checklist Board (Reliable Click & Edit) ──
+function toggleTaskDone(col, idx) {
+  const task = state.tasks[col][idx];
+  if (!task) return;
+  task.done = !task.done;
+  safeSaveState(state);
+  renderBoard();
+  showToast(task.done ? "✅ סומן כבוצע!" : "↩️ הוחזר למשימות פתוחות");
+}
+
+function renderBoard() {
+  const cols = ["before", "during", "submit", "post"];
+  let totalTasks = 0;
+  let totalDone = 0;
+
+  cols.forEach(col => {
+    const listEl = document.querySelector(`.task-list[data-col="${col}"]`);
+    listEl.innerHTML = "";
+    const tasks = state.tasks[col] || [];
+    const doneCount = tasks.filter(t => t.done).length;
+    totalTasks += tasks.length;
+    totalDone += doneCount;
+
+    document.getElementById(`badge-${col}`).textContent = `${doneCount}/${tasks.length}`;
+    document.getElementById(`mini-${col}`).textContent = `${doneCount}/${tasks.length}`;
+
+    tasks.forEach((task, idx) => {
+      if (state.filter === "pending" && task.done) return;
+      if (state.filter === "done" && !task.done) return;
+      if (state.filter === "critical" && task.type !== "critical") return;
+
+      const item = document.createElement("div");
+      item.className = "task-item" + (task.done ? " done" : "");
+
+      item.innerHTML = `
+        <div class="task-top-row">
+          <button type="button" class="task-check-btn" title="לחץ לסימון וי (בוצע)">${task.done ? "✓" : ""}</button>
+          <div class="task-body" title="לחץ לסימון בוצע או לעריכה">
+            <div class="task-title">${escapeHtml(task.text)}</div>
+            ${task.desc ? `<div class="task-desc">${escapeHtml(task.desc)}</div>` : ""}
+            ${task.note ? `<div class="task-note-box">📝 ${escapeHtml(task.note)}</div>` : ""}
+          </div>
+        </div>
+        <div class="task-actions-row">
+          <div class="task-meta">
+            ${task.tag ? `<span class="tag ${task.type || 'core'}">${escapeHtml(task.tag)}</span>` : ""}
+          </div>
+          <div class="task-btns">
+            <button type="button" class="mini-btn status-toggle ${task.done ? 'done' : ''}">${task.done ? "✓ בוצע" : "סמן וי ✓"}</button>
+            <button type="button" class="mini-btn edit-btn">✏️ ערוך / הערה</button>
+            <button type="button" class="mini-btn del" title="מחק">✕</button>
+          </div>
+        </div>
+      `;
+
+      // Clicking the check box, the task body, or the status toggle button toggles Done!
+      item.querySelector(".task-check-btn").onclick = (e) => {
+        e.stopPropagation();
+        toggleTaskDone(col, idx);
+      };
+      item.querySelector(".task-body").onclick = () => {
+        toggleTaskDone(col, idx);
+      };
+      item.querySelector(".status-toggle").onclick = (e) => {
+        e.stopPropagation();
+        toggleTaskDone(col, idx);
+      };
+
+      // Edit button opens the custom modal
+      item.querySelector(".edit-btn").onclick = (e) => {
+        e.stopPropagation();
+        openTaskModal(col, idx);
+      };
+
+      // Delete button
+      item.querySelector(".del").onclick = (e) => {
+        e.stopPropagation();
+        state.tasks[col].splice(idx, 1);
+        safeSaveState(state);
+        renderBoard();
+        showToast("המשימה נמחקה");
+      };
+
+      listEl.appendChild(item);
+    });
+  });
+
+  const pct = totalTasks ? Math.round((totalDone / totalTasks) * 100) : 0;
+  document.getElementById("master-pct").textContent = pct + "%";
+  document.getElementById("master-count").textContent = `${totalDone} מתוך ${totalTasks} משימות הושלמו`;
+  document.getElementById("master-fill").style.width = pct + "%";
+  document.getElementById("selected-venue-pill").textContent = `🏛️ אולם נבחר: ${state.selectedVenue || "טרם נבחר"}`;
+}
+
+function escapeHtml(str) {
+  return String(str || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+// ── 4. Custom Modal for Adding / Editing Tasks ──
+let editingContext = null; // { col, idx } or null for new task
+
+function openTaskModal(col = "before", idx = null) {
+  editingContext = idx !== null ? { col, idx } : null;
+  const modal = document.getElementById("task-modal");
+  document.getElementById("modal-title").textContent = idx !== null ? "✏️ עריכת משימה והוספת הערה" : "➕ הוספת משימה חדשה ללוח";
+  document.getElementById("m-col").value = col;
+
+  if (idx !== null) {
+    const t = state.tasks[col][idx];
+    document.getElementById("m-text").value = t.text || "";
+    document.getElementById("m-desc").value = t.desc || "";
+    document.getElementById("m-note").value = t.note || "";
+    document.getElementById("m-tag").value = t.tag || "קריטי";
+    document.getElementById("m-type").value = t.type || "core";
+    document.getElementById("m-done").checked = !!t.done;
+  } else {
+    document.getElementById("m-text").value = "";
+    document.getElementById("m-desc").value = "";
+    document.getElementById("m-note").value = "";
+    document.getElementById("m-tag").value = "מותאם";
+    document.getElementById("m-type").value = "core";
+    document.getElementById("m-done").checked = false;
+  }
+
+  modal.classList.add("open");
+  setTimeout(() => document.getElementById("m-text").focus(), 50);
+}
+
+document.getElementById("m-cancel").onclick = () => {
+  document.getElementById("task-modal").classList.remove("open");
+};
+
+document.getElementById("m-save").onclick = () => {
+  const targetCol = document.getElementById("m-col").value;
+  const text = document.getElementById("m-text").value.trim();
+  if (!text) {
+    showToast("נא להזין כותרת למשימה");
+    return;
+  }
+  const taskObj = {
+    id: editingContext ? state.tasks[editingContext.col][editingContext.idx].id : "t_" + Date.now(),
+    text,
+    desc: document.getElementById("m-desc").value.trim(),
+    note: document.getElementById("m-note").value.trim(),
+    tag: document.getElementById("m-tag").value.trim() || "משימה",
+    type: document.getElementById("m-type").value,
+    done: document.getElementById("m-done").checked
+  };
+
+  if (editingContext) {
+    if (editingContext.col === targetCol) {
+      state.tasks[targetCol][editingContext.idx] = taskObj;
+    } else {
+      state.tasks[editingContext.col].splice(editingContext.idx, 1);
+      state.tasks[targetCol].push(taskObj);
+    }
+    showToast("המשימה עודכנה ✓");
+  } else {
+    state.tasks[targetCol].push(taskObj);
+    showToast("משימה חדשה נוספה ✓");
+  }
+
+  document.getElementById("task-modal").classList.remove("open");
+  safeSaveState(state);
+  renderBoard();
+};
+
+document.getElementById("btn-open-add-modal").onclick = () => openTaskModal("before", null);
+document.querySelectorAll("[data-add-col]").forEach(btn => {
+  btn.onclick = () => openTaskModal(btn.dataset.addCol, null);
+});
+
+// ── 5. Submission Gate & Venues Render ──
+function renderGate() {
+  const grid = document.getElementById("gate-grid");
+  grid.innerHTML = "";
+  let verifiedCount = 0;
+
+  GATE_ITEMS.forEach((item, i) => {
+    const checked = !!state.gate[i];
+    if (checked) verifiedCount++;
+
+    const card = document.createElement("div");
+    card.className = "gate-card" + (checked ? " verified" : "");
+    card.innerHTML = `
+      <div class="task-check-btn" style="${checked ? 'background:var(--green);border-color:var(--green);color:#0b0d13' : ''}">${checked ? "✓" : ""}</div>
+      <div>
+        <h4>${item.title}</h4>
+        <p>${item.desc}</p>
+      </div>
+    `;
+    card.onclick = () => {
+      state.gate[i] = !state.gate[i];
+      safeSaveState(state);
+      renderGate();
+      if (state.gate.every(Boolean)) {
+        showToast("🎉 כל 6 תנאי הסף אומתו! מוכנים להגשה הרמטית!");
+      }
+    };
+    grid.appendChild(card);
+  });
+
+  const badge = document.getElementById("gate-status-badge");
+  if (verifiedCount === GATE_ITEMS.length) {
+    badge.className = "gate-status-badge ready";
+    badge.textContent = `✅ מוכן להגשה הרמטית! (${verifiedCount}/6)`;
+  } else {
+    badge.className = "gate-status-badge locked";
+    badge.textContent = `⛔ חסרים תנאי סף להגשה (${verifiedCount}/6)`;
+  }
+}
+
+function renderVenues() {
+  const grid = document.getElementById("venues-grid");
+  grid.innerHTML = "";
+  VENUES_DATA.forEach(v => {
+    const isSelected = state.selectedVenue === v.name;
+    const card = document.createElement("div");
+    card.className = "venue-card" + (isSelected ? " selected" : "");
+    card.innerHTML = `
+      <h4>${v.name}</h4>
+      <div class="v-sub">${v.style} · ${v.url}</div>
+      <p><strong>רמז פורטל זכוכית (Portal Clue):</strong> ${v.clue}</p>
+      <p><strong>התאמה אסטרטגית:</strong> ${v.fit}</p>
+    `;
+    card.onclick = () => {
+      state.selectedVenue = v.name;
+      safeSaveState(state);
+      renderVenues();
+      renderBoard();
+      showToast(`נבחר האולם: ${v.name} ✓`);
+    };
+    grid.appendChild(card);
+  });
+}
+
+// ══════════════════════════════════════════════════════════════
+// 6. INTERACTIVE WHITEBOARD / GRID STUDIO (Sticky Notes, Files, Drawing)
+// ══════════════════════════════════════════════════════════════
+let activeNoteColor = "note-yellow";
+const STATUS_CYCLE = ["לבחינה 🔍", "רעיון עיצובי 🎨", "מאושר ✅", "משימה פתוחה 📌", "קובץ מצורף 📎"];
+let highestZ = 20;
+
+document.querySelectorAll(".wb-color-dot").forEach(dot => {
+  dot.onclick = () => {
+    document.querySelectorAll(".wb-color-dot").forEach(d => d.classList.remove("active"));
+    dot.classList.add("active");
+    activeNoteColor = dot.dataset.color;
+  };
+});
+
+function renderWhiteboard() {
+  const viewport = document.getElementById("wb-viewport");
+  viewport.className = "wb-viewport " + (state.wbTheme || "theme-dark-grid") + (viewport.classList.contains("fullscreen") ? " fullscreen" : "");
+  document.getElementById("wb-theme-select").value = state.wbTheme || "theme-dark-grid";
+
+  const stage = document.getElementById("wb-stage");
+  const zoom = state.wbZoom || 1;
+  stage.style.transform = `scale(${zoom})`;
+  document.getElementById("wb-zoom-label").textContent = Math.round(zoom * 100) + "%";
+
+  const layer = document.getElementById("wb-nodes-layer");
+  layer.innerHTML = "";
+
+  (state.wbNodes || []).forEach((node, idx) => {
+    const el = document.createElement("div");
+    el.className = `wb-node ${node.color || "note-yellow"}`;
+    el.style.left = (node.x || 60) + "px";
+    el.style.top = (node.y || 60) + "px";
+    el.style.width = (node.w || 280) + "px";
+    el.style.height = (node.h || 200) + "px";
+    el.style.zIndex = node.z || (10 + idx);
+
+    let fileContentHtml = "";
+    if (node.fileType === "image" && node.dataUrl) {
+      fileContentHtml = `<div class="wb-file-preview"><img src="${node.dataUrl}" alt="${escapeHtml(node.fileName || '')}"></div>`;
+    } else if (node.fileType === "video" && node.dataUrl) {
+      fileContentHtml = `<div class="wb-file-preview"><video src="${node.dataUrl}" controls></video></div>`;
+    } else if (node.fileType === "audio" && node.dataUrl) {
+      fileContentHtml = `<div class="wb-file-preview"><audio src="${node.dataUrl}" controls></audio></div>`;
+    } else if (node.fileType === "csv" && node.textSnippet) {
+      fileContentHtml = renderCsvPreview(node.textSnippet);
+    } else if (node.fileType === "text" && node.textSnippet) {
+      fileContentHtml = `<div class="wb-text-snippet">${escapeHtml(node.textSnippet)}</div>`;
+    } else if (node.fileType === "other") {
+      fileContentHtml = `<div class="wb-text-snippet">📄 קובץ: ${escapeHtml(node.fileName)}\nגודל: ${node.fileSize || ""}</div>`;
+    }
+
+    el.innerHTML = `
+      <div class="wb-node-header">
+        <span class="wb-node-status" title="לחץ להחלפת סטטוס">${escapeHtml(node.status || "לבחינה 🔍")}</span>
+        <div class="wb-node-controls">
+          <button type="button" class="wb-icon-btn color-cycle" title="החלף צבע פתק">🎨</button>
+          <button type="button" class="wb-icon-btn del-node" title="מחק מהלוח">✕</button>
+        </div>
+      </div>
+      <input class="wb-node-title" value="${escapeHtml(node.title || "")}" placeholder="כותרת הפתק / הקובץ...">
+      <div class="wb-node-body">
+        ${fileContentHtml}
+        <textarea class="wb-node-textarea" placeholder="כתוב כאן הערות, רעיונות עיצוביים או נקודות לבחינה...">${escapeHtml(node.text || "")}</textarea>
+      </div>
+    `;
+
+    // Bring to front on click
+    el.onmousedown = () => {
+      highestZ++;
+      el.style.zIndex = highestZ;
+      node.z = highestZ;
+    };
+
+    // Dragging by header
+    const header = el.querySelector(".wb-node-header");
+    header.onmousedown = (e) => {
+      if (e.target.closest("button") || e.target.classList.contains("wb-node-status")) return;
+      e.preventDefault();
+      const startX = e.clientX;
+      const startY = e.clientY;
+      const origX = node.x || 60;
+      const origY = node.y || 60;
+      const currentZoom = state.wbZoom || 1;
+
+      function onMove(ev) {
+        const dx = (ev.clientX - startX) / currentZoom;
+        const dy = (ev.clientY - startY) / currentZoom;
+        node.x = Math.max(0, Math.round(origX + dx));
+        node.y = Math.max(0, Math.round(origY + dy));
+        el.style.left = node.x + "px";
+        el.style.top = node.y + "px";
+      }
+      function onUp() {
+        window.removeEventListener("mousemove", onMove);
+        window.removeEventListener("mouseup", onUp);
+        safeSaveState(state);
+      }
+      window.addEventListener("mousemove", onMove);
+      window.addEventListener("mouseup", onUp);
+    };
+
+    // Save resize dimensions when mouse leaves or releases
+    el.onmouseup = () => {
+      const w = parseInt(el.style.width, 10);
+      const h = parseInt(el.style.height, 10);
+      if (w && h && (w !== node.w || h !== node.h)) {
+        node.w = w;
+        node.h = h;
+        safeSaveState(state);
+      }
+    };
+
+    // Cycle status pill
+    el.querySelector(".wb-node-status").onclick = () => {
+      const curIdx = STATUS_CYCLE.indexOf(node.status);
+      node.status = STATUS_CYCLE[(curIdx + 1) % STATUS_CYCLE.length];
+      safeSaveState(state);
+      renderWhiteboard();
+    };
+
+    // Cycle note color
+    const COLORS = ["note-yellow", "note-pink", "note-blue", "note-green", "note-purple", "note-dark"];
+    el.querySelector(".color-cycle").onclick = () => {
+      const cIdx = COLORS.indexOf(node.color || "note-yellow");
+      node.color = COLORS[(cIdx + 1) % COLORS.length];
+      safeSaveState(state);
+      renderWhiteboard();
+    };
+
+    // Delete node
+    el.querySelector(".del-node").onclick = () => {
+      state.wbNodes.splice(idx, 1);
+      safeSaveState(state);
+      renderWhiteboard();
+      showToast("הפתק הוסר מהלוח");
+    };
+
+    // Live edit title & text
+    el.querySelector(".wb-node-title").oninput = (e) => {
+      node.title = e.target.value;
+      safeSaveState(state);
+    };
+    el.querySelector(".wb-node-textarea").oninput = (e) => {
+      node.text = e.target.value;
+      safeSaveState(state);
+    };
+
+    // Image zoom lightbox
+    const imgEl = el.querySelector(".wb-file-preview img");
+    if (imgEl) {
+      imgEl.onclick = () => {
+        document.getElementById("lightbox-img").src = node.dataUrl;
+        document.getElementById("lightbox").classList.add("open");
+      };
+    }
+
+    layer.appendChild(el);
+  });
+}
+
+function renderCsvPreview(csvText) {
+  const lines = csvText.trim().split(/\r?\n/).slice(0, 8);
+  if (!lines.length) return "";
+  let html = '<div style="overflow:auto;max-height:150px"><table class="wb-csv-table">';
+  lines.forEach((line, i) => {
+    const cells = line.split(",");
+    const tag = i === 0 ? "th" : "td";
+    html += "<tr>" + cells.map(c => `<${tag}>${escapeHtml(c)}</${tag}>`).join("") + "</tr>";
+  });
+  html += "</table></div>";
+  return html;
+}
+
+function addStickyNote(x = null, y = null) {
+  const count = (state.wbNodes || []).length;
+  state.wbNodes.push({
+    id: "wb_" + Date.now(),
+    type: "note",
+    color: activeNoteColor,
+    status: "לבחינה 🔍",
+    title: "רעיון / הערה חדשה",
+    text: "",
+    x: x !== null ? x : 100 + ((count * 35) % 500),
+    y: y !== null ? y : 100 + ((count * 35) % 300),
+    w: 280,
+    h: 200,
+    z: ++highestZ
+  });
+  safeSaveState(state);
+  renderWhiteboard();
+  showToast("נוסף פתק חדש ללוח ✓");
+}
+
+document.getElementById("wb-add-note").onclick = () => addStickyNote();
+
+// Double-click empty spot on whiteboard to add a note there
+document.getElementById("wb-viewport").ondblclick = (e) => {
+  if (e.target.closest(".wb-node") || isDrawingMode) return;
+  const rect = document.getElementById("wb-stage").getBoundingClientRect();
+  const zoom = state.wbZoom || 1;
+  const x = Math.max(20, Math.round((e.clientX - rect.left) / zoom - 120));
+  const y = Math.max(20, Math.round((e.clientY - rect.top) / zoom - 60));
+  addStickyNote(x, y);
+};
+
+// Handle File Uploads onto Whiteboard (Drag & Drop, Button, or Paste)
+function handleWhiteboardFiles(fileList, dropX = null, dropY = null) {
+  Array.from(fileList).forEach((file, i) => {
+    const ext = (file.name.split(".").pop() || "").toLowerCase();
+    const isImg = file.type.startsWith("image/");
+    const isVid = file.type.startsWith("video/");
+    const isAud = file.type.startsWith("audio/");
+    const isCsv = ext === "csv";
+    const isText = file.type.startsWith("text/") || ["md", "txt", "json", "js", "html", "css", "yaml", "yml"].includes(ext);
+
+    const posX = (dropX !== null ? dropX : 160) + i * 30;
+    const posY = (dropY !== null ? dropY : 140) + i * 30;
+
+    if (isImg || isVid || isAud) {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        state.wbNodes.push({
+          id: "wb_file_" + Date.now() + "_" + i,
+          type: "file",
+          fileType: isImg ? "image" : (isVid ? "video" : "audio"),
+          fileName: file.name,
+          dataUrl: ev.target.result,
+          color: "note-dark",
+          status: "קובץ מצורף 📎",
+          title: file.name,
+          text: "",
+          x: posX,
+          y: posY,
+          w: 340,
+          h: 320,
+          z: ++highestZ
+        });
+        safeSaveState(state);
+        renderWhiteboard();
+        showToast(`הקובץ "${file.name}" נוסף ללוח ✓`);
+      };
+      reader.readAsDataURL(file);
+    } else if (isCsv || isText) {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        state.wbNodes.push({
+          id: "wb_file_" + Date.now() + "_" + i,
+          type: "file",
+          fileType: isCsv ? "csv" : "text",
+          fileName: file.name,
+          textSnippet: String(ev.target.result || "").slice(0, 4000),
+          color: "note-dark",
+          status: isCsv ? "טבלת נתונים 📊" : "מסמך / קוד 📄",
+          title: file.name,
+          text: "",
+          x: posX,
+          y: posY,
+          w: 380,
+          h: 300,
+          z: ++highestZ
+        });
+        safeSaveState(state);
+        renderWhiteboard();
+        showToast(`המסמך "${file.name}" נוסף ללוח ✓`);
+      };
+      reader.readAsText(file, "UTF-8");
+    } else {
+      state.wbNodes.push({
+        id: "wb_file_" + Date.now() + "_" + i,
+        type: "file",
+        fileType: "other",
+        fileName: file.name,
+        fileSize: Math.round(file.size / 1024) + " KB",
+        color: "note-blue",
+        status: "קובץ מצורף 📎",
+        title: file.name,
+        text: "הערות על הקובץ:",
+        x: posX,
+        y: posY,
+        w: 300,
+        h: 220,
+        z: ++highestZ
+      });
+      safeSaveState(state);
+      renderWhiteboard();
+      showToast(`הקובץ "${file.name}" נוסף ללוח ✓`);
+    }
+  });
+}
+
+document.getElementById("wb-upload-btn").onclick = () => document.getElementById("wb-file-input").click();
+document.getElementById("wb-file-input").onchange = (e) => {
+  if (e.target.files.length) handleWhiteboardFiles(e.target.files);
+  e.target.value = "";
+};
+
+const wbViewport = document.getElementById("wb-viewport");
+wbViewport.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  wbViewport.classList.add("drag-over");
+});
+wbViewport.addEventListener("dragleave", () => wbViewport.classList.remove("drag-over"));
+wbViewport.addEventListener("drop", (e) => {
+  e.preventDefault();
+  wbViewport.classList.remove("drag-over");
+  if (e.dataTransfer.files && e.dataTransfer.files.length) {
+    const rect = document.getElementById("wb-stage").getBoundingClientRect();
+    const zoom = state.wbZoom || 1;
+    const x = Math.max(20, Math.round((e.clientX - rect.left) / zoom - 140));
+    const y = Math.max(20, Math.round((e.clientY - rect.top) / zoom - 80));
+    handleWhiteboardFiles(e.dataTransfer.files, x, y);
+  }
+});
+
+// Paste image or text directly onto Whiteboard with Ctrl+V
+window.addEventListener("paste", (e) => {
+  const wbTabActive = document.getElementById("tab-whiteboard").classList.contains("active");
+  if (!wbTabActive) return;
+  if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+  if (e.clipboardData && e.clipboardData.files && e.clipboardData.files.length) {
+    handleWhiteboardFiles(e.clipboardData.files);
+  }
+});
+
+// Whiteboard Theme, Zoom & Fullscreen
+document.getElementById("wb-theme-select").onchange = (e) => {
+  state.wbTheme = e.target.value;
+  safeSaveState(state);
+  renderWhiteboard();
+};
+
+document.getElementById("wb-zoom-in").onclick = () => {
+  state.wbZoom = Math.min(1.6, Math.round(((state.wbZoom || 1) + 0.1) * 10) / 10);
+  safeSaveState(state);
+  renderWhiteboard();
+};
+
+document.getElementById("wb-zoom-out").onclick = () => {
+  state.wbZoom = Math.max(0.5, Math.round(((state.wbZoom || 1) - 0.1) * 10) / 10);
+  safeSaveState(state);
+  renderWhiteboard();
+};
+
+document.getElementById("wb-fullscreen-btn").onclick = () => {
+  wbViewport.classList.toggle("fullscreen");
+  document.getElementById("wb-fullscreen-btn").textContent =
+    wbViewport.classList.contains("fullscreen") ? "✕ צא ממסך מלא" : "⛶ מסך מלא";
+};
+
+// Freehand Drawing Canvas on the Whiteboard
+const drawCanvas = document.getElementById("wb-draw-canvas");
+const ctx = drawCanvas.getContext("2d");
+let isDrawingMode = false;
+let isPenDown = false;
+
+function restoreCanvasDrawing() {
+  ctx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+  if (state.wbDrawingDataUrl) {
+    const img = new Image();
+    img.onload = () => ctx.drawImage(img, 0, 0);
+    img.src = state.wbDrawingDataUrl;
+  }
+}
+
+document.getElementById("wb-toggle-draw").onclick = (e) => {
+  isDrawingMode = !isDrawingMode;
+  drawCanvas.classList.toggle("drawing-active", isDrawingMode);
+  e.target.textContent = isDrawingMode ? "✏️ ציור חופשי: פעיל" : "✏️ ציור חופשי: כבוי";
+  e.target.classList.toggle("primary", isDrawingMode);
+};
+
+drawCanvas.addEventListener("mousedown", (e) => {
+  if (!isDrawingMode) return;
+  isPenDown = true;
+  const rect = drawCanvas.getBoundingClientRect();
+  const zoom = state.wbZoom || 1;
+  ctx.strokeStyle = document.getElementById("wb-pen-color").value;
+  ctx.lineWidth = 3;
+  ctx.lineCap = "round";
+  ctx.beginPath();
+  ctx.moveTo((e.clientX - rect.left) / zoom, (e.clientY - rect.top) / zoom);
+});
+
+drawCanvas.addEventListener("mousemove", (e) => {
+  if (!isDrawingMode || !isPenDown) return;
+  const rect = drawCanvas.getBoundingClientRect();
+  const zoom = state.wbZoom || 1;
+  ctx.lineTo((e.clientX - rect.left) / zoom, (e.clientY - rect.top) / zoom);
+  ctx.stroke();
+});
+
+window.addEventListener("mouseup", () => {
+  if (isPenDown) {
+    isPenDown = false;
+    state.wbDrawingDataUrl = drawCanvas.toDataURL();
+    safeSaveState(state);
+  }
+});
+
+document.getElementById("wb-clear-draw").onclick = () => {
+  ctx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+  state.wbDrawingDataUrl = null;
+  safeSaveState(state);
+  showToast("הציורים על הלוח נוקו");
+};
+
+// Lightbox close
+document.getElementById("lightbox").onclick = () => {
+  document.getElementById("lightbox").classList.remove("open");
+};
+
+// ── 7. Tabs, Filters, Export/Import & Reset ──
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.tab).classList.add("active");
+  };
+});
+
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    state.filter = btn.dataset.filter;
+    safeSaveState(state);
+    renderBoard();
+  };
+});
+
+// Export / Import JSON backup
+document.getElementById("btn-export-json").onclick = () => {
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "agent-games-2026-backup.json";
+  a.click();
+  showToast("קובץ הגיבוי הורד למחשב ✓");
+};
+
+document.getElementById("btn-import-json").onclick = () => {
+  document.getElementById("import-json-input").click();
+};
+
+document.getElementById("import-json-input").onchange = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const imported = JSON.parse(ev.target.result);
+      if (imported && imported.tasks) {
+        state = imported;
+        safeSaveState(state);
+        renderBoard();
+        renderGate();
+        renderVenues();
+        renderWhiteboard();
+        restoreCanvasDrawing();
+        showToast("הגיבוי שוחזר בהצלחה ✓");
+      }
+    } catch (err) {
+      showToast("שגיאה בקריאת קובץ הגיבוי");
+    }
+  };
+  reader.readAsText(file);
+};
+
+// Reset button (No native confirm required — double click or click to reset)
+let resetArmed = false;
+document.getElementById("btn-reset").onclick = (e) => {
+  if (!resetArmed) {
+    resetArmed = true;
+    e.target.textContent = "⚠️ לחץ שוב לאישור איפוס";
+    setTimeout(() => {
+      resetArmed = false;
+      e.target.textContent = "↺ איפוס לברירת מחדל";
+    }, 3500);
+    return;
+  }
+  resetArmed = false;
+  e.target.textContent = "↺ איפוס לברירת מחדל";
+  state = safeClone(DEFAULT_STATE);
+  safeSaveState(state);
+  renderBoard();
+  renderGate();
+  renderVenues();
+  renderWhiteboard();
+  restoreCanvasDrawing();
+  showToast("הלוח אופס לברירת המחדל ✓");
+};
+
+// Initial Load (Sync with IndexedDB if available)
+renderBoard();
+renderGate();
+renderVenues();
+renderWhiteboard();
+restoreCanvasDrawing();
+
+loadFromIndexedDB().then(idbState => {
+  if (idbState && idbState.tasks) {
+    state = idbState;
+    renderBoard();
+    renderGate();
+    renderVenues();
+    renderWhiteboard();
+    restoreCanvasDrawing();
+  }
+});
+</script>
+<script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="1fafbc169e967bae77e35573-|49" defer></script></body>
+</html>

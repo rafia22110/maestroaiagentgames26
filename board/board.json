@@ -1,0 +1,460 @@
+{
+  "board": "Agent Games 2026",
+  "source": {
+    "file": "board/source/agent-games-timeline.html",
+    "sha256": "1d776877cb62771f7a43c8de766115984d093fffe8be6060bc17e901fa61873d",
+    "bytes": 104767,
+    "driveFileId": "16nHdPycrROdV26cmGzTkMy1Ocpfy7HZY",
+    "driveLink": "https://drive.google.com/file/d/16nHdPycrROdV26cmGzTkMy1Ocpfy7HZY/view",
+    "note": "Hebrew RTL single-file board. board.json is extracted from it; state.json holds live progress."
+  },
+  "event": {
+    "name": "Agent Games 2026 — Main Street Edition",
+    "track": "Wedding Venues (tthezgqmvrrh)",
+    "registration": "הרשמה מאושרת (Vlad Yanch, 6.11.2026)",
+    "judges": "Vlad Yanch (CEO) & Eugene Sorokin (CTO)",
+    "venue": "The Exploratorium (Pier 15)",
+    "hackathonStart": "2026-12-04T22:00:00+02:00",
+    "hackathonEnd": "2026-12-07T16:00:00+02:00",
+    "submissionDeadline": "2026-12-07T22:00:00+02:00",
+    "shortlistAnnouncement": "2026-12-09",
+    "winnersAnnouncement": "2026-12-10",
+    "judging": [
+      {
+        "rank": 1,
+        "criterion": "מוכן לעסק אמיתי מחר בבוקר",
+        "criterionEn": "Ready for Real Business",
+        "weight": "25%"
+      },
+      {
+        "rank": 2,
+        "criterion": "התנהגות סוכנותית",
+        "criterionEn": "שאלה ← המלצה ← תמחור ← סגירה",
+        "weight": "25%"
+      },
+      {
+        "rank": 3,
+        "criterion": "עיצוב וחוויית משתמש",
+        "criterionEn": "התאמה למותג + מובייל ודסקטופ",
+        "weight": "20%"
+      },
+      {
+        "rank": 4,
+        "criterion": "שימוש ביכולות Agentplace",
+        "criterionEn": "חיפוש, Skills, סוכנים, קול",
+        "weight": "15%"
+      },
+      {
+        "rank": 5,
+        "criterion": "אמינות ובטיחות",
+        "criterionEn": "אפס מבוי סתום, דיוק מחירים ומדיניות",
+        "weight": "15%"
+      }
+    ]
+  },
+  "selectedVenue": "The Exploratorium (Pier 15 Waterfront Galleries)",
+  "phases": [
+    {
+      "id": "before",
+      "order": 0,
+      "title": "הכנות לפני התחרות",
+      "tasks": [
+        {
+          "id": "b1",
+          "text": "אימות מייל הרשמה מ-Vlad Yanch (6.11) והוספת חלון התחרות ליומן",
+          "description": "4 בדצמבר 22:00 עד 7 בדצמבר 22:00 שעון ישראל",
+          "note": "נרשמתי — אושר במייל מוולד יאנץ'",
+          "tag": "לוגיסטיקה",
+          "kind": "core",
+          "critical": false,
+          "doneByDefault": true
+        },
+        {
+          "id": "b2",
+          "text": "הצטרפות לשרת הדיסקורד הרשמי (discord.gg/DUscgNMuva)",
+          "description": "מעקב אחר ערוץ ההכרזות והיכרות עם מתמודדים",
+          "note": "",
+          "tag": "קריטי",
+          "kind": "critical",
+          "critical": true,
+          "doneByDefault": false
+        },
+        {
+          "id": "b3",
+          "text": "בחירה סופית של לוקיישן דגל בסן פרנסיסקו לשדרוג",
+          "description": "נבחר: The Exploratorium (Pier 15 Waterfront Galleries) — exploratorium.edu/rentals",
+          "note": "בוצע! נבחר ה-Exploratorium ב-Pier 15 (התאמה מושלמת ל-3 מפלסים, אור, מדע ואירועי חתונה/הייטק)",
+          "tag": "קריטי",
+          "kind": "critical",
+          "critical": true,
+          "doneByDefault": true
+        },
+        {
+          "id": "b4",
+          "text": "פתיחת תבנית המסלול (tthezgqmvrrh) ובדיקת זרימת ה-Remix",
+          "description": "הבנת מבנה הפרומפטים והכלים בתבנית הרשמית לפני ההזנקה",
+          "note": "",
+          "tag": "תבנית",
+          "kind": "core",
+          "critical": false,
+          "doneByDefault": false
+        },
+        {
+          "id": "b5",
+          "text": "בניית Knowledge Base מלא באנגלית עבור ה-Exploratorium (Pier 15)",
+          "description": "Observatory ($9.5k-$12k+, 200 standing/150 seated), East Gallery (450 standing/150 seated), Bundle ($16.5k+), Explainers, Soft Hold לשבועיים",
+          "note": "נתוני האמת כבר רוכזו בלשונית האולמות ולוח המשבצות!",
+          "tag": "קריטי",
+          "kind": "critical",
+          "critical": true,
+          "doneByDefault": false
+        },
+        {
+          "id": "b6",
+          "text": "כתיבת תסריטי שיחה ומודול הכלה (LGBTQ+ / POC / גיל שלישי)",
+          "description": "התאמת שפה מכילה, מסלולי מעליות נגישים ב-Pier 15 ו'מפלט אקוסטי' שקט ב-Observatory Terrace למבוגרים",
+          "note": "",
+          "tag": "בידול",
+          "kind": "inclusion",
+          "critical": false,
+          "doneByDefault": false
+        },
+        {
+          "id": "b7",
+          "text": "אפיון מודולריות עסקית לאמצע השבוע (Mid-Week Corporate Switch)",
+          "description": "מעבר מיידי מחתונה ב-Observatory לכנס הייטק / השקה ב-Kanbar Forum וגלריות המוזיאון + 15% הנחת עמותות",
+          "note": "",
+          "tag": "בידול",
+          "kind": "inclusion",
+          "critical": false,
+          "doneByDefault": false
+        },
+        {
+          "id": "b8",
+          "text": "הכנת נכסי וידאו ו-UI/UX (Active Theory + Amado Multi-Level)",
+          "description": "רקע Deep Void, כרטיסיות Dark Obsidian Glass, רמזי וידאו של גלריות האור והמפרץ ומסכי LED גמישים",
+          "note": "",
+          "tag": "עיצוב",
+          "kind": "design",
+          "critical": false,
+          "doneByDefault": false
+        },
+        {
+          "id": "b9",
+          "text": "השתתפות בהדרכה החיה ב-2 בדצמבר (Live Walkthrough)",
+          "description": "להכין 3 שאלות מראש על חיבור Skills, קול והטמעת UI מותאם",
+          "note": "",
+          "tag": "למידה",
+          "kind": "core",
+          "critical": false,
+          "doneByDefault": false
+        }
+      ]
+    },
+    {
+      "id": "during",
+      "order": 1,
+      "title": "במהלך התחרות (72 שעות)",
+      "tasks": [
+        {
+          "id": "d1",
+          "text": "מימוש קוד הפרומו האישי במייל (4.12 בשעה 22:00)",
+          "description": "100% הנחה ב-Agentplace + מודל Luna חינם (אסור לשתף את הקוד!)",
+          "note": "",
+          "tag": "קריטי",
+          "kind": "critical",
+          "critical": true,
+          "doneByDefault": false
+        },
+        {
+          "id": "d2",
+          "text": "לחיצה על Remix this agent והזנת exploratorium.edu/rentals",
+          "description": "יצירת ליבת הסוכן על בסיס מחלקת האירועים והחתונות של ה-Exploratorium באנגלית",
+          "note": "",
+          "tag": "ליבת סוכן",
+          "kind": "core",
+          "critical": false,
+          "doneByDefault": false
+        },
+        {
+          "id": "d3",
+          "text": "הטמעת בסיס הידע המלא של ה-Exploratorium (חבילות, תמחור ונהלים)",
+          "description": "Observatory vs. East Gallery Bundle, הטבות Explainers וצילומים, ומענה מדויק (25% מהציון: מוכן לעסק אמיתי)",
+          "note": "",
+          "tag": "קריטי",
+          "kind": "critical",
+          "critical": true,
+          "doneByDefault": false
+        },
+        {
+          "id": "d4",
+          "text": "בניית זרימת המרה מלאה (שאלה ← המלצה ← הצעת מחיר ← סגירה)",
+          "description": "איסוף שם, אימייל, סוג אירוע והובלה לסיור ב-Pier 15 או נעילת Soft Hold לשבועיים (25% מהציון)",
+          "note": "",
+          "tag": "קריטי",
+          "kind": "critical",
+          "critical": true,
+          "doneByDefault": false
+        },
+        {
+          "id": "d5",
+          "text": "שילוב Adaptive Inclusive Concierge + מודולריות לכנסים",
+          "description": "הפעלת התאמה רב-דורית ('מפלט אקוסטי' מהמיצגים), להטב\"ק ומעבר חכם מחתונה לכנס הייטק",
+          "note": "",
+          "tag": "בידול",
+          "kind": "inclusion",
+          "critical": false,
+          "doneByDefault": false
+        },
+        {
+          "id": "d6",
+          "text": "הפעלת יכולות Agentplace מתקדמות (Search, Skills, Voice, Agents)",
+          "description": "חיפוש חי, מחשבון תקציב גלריות, שיחה קולית וסוכנים מחוברים (15% מהציון + בונוס)",
+          "note": "",
+          "tag": "פלטפורמה",
+          "kind": "core",
+          "critical": false,
+          "doneByDefault": false
+        },
+        {
+          "id": "d7",
+          "text": "הלבשת עיצוב 3 המפלסים (Obsidian Glass + LED Skins) ובדיקת מובייל",
+          "description": "Bechtel Light Gallery ← Moore East Mezzanine ← Fisher Bay Observatory (20% מהציון)",
+          "note": "",
+          "tag": "עיצוב",
+          "kind": "design",
+          "critical": false,
+          "doneByDefault": false
+        },
+        {
+          "id": "d8",
+          "text": "בדיקות QA ובטיחות: אפס מבוי סתום (No Dead Ends)",
+          "description": "בדיקת 10 מקרי קצה, מניעת הזיות מחירים ושמירה על שיחה בטוחה (15% מהציון)",
+          "note": "",
+          "tag": "QA",
+          "kind": "critical",
+          "critical": true,
+          "doneByDefault": false
+        }
+      ]
+    },
+    {
+      "id": "submit",
+      "order": 2,
+      "title": "סיום והגשה",
+      "tasks": [
+        {
+          "id": "s1",
+          "text": "וידוא שהתג 'Built for Agent Games' מופיע על הסוכן המפורסם",
+          "description": "חובה להשאיר את התג פעיל עד הכרזת הזוכים ב-10 בדצמבר",
+          "note": "",
+          "tag": "חובה",
+          "kind": "submit",
+          "critical": false,
+          "doneByDefault": false
+        },
+        {
+          "id": "s2",
+          "text": "בדיקת הקישור הציבורי של הסוכן בחלון גלישה בסתר (Incognito)",
+          "description": "לוודא שהסוכן פתוח לכולם, נטען מהר ועובד ללא תקלות",
+          "note": "",
+          "tag": "חובה",
+          "kind": "submit",
+          "critical": false,
+          "doneByDefault": false
+        },
+        {
+          "id": "s3",
+          "text": "הקלטה ועריכה של סרטון הדגמה (Demo Video) באורך 30–90 שניות",
+          "description": "מומלץ 60–75 שניות: האתר הישן של ה-Exploratorium ← שיחה חיה ← מודולריות לכנס ← סגירת סיור/Soft Hold",
+          "note": "",
+          "tag": "חובה",
+          "kind": "submit",
+          "critical": false,
+          "doneByDefault": false
+        },
+        {
+          "id": "s4",
+          "text": "כתיבת תקציר של 3–5 משפטים באנגלית לטופס ההגשה",
+          "description": "מיצוב: Exploratorium Pier 15 Waterfront Wedding & Event Galleries + מה הסוכן עושה + במה אנחנו הכי גאים",
+          "note": "",
+          "tag": "חובה",
+          "kind": "submit",
+          "critical": false,
+          "doneByDefault": false
+        },
+        {
+          "id": "s5",
+          "text": "פרסום פוסט ציבורי ב-X או ב-LinkedIn עם תיוגים מחייבים",
+          "description": "חובה לכלול #AgentGames ו-@agentplace_io (בלי פוסט = אין הגשה!)",
+          "note": "",
+          "tag": "קריטי",
+          "kind": "critical",
+          "critical": true,
+          "doneByDefault": false
+        },
+        {
+          "id": "s6",
+          "text": "סימון תיבת ההסכמה (Consent Checkbox) ושליחת טופס ההגשה עד 19:00",
+          "description": "3 שעות מרווח ביטחון לפני נעילת ההגשות ב-22:00 + צילום מסך לאישור",
+          "note": "",
+          "tag": "קריטי",
+          "kind": "critical",
+          "critical": true,
+          "doneByDefault": false
+        }
+      ]
+    },
+    {
+      "id": "post",
+      "order": 3,
+      "title": "אחרי ההגשה ומוניטיזציה",
+      "tasks": [
+        {
+          "id": "p1",
+          "text": "קידום אורגני של הפוסט ב-3+ קהילות לזכייה ב-Most Buzzworthy ($150)",
+          "description": "8–9 בדצמבר: שיתוף הפוסט וגיוס תגובות אמיתיות ללא שינוי הסוכן שננעל",
+          "note": "",
+          "tag": "באזז",
+          "kind": "submit",
+          "critical": false,
+          "doneByDefault": false
+        },
+        {
+          "id": "p2",
+          "text": "בדיקת הכרזת ה-Shortlist (9 בדצמבר) והזוכים (10 בדצמבר)",
+          "description": "שיתוף תעודת ה-LinkedIn הרשמית ומכתב ההמלצה ממנכ\"ל Agentplace",
+          "note": "",
+          "tag": "תוצאות",
+          "kind": "core",
+          "critical": false,
+          "doneByDefault": false
+        },
+        {
+          "id": "p3",
+          "text": "4.1 Productize (20–25.12): הפיכת הסוכן למוצר רחב (רישיון White-Label)",
+          "description": "אריזת ה-'Inclusive Event Concierge' לשכפול מהיר לאולמות נוספים (כגון The Pearl ו-One Sansome)",
+          "note": "",
+          "tag": "4.1 מוצר",
+          "kind": "core",
+          "critical": false,
+          "doneByDefault": false
+        },
+        {
+          "id": "p4",
+          "text": "4.2 Outreach (27.12–9.1): פנייה ל-events@exploratorium.edu + 5 אולמות",
+          "description": "יעד מדיד: סגירת 2 יועצים/לקוחות בתשלום עד 8 בינואר 2027",
+          "note": "",
+          "tag": "4.2 מכירות",
+          "kind": "inclusion",
+          "critical": false,
+          "doneByDefault": false
+        },
+        {
+          "id": "p5",
+          "text": "4.3–4.5 Scaling (Q1–Q2 2027): קהילה, צוות ו-5 לקוחות משלמים",
+          "description": "פוסט שבועי ב-LinkedIn/X · לקוח ראשון בינואר ← 5 סוכנים רצים במאי 2027",
+          "note": "",
+          "tag": "4.5 צמיחה",
+          "kind": "design",
+          "critical": false,
+          "doneByDefault": false
+        }
+      ]
+    }
+  ],
+  "gate": [
+    {
+      "index": 0,
+      "title": "1. קישור לסוכן מפורסם ועובד (Published Working Agent)",
+      "description": "הסוכן באוויר, מדבר אנגלית, מבוסס על עסק אמיתי ונבדק בגלישה בסתר.",
+      "passedByDefault": false
+    },
+    {
+      "index": 1,
+      "title": "2. סרטון הדגמה באורך 30–90 שניות (Demo Video)",
+      "description": "מציג את הסוכן בפעולה מרגע השאלה ועד להצעת מחיר וסגירת סיור/הצעה.",
+      "passedByDefault": false
+    },
+    {
+      "index": 2,
+      "title": "3. פוסט ציבורי ב-X או LinkedIn (No Post = No Submission)",
+      "description": "כולל את ההאשטאג #AgentGames ותיוג @agentplace_io (או @agentplace-io בלינקדאין).",
+      "passedByDefault": false
+    },
+    {
+      "index": 3,
+      "title": "4. תקציר של 3–5 משפטים באנגלית (3–5 Sentences Summary)",
+      "description": "מפרט לאיזה עסק הסוכן נבנה, מה העבודה שהוא מבצע, ובמה אנחנו הכי גאים.",
+      "passedByDefault": false
+    },
+    {
+      "index": 4,
+      "title": "5. סימון תיבת ההסכמה (Consent Checkbox)",
+      "description": "אישור ל-Agentplace להציג את הסוכן בגלריה הציבורית ובחומרי שיווק עם קרדיט.",
+      "passedByDefault": false
+    },
+    {
+      "index": 5,
+      "title": "6. תג 'Built for Agent Games' פעיל על הסוכן",
+      "description": "התג חייב להישאר על הסוכן ברציפות עד הכרזת הזוכים ב-10 בדצמבר.",
+      "passedByDefault": false
+    }
+  ],
+  "venues": [
+    {
+      "name": "The Exploratorium (Pier 15 Waterfront Galleries)",
+      "style": "Interactive Science, Light & Glass Waterfront Museum",
+      "url": "exploratorium.edu/rentals",
+      "clue": "אלומות אור, אופטיקה והשתקפויות המפרץ מתמזגות עם קירות הזכוכית של ה-Fisher Bay Observatory מול אורות ה-Bay Bridge.",
+      "fit": "הבחירה המנצחת (#1): גלריות אור וצליל חיות (Bechtel), חלל דו-מפלסי (Moore East + Mezzanine) וקוביית זכוכית על המפרץ (Observatory). אידיאלי לחתונות ($9.5k–$16.5k+) ולכנסי הייטק!"
+    },
+    {
+      "name": "The Pearl (Dogpatch)",
+      "style": "Modern Industrial Chic & Rooftop Garden",
+      "url": "thepearlsf.com/private-events",
+      "clue": "טיימלאפס של שקיעה מעל המפרץ המתחלפת באור נרות מרצד על שולחנות עץ אלון כהה.",
+      "fit": "אידיאלי למסע 3 המפלסים (קומת קרקע תעשייתית ← גלריה/מנהרה ← גג פתוח) ולמודולריות של כנסי טכנולוגיה והשקות."
+    },
+    {
+      "name": "The Conservatory at One Sansome",
+      "style": "Neo-Futuristic Light-Filled Glass Atrium",
+      "url": "onesansome.com/the-conservatory",
+      "clue": "השתקפויות שמיים דרך כיפת זכוכית מודרנית עם צלליות אלגנטיות ונרות צפים במים.",
+      "fit": "מתאים במיוחד לשפת העיצוב של Dark Obsidian Glass ואירועי חברות יוקרתיים במרכז ה-Financial District."
+    },
+    {
+      "name": "James Leary Flood Mansion",
+      "style": "Gilded Age Classical Elegance & Marble Grandeur",
+      "url": "thefloodmansion.org/events",
+      "clue": "אלומת שקיעה פוגעת בעמודי שיש רומיים ויוצרת נצנוץ פריזמטי על כוסיות שמפניה.",
+      "fit": "ניגודיות דרמטית בין ארכיטקטורה היסטורית שמרנית לבין קונסיירז' AI מכיל, מודרני ורב-דורי."
+    },
+    {
+      "name": "Golden Gate Club (The Presidio)",
+      "style": "Historic Coastal Estate & Scenic Panorama",
+      "url": "presidio.gov/venues/golden-gate-club",
+      "clue": "ערפל המפרץ מתגלגל באיטיות בין ענפי הברוש אל תוך זוהר חם של אש בקמין.",
+      "fit": "חלונות פנורמיים למפרץ ואלקטרז; מעולה לשילוב חתונות טבע יוקרתיות וכנסים אקזקוטיביים."
+    },
+    {
+      "name": "Log Cabin (Presidio Bluffs)",
+      "style": "Rustic Pacific Luxury & Skyline View",
+      "url": "presidio.gov/venues/log-cabin",
+      "clue": "להבות אש מרקדות בבורות האש החיצוניים כשברקע מנצנצים אורות קו הרקיע של סן פרנסיסקו.",
+      "fit": "אווירה חמה ואינטימית עם מדשאה רחבה מול קו הרקיע של העיר."
+    }
+  ],
+  "counts": {
+    "phases": 4,
+    "tasks": 28,
+    "critical": 9,
+    "doneByDefault": 2
+  },
+  "statuses": [
+    "open",
+    "in_progress",
+    "done",
+    "blocked"
+  ]
+}

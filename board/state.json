@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "updatedAt": null,
+  "updatedBy": null,
+  "tasks": {},
+  "gate": {},
+  "note": "Live progress overlay. Keys are task ids from board.json; values are the current status."
+}

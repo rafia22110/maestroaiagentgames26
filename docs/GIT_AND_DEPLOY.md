@@ -27,11 +27,28 @@ cd openbot && npm test && npm run dev             # bot tests, then the live ser
 
 ## Pushing to GitHub
 
-There is no GitHub app connected to this session and no personal access token in the sandbox, so
-the commits exist locally and in a transportable bundle rather than on github.com. Two ways to
-publish:
+**Target repository:** <https://github.com/rafia22110/maestro-ai-agent-games-2026.git> (branch `main`).
 
-**A. From the bundle (recommended — keeps the three commits and the tag)**
+This sandbox has no GitHub credential: Arena has no GitHub connector, there is no `gh` CLI, no SSH
+key and no token in the environment, and the repository answers **404 to anonymous requests**, which
+means it is private (or not created yet). So the commits exist locally plus in a transportable
+bundle, and publication is one command.
+
+**One command, with a token that is never stored:**
+
+```bash
+cd exploratorium-events-ui
+GITHUB_TOKEN=github_pat_xxx ./scripts/push-to-github.sh --dry-run   # what would be pushed
+GITHUB_TOKEN=github_pat_xxx ./scripts/push-to-github.sh             # pushes main + all tags
+```
+
+The token needs *Contents: read and write* on that single repository (fine-grained token). The
+script passes it inline with `credential.helper=` disabled, so it never lands in `.git/config`,
+the shell history or the reflog, and it leaves a token-free `origin` behind.
+
+Without a token, two alternatives:
+
+**A. From the bundle (keeps every commit and tag)**
 
 ```bash
 # 1. Create an empty repository on GitHub, then:
@@ -41,11 +58,14 @@ git remote add origin git@github.com:<owner>/exploratorium-events-ui.git
 git push -u origin main --tags
 ```
 
-**B. From this workspace, with a token**
+**B. From a checkout of the target repository (GitHub Desktop, VS Code or the web UI)**
+
+Download `25 — git repository bundle v0.2.0.bundle` from the Drive folder, then:
 
 ```bash
-cd exploratorium-events-ui
-git remote add origin https://<token>@github.com/<owner>/exploratorium-events-ui.git
+git clone /path/to/exploratorium-events-ui-v0.2.0.bundle maestro-ai-agent-games-2026
+cd maestro-ai-agent-games-2026
+git remote add origin https://github.com/rafia22110/maestro-ai-agent-games-2026.git
 git push -u origin main --tags
 ```
 

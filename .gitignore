@@ -15,3 +15,5 @@ npm-debug.log*
 # OS / editor
 .vscode/
 .idea/
+*token*
+*.token

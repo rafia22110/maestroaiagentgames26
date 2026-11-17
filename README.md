@@ -1,4 +1,22 @@
-# Exploratorium Events UI — adaptation bundle
+# maestro-ai-agent-games-2026
+
+**Agent Games 2026 submission — Exploratorium (Pier 15) event-rentals concierge, with the project's
+task board and the venue evidence in one repository.**
+
+| | |
+|---|---|
+| Track | Wedding Venues (`tthezgqmvrrh`) · Main Street Edition |
+| Venue | The Exploratorium, Pier 15, Embarcadero, San Francisco |
+| Prototype | [`index.html`](index.html) — standalone, no build step, no CDN, no API key |
+| Bot | [`openbot/`](openbot) — an AG-UI service, registrable in CopilotKit OpenBot, 11 tools, 18 tests |
+| Board | [`board/`](board) — 4 phases, 28 tasks, 6 submission-gate conditions, extracted and versioned |
+| Judges' map | [`SUBMISSION.md`](SUBMISSION.md) — each scoring criterion → the artefact that satisfies it |
+
+```bash
+python3 build.py                                # regenerate the prototype, docs and bundle
+node board/scripts/extract-board.mjs --check    # fail if the board extraction drifted
+cd openbot && npm test && npm run dev           # bot tests, then the live service on :8787
+```
 
 **Main deliverable:** `index.html` — open it in the workspace viewer or download it. It is fully standalone: images, wallpaper, transparent cutout, styles and scripts are embedded.
 

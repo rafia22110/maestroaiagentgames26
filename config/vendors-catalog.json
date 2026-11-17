@@ -1,0 +1,160 @@
+{
+  "vendors": [
+    {
+      "vendorID": "v_paula_leduc",
+      "vendorName": "Paula LeDuc Fine Catering & Events",
+      "primaryCategory": "Catering",
+      "serviceTier": "Tier1_Enterprise_Michelin",
+      "inHouseCapabilities": [
+        "Michelin-Caliber Seasonal Menus",
+        "Synchronized 450-Guest Seated Service",
+        "Multicultural & Kosher/Vegan/GF Matrix",
+        "Approved Exploratorium & SFMOMA Caterer"
+      ],
+      "estimatedCostPerGuest": 245,
+      "directContact": {
+        "phone": "+1 (510) 547-7825",
+        "email": "info@paulaleduc.com",
+        "domain": "paulaleduc.com"
+      }
+    },
+    {
+      "vendorID": "v_blueprint_studios",
+      "vendorName": "Blueprint Studios",
+      "primaryCategory": "FullProduction & SpecialtyFurniture",
+      "serviceTier": "Tier1_Enterprise_Michelin",
+      "inHouseCapabilities": [
+        "300k+ SKU Luxury Furniture Inventory",
+        "Off-Site Pre-Fabrication Studio",
+        "Flexible LED Column Skins & Custom Bars",
+        "Spatial Wayfinding & Custom Graphics"
+      ],
+      "estimatedFlatFee": 18500,
+      "directContact": {
+        "phone": "+1 (415) 922-9004",
+        "email": "info@blueprintstudios.com",
+        "domain": "blueprintstudios.com"
+      }
+    },
+    {
+      "vendorID": "v_argus_hd",
+      "vendorName": "Argus HD — Audio, Video & Lighting",
+      "primaryCategory": "AV_Broadcast",
+      "serviceTier": "Tier1_Enterprise_Michelin",
+      "inHouseCapabilities": [
+        "Digital Signal Processing (DSP) for Glass/Marble",
+        "Directional Line-Array Audio",
+        "Flexible LED Skins & Projection Mapping",
+        "90-Minute Pre-Rigged Museum Turnaround"
+      ],
+      "estimatedFlatFee": 16000,
+      "directContact": {
+        "phone": "+1 (415) 285-2748",
+        "email": "production@argushd.com",
+        "domain": "argushd.com"
+      }
+    },
+    {
+      "vendorID": "v_entire_productions",
+      "vendorName": "Entire Productions",
+      "primaryCategory": "TalentBooking",
+      "serviceTier": "Bespoke_Luxury",
+      "inHouseCapabilities": [
+        "SFJAZZ-Caliber Live Jazz Ensembles",
+        "Academic Speakeasy & Bossa Nova Quartets",
+        "Interactive LED Roaming Performers",
+        "Zero-Latency Show Calling"
+      ],
+      "estimatedFlatFee": 9500,
+      "directContact": {
+        "phone": "+1 (415) 291-9191",
+        "email": "events@entireproductions.com",
+        "domain": "entireproductions.com"
+      }
+    },
+    {
+      "vendorID": "v_tonic_beverage",
+      "vendorName": "Tonic Beverage Catering",
+      "primaryCategory": "Mixology & Bar",
+      "serviceTier": "Bespoke_Luxury",
+      "inHouseCapabilities": [
+        "3 Distributed Zero-Queue Mixology Stations",
+        "Molecular Speakeasy Cocktails & Zero-Proof Elixirs",
+        "Full Liquor Liability & Museum Compliance"
+      ],
+      "estimatedCostPerGuest": 68,
+      "directContact": {
+        "phone": "+1 (415) 339-9933",
+        "email": "cheers@tonicbeverage.com",
+        "domain": "tonicbeverage.com"
+      }
+    },
+    {
+      "vendorID": "v_caviar_co",
+      "vendorName": "The Caviar Co. San Francisco",
+      "primaryCategory": "VIP Culinary Activation",
+      "serviceTier": "Bespoke_Luxury",
+      "inHouseCapabilities": [
+        "Sustainable Sturgeon Caviar Tasting Cart",
+        "Observatory Terrace VIP Lounge Pairing",
+        "Dedicated Caviar Sommelier"
+      ],
+      "estimatedFlatFee": 4800,
+      "directContact": {
+        "phone": "+1 (415) 857-9550",
+        "email": "events@thecaviarco.com",
+        "domain": "thecaviarco.com"
+      }
+    },
+    {
+      "vendorID": "v_espresso_subito",
+      "vendorName": "Espresso Subito Specialty Coffee",
+      "primaryCategory": "Hospitality Activation",
+      "serviceTier": "Boutique_Eco",
+      "inHouseCapabilities": [
+        "Dual Artisan Espresso & Matcha Bars",
+        "Late-Night Jazz Club Affogato Service"
+      ],
+      "estimatedFlatFee": 2400,
+      "directContact": {
+        "phone": "+1 (415) 515-3150",
+        "email": "hello@espressosubito.com",
+        "domain": "espressosubito.com"
+      }
+    },
+    {
+      "vendorID": "v_orangepiel_rugs",
+      "vendorName": "OrangePiel & The Rug Company Acoustic Decor",
+      "primaryCategory": "Acoustic Architecture",
+      "serviceTier": "Bespoke_Luxury",
+      "inHouseCapabilities": [
+        "Sound-Absorbing Velvet Drapery",
+        "Acoustic Luxury Area Rugs for Glass/Steel Halls",
+        "Senior Acoustic Sanctuary Zoning"
+      ],
+      "estimatedFlatFee": 6200,
+      "directContact": {
+        "phone": "+1 (415) 621-5800",
+        "email": "design@orangepiel.com",
+        "domain": "orangepiel.com"
+      }
+    },
+    {
+      "vendorID": "v_jays_small_moves",
+      "vendorName": "Jay's Small Moves — Rapid Event Logistics",
+      "primaryCategory": "Infrastructure",
+      "serviceTier": "Tier1_Enterprise_Michelin",
+      "inHouseCapabilities": [
+        "90-Minute Pier 15 Museum Load-In Crew",
+        "Synchronized Dock-to-Gallery Staging",
+        "00:30 AM Rapid Strike & Load-Out"
+      ],
+      "estimatedFlatFee": 3800,
+      "directContact": {
+        "phone": "+1 (415) 285-2600",
+        "email": "dispatch@jayssmallmoves.com",
+        "domain": "jayssmallmoves.com"
+      }
+    }
+  ]
+}

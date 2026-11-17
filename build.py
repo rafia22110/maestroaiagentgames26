@@ -7,6 +7,7 @@ import html
 import json
 import mimetypes
 import shutil
+import sys
 from datetime import date
 from pathlib import Path
 
@@ -59,48 +60,55 @@ ASSET_MAP = {
 }
 
 # Normalize into compact local JPEGs and copy the official video poster.
+# Assets are only re-encoded when missing or when --force-assets is passed: re-encoding an
+# already-normalized JPEG shifts a few bytes every run and would dirty the git tree each build.
+FORCE_ASSETS = '--force-assets' in sys.argv
 prepared: dict[str, Path] = {}
 for key, filename in ASSET_MAP.items():
     src = SEARCH / filename
     dst = ASSETS / f'{key}.jpg'
-    if src.exists():
+    if src.exists() and (FORCE_ASSETS or not dst.exists()):
         with Image.open(src) as raw:
             im = raw.convert('RGB')
             im.thumbnail((760, 760), Image.Resampling.LANCZOS)
             im.save(dst, 'JPEG', quality=76, optimize=True, progressive=True)
         prepared[key] = dst
+    elif dst.exists():
+        prepared[key] = dst
 
 video_poster = ASSETS / 'video_poster.jpg'
-if not video_poster.exists():
-    shutil.copyfile(ASSETS / 'maxresdefault.jpg', video_poster)
-with Image.open(video_poster) as raw:
-    im = raw.convert('RGB')
-    im.thumbnail((1000, 600), Image.Resampling.LANCZOS)
-    im.save(video_poster, 'JPEG', quality=78, optimize=True, progressive=True)
+if FORCE_ASSETS or not video_poster.exists():
+    if not video_poster.exists():
+        shutil.copyfile(ASSETS / 'maxresdefault.jpg', video_poster)
+    with Image.open(video_poster) as raw:
+        im = raw.convert('RGB')
+        im.thumbnail((1000, 600), Image.Resampling.LANCZOS)
+        im.save(video_poster, 'JPEG', quality=78, optimize=True, progressive=True)
 prepared['video_poster'] = video_poster
 
 # Create an animated-wallpaper still derived from the original-site rental imagery.
 wallpaper = ASSETS / 'glass-wallpaper.jpg'
-with Image.open(prepared['holiday_moon']) as raw:
-    base = ImageOps.fit(raw.convert('RGB'), (1600, 900), Image.Resampling.LANCZOS, centering=(0.5, 0.45))
-base = base.filter(ImageFilter.GaussianBlur(10))
-base = ImageEnhance.Color(base).enhance(0.72)
-base = ImageEnhance.Contrast(base).enhance(1.08)
-overlay = Image.new('RGBA', base.size, (5, 8, 20, 140))
-gradient = Image.new('RGBA', (1, 900), (0, 0, 0, 0))
-for y in range(900):
-    a = int(25 + 135 * (y / 899) ** 1.7)
-    gradient.putpixel((0, y), (2, 6, 18, a))
-gradient = gradient.resize((1600, 900))
-overlay = Image.alpha_composite(overlay, gradient)
-shards = Image.new('RGBA', base.size, (0, 0, 0, 0))
-d = ImageDraw.Draw(shards)
-for i, x in enumerate(range(-300, 1700, 260)):
-    d.polygon([(x, 0), (x + 90, 0), (x + 400, 900), (x + 300, 900)], fill=(170, 215, 255, 12 if i % 2 else 22))
-    d.line([(x + 92, 0), (x + 402, 900)], fill=(230, 245, 255, 48), width=2)
-shards = shards.filter(ImageFilter.GaussianBlur(1.2))
-wall = Image.alpha_composite(Image.alpha_composite(base.convert('RGBA'), overlay), shards)
-wall.convert('RGB').save(wallpaper, 'JPEG', quality=82, optimize=True, progressive=True)
+if FORCE_ASSETS or not wallpaper.exists():
+    with Image.open(prepared['holiday_moon']) as raw:
+        base = ImageOps.fit(raw.convert('RGB'), (1600, 900), Image.Resampling.LANCZOS, centering=(0.5, 0.45))
+    base = base.filter(ImageFilter.GaussianBlur(10))
+    base = ImageEnhance.Color(base).enhance(0.72)
+    base = ImageEnhance.Contrast(base).enhance(1.08)
+    overlay = Image.new('RGBA', base.size, (5, 8, 20, 140))
+    gradient = Image.new('RGBA', (1, 900), (0, 0, 0, 0))
+    for y in range(900):
+        a = int(25 + 135 * (y / 899) ** 1.7)
+        gradient.putpixel((0, y), (2, 6, 18, a))
+    gradient = gradient.resize((1600, 900))
+    overlay = Image.alpha_composite(overlay, gradient)
+    shards = Image.new('RGBA', base.size, (0, 0, 0, 0))
+    d = ImageDraw.Draw(shards)
+    for i, x in enumerate(range(-300, 1700, 260)):
+        d.polygon([(x, 0), (x + 90, 0), (x + 400, 900), (x + 300, 900)], fill=(170, 215, 255, 12 if i % 2 else 22))
+        d.line([(x + 92, 0), (x + 402, 900)], fill=(230, 245, 255, 48), width=2)
+    shards = shards.filter(ImageFilter.GaussianBlur(1.2))
+    wall = Image.alpha_composite(Image.alpha_composite(base.convert('RGBA'), overlay), shards)
+    wall.convert('RGB').save(wallpaper, 'JPEG', quality=82, optimize=True, progressive=True)
 prepared['wallpaper'] = wallpaper
 
 cutout = ASSETS / 'exploratorium-logo-transparent.png'

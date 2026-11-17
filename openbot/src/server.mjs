@@ -10,6 +10,11 @@
  *   GET  /api/events           Event-type catalogue (the events tab).
  *   GET  /api/media?category=  Media wall items.
  *   GET  /api/documents        Map, brochures, FAQ, inquiry form.
+ *   GET  /api/board            Task-board summary: progress, gate, countdown, next actions.
+ *   GET  /api/board/tasks      Tasks, filtered by ?phase=&status=&critical=1&limit=
+ *   GET  /api/board/activity   Recent board changes (board/activity.jsonl).
+ *   POST /api/board/tasks/:id  Change a task status. 202 = proposal when BOARD_WRITE is off.
+ *   POST /api/board/gate/:i    Tick a submission-gate condition.
  *   POST /api/bot/brief        Same brain, non-streaming: returns the grounded brief as JSON.
  *   POST /api/inquiries        Records an inquiry intent and returns a reference (no email is sent).
  *
@@ -24,6 +29,7 @@ import { fileURLToPath } from 'node:url';
 import { streamRun, toSSE, agentInfo, collectRun } from './agui.mjs';
 import { runTurn } from './brain.mjs';
 import { kb } from './kb.mjs';
+import { summary as boardSummary, listTasks, nextTasks, updateTask, activity as boardActivity, setGate, countdown, board as boardData } from './board.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = resolve(here, '..', '..');
@@ -172,6 +178,40 @@ export function createConciergeServer() {
       }
       if (pathname === '/api/documents') return json(res, 200, { count: data.documents.length, documents: data.documents });
       if (pathname === '/api/kb') return json(res, 200, data);
+
+      if (pathname === '/api/board') {
+        return json(res, 200, { ...boardSummary(), countdown: countdown(), nextActions: nextTasks({ limit: 5 }).tasks, writesEnabled: process.env.BOARD_WRITE === '1' });
+      }
+      if (pathname === '/api/board/tasks') {
+        const phase = url.searchParams.get('phase');
+        const status = url.searchParams.get('status');
+        const critical = url.searchParams.get('critical') === '1';
+        const limit = Number(url.searchParams.get('limit') ?? 50);
+        return json(res, 200, listTasks({ phase, status, criticalOnly: critical, limit }));
+      }
+      if (pathname === '/api/board/activity') {
+        return json(res, 200, boardActivity({ limit: Number(url.searchParams.get('limit') ?? 20) }));
+      }
+      if (pathname === '/api/board/source') return json(res, 200, boardData().source);
+
+      const taskRoute = /^\/api\/board\/tasks\/([a-z]\d{1,2})$/i.exec(pathname);
+      if (taskRoute && req.method === 'POST') {
+        const body = await readBody(req);
+        const result = updateTask({ taskId: taskRoute[1], status: body.status ?? null, done: body.done ?? null, note: body.note ?? null, by: body.by ?? 'http' });
+        if (result.error === 'unknown_task') return json(res, 404, result);
+        if (result.error) return json(res, 400, result);
+        audit({ event: 'board_write', taskId: taskRoute[1], from: result.from, to: result.to, changed: result.changed, by: body.by ?? 'http' });
+        return json(res, result.changed ? 200 : 202, result);
+      }
+
+      const gateRoute = /^\/api\/board\/gate\/(\d)$/.exec(pathname);
+      if (gateRoute && req.method === 'POST') {
+        const body = await readBody(req);
+        const result = setGate({ index: Number(gateRoute[1]), passed: body.passed ?? true, by: body.by ?? 'http' });
+        if (result.error) return json(res, 404, result);
+        audit({ event: 'board_gate', index: Number(gateRoute[1]), passed: body.passed ?? true, changed: result.changed });
+        return json(res, result.changed ? 200 : 202, result);
+      }
 
       if (pathname === '/api/bot/brief' && req.method === 'POST') {
         const body = await readBody(req);

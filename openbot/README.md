@@ -15,7 +15,8 @@ openbot/
 │   ├── server.mjs    HTTP surface: POST /agui (SSE), /api/*, optional static hosting
 │   ├── agui.mjs      AG-UI event stream (RUN_*, STEP_*, TOOL_CALL_*, TEXT_MESSAGE_*, CUSTOM)
 │   ├── brain.mjs     intent → tool plan → composed, cited answer (EN / HE)
-│   ├── tools.mjs     the six declared tools — the only path to venue data
+│   ├── tools.mjs     the declared tools — the only path to venue and board data
+│   ├── board.mjs     the task board: read, propose, and (with BOARD_WRITE=1) record
 │   └── kb.mjs        loads kb/knowledge.json once per process
 ├── kb/knowledge.json generated from ../content-inventory.json
 ├── scripts/build-kb.mjs    the generator (run it after editing the inventory)

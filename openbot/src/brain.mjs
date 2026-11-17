@@ -7,11 +7,15 @@
  * intent, a tool plan and a composer over tool results — and let the model choose the plan and
  * the wording while `tools.mjs` stays the only data path.
  */
+import { readFileSync } from 'node:fs';
 import { callTool } from './tools.mjs';
 import { kb, handoff, venue as findVenue } from './kb.mjs';
 
 const has = (text, re) => re.test(text);
 const HEBREW = /[\u0590-\u05FF]/;
+/** A board task id such as b5, d3, s1, p4 — the only ids the board answers accept. */
+const TASK_ID = /\b([bdsp]\d{1,2})\b/i;
+const UPDATE_VERB = /mark|tick|complete|finish|close|done|update|set|סמן|סיימתי|בוצע|עדכן|השלם|תסמן/i;
 
 const VENUE_ALIASES = [
   ['forum', /kanbar|forum|קנבר|פורום/],
@@ -25,6 +29,7 @@ const VENUE_ALIASES = [
 const INTENT_PATTERNS = [
   ['pricing', /price|pricing|cost|budget|how much|fee|rate|מחיר|עלות|תקציב|כמה עולה/i],
   ['availability', /availab|book(ing)?|hold a date|reserv|open date|פנוי|זמינות|להזמין|תפוס/i],
+  ['board', /task|tasks|checklist|to-?do|board|progress|deadline|gate|milestone|what.s (left|next|open)|משימ|צ.קליסט|לוח|דדליין|התקדמות|שער ההגשה|מה נשאר|מה הבא|יעד/i],
   ['conference', /conference|meeting|summit|offsite|off-site|daytime|plenary|film(ing)?|כנס|ישיבה|יום עיון|צילום/i],
   ['wedding', /wedding|ceremony|bride|חתונה|טקס/i],
   ['holiday', /holiday|glow|christmas|new year|december|חגים|חג\b|דצמבר/i],
@@ -42,6 +47,8 @@ function detectIntent(text, venueId = null) {
   if (venueId && /capacit|seat|sq|size|stand|fit|how many|big|קיבולת|מקומות|גודל|מתאים/i.test(text)) return 'venue_detail';
   // A request for pictures is a media request even when it names an event programme.
   if (/photo|image|picture|video|reel|תמונה|וידאו|סרטון/i.test(text)) return 'media';
+  // "mark b2 as done" names a board task: that is a board turn, not a venue turn.
+  if (TASK_ID.test(text) && (UPDATE_VERB.test(text) || /status|state|סטטוס|מצב/i.test(text))) return 'board';
   for (const [intent, re] of INTENT_PATTERNS) if (has(text, re)) return intent;
   return 'overview';
 }
@@ -73,6 +80,20 @@ function extractVenueId(text) {
 
 const fmt = (n) => (typeof n === 'number' ? n.toLocaleString('en-US') : n);
 
+function boardLink() {
+  const source = kbBoardSource();
+  return source ?? 'board/board.json';
+}
+
+function kbBoardSource() {
+  try {
+    const raw = JSON.parse(readFileSync(new URL('../../board/board.json', import.meta.url), 'utf8'));
+    return raw.source?.driveLink ?? null;
+  } catch {
+    return null;
+  }
+}
+
 function bullets(lines) {
   return lines.filter(Boolean).map((l) => `• ${l}`).join('\n');
 }
@@ -93,6 +114,15 @@ function rowFor(match) {
  * @param {{text: string, state?: object}} turn
  * @returns {{intent: string, language: 'en'|'he', stages: string[], calls: Array<{name: string, args: object, result: any}>, answer: string, citations: Array<{title: string, url: string}>, brief?: object, handoff: string, state: object}}
  */
+/** Snapshot used by the UI's board card; never throws, so a missing board cannot break a turn. */
+function runBoardSnapshot() {
+  try {
+    return callTool('board_status', { limit: 3 });
+  } catch {
+    return null;
+  }
+}
+
 export function runTurn({ text = '', state = {} } = {}) {
   const clean = String(text).trim();
   const language = HEBREW.test(clean) ? 'he' : 'en';
@@ -133,7 +163,89 @@ export function runTurn({ text = '', state = {} } = {}) {
     ].filter(Boolean).join('\n\n');
   };
 
-  if (intent === 'pricing') {
+  if (intent === 'board') {
+    stages.push('capacity_check');
+    const taskMatch = TASK_ID.exec(clean);
+    const wantsUpdate = Boolean(taskMatch) && UPDATE_VERB.test(clean);
+    const wantsGate = /gate|שער/i.test(clean);
+
+    if (wantsUpdate) {
+      const wanted = taskMatch[1].toLowerCase();
+      const wantsOpen = /reopen|not done|undo|פתח|בטל/i.test(clean);
+      const status = wanted === '' ? null : wantsOpen ? 'open' : 'done';
+      const result = run('board_update_task', { taskId: wanted, done: !wantsOpen, status, by: 'concierge' });
+      stages.push('human_handoff');
+      if (result.error) {
+        answer = (language === 'he' ? 'לא מצאתי משימה כזו בלוח. ' : "I couldn't find that task on the board. ") +
+          (language === 'he' ? 'המשימות הזמינות: ' : 'Valid ids: ') + 'b1–b9, d1–d8, s1–s6, p1–p5.';
+      } else if (result.changed) {
+        answer = (language === 'he'
+          ? `עודכן: ${result.task.id} — ${result.task.text} → ${result.to}. השינוי נרשם ב-board/activity.jsonl.`
+          : `Recorded: ${result.task.id} — ${result.task.text} is now ${result.to}. The change is appended to board/activity.jsonl.`);
+      } else {
+        const t = result.task ?? { id: wanted, text: '', status: 'open' };
+        answer = language === 'he'
+          ? [`הצעה בלבד (מצב כתיבה כבוי): לסמן ${t.id} כ"${result.to}".`, 'הפעלת הכתיבה דורשת אישור — BOARD_WRITE=1 בשירות, או אישור בתוך OpenBot.', `מצב נוכחי: ${t.status}.`].join('\n\n')
+          : [`Proposal only — write mode is off: mark ${t.id} as “${result.to}”.`, 'Approving it means setting BOARD_WRITE=1 on the service, or approving the tool call inside OpenBot.', `Current state: ${t.status}.`].join('\n\n');
+      }
+      citations.push({ title: 'Agent Games 2026 board', url: boardLink() }, { title: 'Board activity log', url: 'board/activity.jsonl' });
+    } else if (taskMatch) {
+      const wanted = taskMatch[1].toLowerCase();
+      const list = run('board_tasks', { limit: 50 });
+      const task = list.tasks.find((t) => t.id === wanted);
+      stages.push('curatorial_constraints', 'brief');
+      if (!task) {
+        answer = (language === 'he' ? 'לא מצאתי את המשימה ' : 'No task with the id ') + wanted + (language === 'he' ? ' בלוח.' : ' on the board.');
+      } else {
+        answer = [
+          `${task.id} · ${task.phaseTitle} · ${task.status}${task.critical ? ' · critical' : ''}`,
+          task.text,
+          task.description,
+          bullets([
+            `Tag: ${task.tag || '—'}`,
+            `Note: ${task.note || '—'}`,
+            task.updatedAt ? `Last change: ${task.updatedAt} by ${task.updatedBy}` : 'No changes recorded yet',
+          ]),
+        ].filter(Boolean).join('\n\n');
+      }
+      citations.push({ title: 'Agent Games 2026 board', url: boardLink() });
+    } else if (wantsGate) {
+      const gate = run('board_gate', {});
+      stages.push('curatorial_constraints', 'brief');
+      answer = [
+        language === 'he' ? `שער ההגשה: ${gate.passed}/${gate.total} תנאים מאומתים.` : `Submission gate: ${gate.passed}/${gate.total} conditions verified.`,
+        bullets(gate.items.map((g) => `${g.passed ? '✓' : '✗'} ${g.title}`)),
+        language === 'he' ? 'כל שישה הם חובה מוחלטת לפני ההגשה.' : 'All six are mandatory before submitting.',
+      ].join('\n\n');
+      citations.push({ title: 'Agent Games 2026 board', url: boardLink() });
+    } else {
+      const status = run('board_status', { limit: 5 });
+      stages.push('curatorial_constraints', 'gallery_match', 'brief');
+      const cd = status.countdown;
+      if (language === 'he') {
+        answer = [
+          `${status.event} — ${status.overall.done}/${status.overall.total} משימות הושלמו (${status.overall.percent}%). קריטי: ${status.critical.done}/${status.critical.total}.`,
+          bullets([
+            `שער ההגשה: ${status.gate.passed}/${status.gate.total}`,
+            `נותרו ${cd.hastaStart} עד פתיחת חלון 72 השעות, ${cd.hastaDeadline} עד הדדליין`,
+            ...status.nextActions.slice(0, 4).map((t) => `${t.id}${t.critical ? ' (קריטי)' : ''} — ${t.text}`),
+          ]),
+          status.writesEnabled ? 'מצב כתיבה פעיל — אפשר לסמן משימות דרך הבוט.' : 'מצב קריאה בלבד: סימון משימות מוחזר כהצעה לאישור.',
+        ].join('\n\n');
+      } else {
+        answer = [
+          `${status.event} — ${status.overall.done}/${status.overall.total} tasks done (${status.overall.percent}%). Critical path: ${status.critical.done}/${status.critical.total}.`,
+          bullets([
+            `Submission gate: ${status.gate.passed}/${status.gate.total}`,
+            `${cd.hastaStart} to the 72-hour window, ${cd.hastaDeadline} to the deadline`,
+            ...status.nextActions.slice(0, 4).map((t) => `${t.id}${t.critical ? ' (critical)' : ''} — ${t.text}`),
+          ]),
+          status.writesEnabled ? 'Write mode is on: ask me to mark a task and I will record it.' : 'Read-only mode: marking a task returns a proposal that needs approval.',
+        ].join('\n\n');
+      }
+      citations.push({ title: 'Agent Games 2026 board', url: boardLink() }, { title: 'Exploratorium rentals (the board’s chosen venue)', url: kb().venues[0].url });
+    }
+  } else if (intent === 'pricing') {
     run('contact_paths', {});
     run('match_venue', { guests, format });
     answer = guardrail(
@@ -280,6 +392,7 @@ export function runTurn({ text = '', state = {} } = {}) {
     answer: answer.replace(/\n{3,}/g, '\n\n').trim(),
     citations: deduped,
     ...(brief ? { brief } : {}),
+    ...(intent === 'board' ? { board: { summary: runBoardSnapshot() } } : {}),
     handoff: handoff(),
     state: { guests, format, intent, lastVenue: calls.find((c) => c.name === 'match_venue')?.result?.shortlist?.[0]?.venueId ?? state.lastVenue ?? null },
   };

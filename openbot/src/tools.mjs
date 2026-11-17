@@ -7,6 +7,7 @@
  * this small is deliberate: no shell, no browser, no network, read-only.
  */
 import { kb, normaliseFormat, FORMATS, venue as findVenue, handoff } from './kb.mjs';
+import { summary as boardSummary, listTasks, nextTasks, updateTask, activity, setGate, countdown, board } from './board.mjs';
 
 const GUEST_BANDS = [
   { max: 45, note: 'lounge / small group' },
@@ -144,6 +145,45 @@ export function contactPaths() {
   };
 }
 
+/** The project board, as one status object: counts, gate, countdown, next critical work. */
+export function boardStatus({ limit = 4 } = {}) {
+  const s = boardSummary();
+  return {
+    event: s.event.name,
+    track: s.event.track,
+    selectedVenue: s.selectedVenue,
+    overall: s.overall,
+    critical: s.critical,
+    phases: s.phases,
+    gate: s.gate,
+    countdown: countdown(),
+    nextActions: nextTasks({ limit }).tasks,
+    writesEnabled: s.writesEnabled,
+    boardFile: 'board/board.json',
+    sourceFile: 'board/source/agent-games-timeline.html',
+    sourceLink: board().source.driveLink,
+  };
+}
+
+/** Board queries a person actually asks for. */
+export function boardTasks({ phase = null, status = null, criticalOnly = false, tag = null, limit = 8 } = {}) {
+  return listTasks({ phase, status, criticalOnly, tag, limit: Math.min(Number(limit) || 8, 50) });
+}
+
+/** Moves one task. Writes only when BOARD_WRITE=1; otherwise returns a proposal. */
+export function boardUpdate({ taskId, status = null, done = null, note = null, by = 'concierge' } = {}) {
+  return updateTask({ taskId, status, done, note, by });
+}
+
+export function boardGate({ index = null, passed = null, by = 'concierge' } = {}) {
+  if (index === null) return boardSummary().gate;
+  return setGate({ index, passed: passed ?? true, by });
+}
+
+export function boardActivity({ limit = 10 } = {}) {
+  return activity({ limit: Math.min(Number(limit) || 10, 50) });
+}
+
 /** Declarations passed to clients (AG-UI `tools`) and shown in OpenBot's Bot page. */
 export const TOOL_DEFINITIONS = [
   {
@@ -189,6 +229,50 @@ export const TOOL_DEFINITIONS = [
     description: 'Return the official phone number, email, inquiry form and source documents.',
     parameters: { type: 'object', properties: {} },
   },
+  {
+    name: 'board_status',
+    description: 'Read the project task board: completion by phase, critical open work, the six submission-gate conditions, the hackathon countdown and the next actions.',
+    parameters: { type: 'object', properties: { limit: { type: 'integer', minimum: 1, maximum: 20 } } },
+  },
+  {
+    name: 'board_tasks',
+    description: 'List board tasks, filtered by phase, status, tag or critical flag.',
+    parameters: {
+      type: 'object',
+      properties: {
+        phase: { type: 'string', enum: ['before', 'during', 'submit', 'post'] },
+        status: { type: 'string', enum: ['open', 'in_progress', 'done', 'blocked'] },
+        criticalOnly: { type: 'boolean' },
+        tag: { type: 'string' },
+        limit: { type: 'integer', minimum: 1, maximum: 50 },
+      },
+    },
+  },
+  {
+    name: 'board_update_task',
+    description: 'Change one task\'s status. Writes only when the service runs with BOARD_WRITE=1; otherwise returns a proposal that needs approval, which OpenBot can enforce.',
+    parameters: {
+      type: 'object',
+      properties: {
+        taskId: { type: 'string', description: 'Task id from board_tasks, e.g. b5, d3, s3' },
+        status: { type: 'string', enum: ['open', 'in_progress', 'done', 'blocked'] },
+        done: { type: 'boolean' },
+        note: { type: 'string' },
+        by: { type: 'string' },
+      },
+      required: ['taskId'],
+    },
+  },
+  {
+    name: 'board_gate',
+    description: 'Read or tick the six submission-gate conditions. Ticking needs BOARD_WRITE=1; otherwise a proposal is returned.',
+    parameters: { type: 'object', properties: { index: { type: 'integer', minimum: 0, maximum: 5 }, passed: { type: 'boolean' }, by: { type: 'string' } } },
+  },
+  {
+    name: 'board_activity',
+    description: 'Recent board changes, newest first, from board/activity.jsonl.',
+    parameters: { type: 'object', properties: { limit: { type: 'integer', minimum: 1, maximum: 50 } } },
+  },
 ];
 
 const EXECUTORS = {
@@ -198,6 +282,11 @@ const EXECUTORS = {
   search_media: searchMedia,
   draft_brief: draftBrief,
   contact_paths: contactPaths,
+  board_status: boardStatus,
+  board_tasks: boardTasks,
+  board_update_task: boardUpdate,
+  board_gate: boardGate,
+  board_activity: boardActivity,
 };
 
 /** Runs a declared tool. Unknown names are refused rather than guessed at. */

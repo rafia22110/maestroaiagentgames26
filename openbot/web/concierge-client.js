@@ -14,6 +14,7 @@
  *     onText:  (full, delta) => (answerEl.textContent = full),
  *     onBrief: (brief) => renderBrief(brief),
  *     onCitations: (citations, handoff) => renderSources(citations, handoff),
+ *     onBoard: (board) => renderBoard(board.summary),
  *   });
  *
  * No dependencies. The endpoint must allow this origin (ALLOWED_ORIGIN on the bot server).
@@ -79,6 +80,8 @@ export function createConcierge({
             handlers.onStage?.(event.value.stage, event.value.index, STAGE_ORDER.length);
           } else if (event.name === 'artifact.brief') {
             handlers.onBrief?.(event.value);
+          } else if (event.name === 'artifact.board') {
+            handlers.onBoard?.(event.value);
           } else if (event.name === 'artifact.citations') {
             handlers.onCitations?.(event.value.citations, event.value.handoff, event.value);
           }

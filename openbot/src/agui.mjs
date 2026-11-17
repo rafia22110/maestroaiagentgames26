@@ -91,6 +91,7 @@ export async function* streamRun(input = {}, options = {}) {
   yield { type: 'TEXT_MESSAGE_END', messageId };
 
   if (turn.brief) yield { type: 'CUSTOM', name: 'artifact.brief', value: turn.brief };
+  if (turn.board) yield { type: 'CUSTOM', name: 'artifact.board', value: turn.board };
   yield { type: 'CUSTOM', name: 'artifact.citations', value: { citations: turn.citations, handoff: turn.handoff, intent: turn.intent, language: turn.language } };
 
   const nextState = { ...priorState, ...turn.state, lastIntent: turn.intent, language: turn.language };
@@ -107,6 +108,7 @@ export async function* streamRun(input = {}, options = {}) {
       language: turn.language,
       citations: turn.citations,
       ...(turn.brief ? { brief: turn.brief } : {}),
+      ...(turn.board ? { board: turn.board } : {}),
       handoff: turn.handoff,
     },
   };
@@ -137,7 +139,7 @@ export function agentInfo() {
   return {
     id: AGENT_ID,
     name: 'Pier 15 Concierge',
-    description: 'Maestro AI concierge for Exploratorium event rentals, grounded in the 2026 rentals pages, capacities and map.',
+    description: 'Maestro AI concierge for Exploratorium event rentals, grounded in the 2026 rentals pages, capacities and map, and wired to the project task board.',
     protocolVersion: PROTOCOL_VERSION,
     tools: TOOL_DEFINITIONS,
     stages: STAGE_ORDER,

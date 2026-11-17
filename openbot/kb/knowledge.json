@@ -1,0 +1,621 @@
+{
+  "generatedFrom": "content-inventory.json",
+  "venueBrand": "Exploratorium, Pier 15, Embarcadero, San Francisco",
+  "contact": {
+    "phone": "415.528.4500",
+    "email": "events@exploratorium.edu",
+    "form": "https://www.exploratorium.edu/rentals/form"
+  },
+  "hero": {
+    "title": "Private & Corporate Event Rentals",
+    "tagline": "Have your next event in our spectacular setting on the Bay.",
+    "intro": "Our LEED platinum sustainably designed facility—located in the vibrant heart of the historic Embarcadero at Pier 15—is an unforgettable venue for everything from intimate gatherings to large events. With spectacular views of both city and Bay—plus access to our lively landscape of hundreds of exhibits—the Exploratorium’s waterfront home offers an exciting, imaginative setting for just about anything you can dream up.",
+    "reel": {
+      "title": "Exploratorium Event Rentals",
+      "url": "https://www.youtube.com/watch?v=qVxsUfNnzNw",
+      "poster": "https://i.ytimg.com/vi/qVxsUfNnzNw/maxresdefault.jpg",
+      "duration": "00:56",
+      "uploaded": "2019-05-03",
+      "channel": "Exploratorium",
+      "transcript_note": "Music-led reel; automatic transcript contains only music/no-word tokens."
+    }
+  },
+  "venues": [
+    {
+      "id": "full",
+      "name": "Full Facility & Gallery Bundles",
+      "url": "https://www.exploratorium.edu/rentals/full-facility-gallery-bundles",
+      "sqftLabel": "100,000",
+      "sqft": 100000,
+      "seatedLabel": "1,100",
+      "standingLabel": "3,500",
+      "capacity": {
+        "seated": 1100,
+        "standing": 3500
+      },
+      "description": "Rent the entire waterfront facility or combine galleries for a progressive celebration. The bundles range from 13,000 to 49,000 sq ft.",
+      "categories": [
+        "all",
+        "large",
+        "social"
+      ],
+      "mapZone": "full",
+      "image": "pier_night",
+      "documents": [
+        "rentals-map",
+        "corporate-brochure"
+      ]
+    },
+    {
+      "id": "observatory",
+      "name": "Fisher Bay Observatory Gallery & Terrace",
+      "url": "https://www.exploratorium.edu/rentals/bay-observatory-gallery-terrace",
+      "sqftLabel": "3,500 indoor / 2,500 outdoor",
+      "sqft": 3500,
+      "seatedLabel": "150 indoor / 100 outdoor",
+      "standingLabel": "200 indoor / 125 outdoor",
+      "capacity": {
+        "seated": 150,
+        "standing": 200,
+        "outdoor": {
+          "sqft": 2500,
+          "seated": 100,
+          "standing": 125
+        }
+      },
+      "description": "A glass-and-steel waterfront gallery with Bay views and an adjoining terrace, suited to dinners, receptions, weddings and daytime meetings.",
+      "categories": [
+        "all",
+        "waterfront",
+        "conference",
+        "social"
+      ],
+      "mapZone": "observatory",
+      "image": "wedding_2",
+      "documents": [
+        "rentals-map",
+        "wedding-brochure"
+      ]
+    },
+    {
+      "id": "east",
+      "name": "Moore East Gallery",
+      "url": "https://www.exploratorium.edu/rentals/east-gallery",
+      "sqftLabel": "7,000",
+      "sqft": 7000,
+      "seatedLabel": "90–200",
+      "standingLabel": "450",
+      "capacity": {
+        "seated": 200,
+        "standing": 450
+      },
+      "description": "Large windows overlooking the Bay frame life-science exhibits and an intimate setting for seated dinners, dancing and receptions.",
+      "categories": [
+        "all",
+        "waterfront",
+        "social"
+      ],
+      "mapZone": "east",
+      "image": "east_1",
+      "documents": [
+        "rentals-map"
+      ]
+    },
+    {
+      "id": "central",
+      "name": "Bechtel Central & Outdoor Gallery",
+      "url": "https://www.exploratorium.edu/rentals/central-gallery",
+      "sqftLabel": "20,000 + 15,000 outdoor",
+      "sqft": 20000,
+      "seatedLabel": "500 / 300 outdoor",
+      "standingLabel": "1,200 / 500 outdoor",
+      "capacity": {
+        "seated": 500,
+        "standing": 1200,
+        "outdoor": {
+          "sqft": 15000,
+          "seated": 300,
+          "standing": 500
+        }
+      },
+      "description": "The largest single gallery: physics and perception installations, strolling receptions, dining and dancing, plus open-air views and the Fog Bridge.",
+      "categories": [
+        "all",
+        "large",
+        "conference"
+      ],
+      "mapZone": "central",
+      "image": "central_event",
+      "documents": [
+        "rentals-map",
+        "corporate-brochure"
+      ]
+    },
+    {
+      "id": "west",
+      "name": "Osher West Gallery",
+      "url": "https://www.exploratorium.edu/rentals/west-gallery",
+      "sqftLabel": "16,000",
+      "sqft": 16000,
+      "seatedLabel": "70–200",
+      "standingLabel": "500",
+      "capacity": {
+        "seated": 200,
+        "standing": 500
+      },
+      "description": "Psychology, art, the iconic Tactile Dome and Black Box; adjacent to the Forum and strong for launches, alumni gatherings and evening receptions.",
+      "categories": [
+        "all",
+        "large",
+        "social"
+      ],
+      "mapZone": "west",
+      "image": "west_2",
+      "documents": [
+        "rentals-map"
+      ]
+    },
+    {
+      "id": "forum",
+      "name": "Kanbar Forum",
+      "url": "https://www.exploratorium.edu/rentals/kanbar-forum",
+      "sqftLabel": "3,600",
+      "sqft": 3600,
+      "seatedLabel": "160–200",
+      "standingLabel": "250",
+      "capacity": {
+        "seated": 200,
+        "standing": 250
+      },
+      "description": "Meyer Constellation sound, state-of-the-art projection, theater or cabaret seating; built for seminars, lectures, screenings and media events.",
+      "categories": [
+        "all",
+        "conference"
+      ],
+      "mapZone": "forum",
+      "image": "forum_1",
+      "documents": [
+        "rentals-map"
+      ]
+    }
+  ],
+  "bundles": [
+    {
+      "sqft": 49000,
+      "seated": 1000,
+      "standing": 3300
+    },
+    {
+      "sqft": 33000,
+      "seated": 730,
+      "standing": 1900
+    },
+    {
+      "sqft": 43000,
+      "seated": 750,
+      "standing": 2750
+    },
+    {
+      "sqft": 27000,
+      "seated": 550,
+      "standing": 1650
+    },
+    {
+      "sqft": 36000,
+      "seated": 650,
+      "standing": 1800
+    },
+    {
+      "sqft": 13000,
+      "seated": 380,
+      "standing": 700
+    },
+    {
+      "sqft": 19600,
+      "seated": 350,
+      "standing": 850
+    }
+  ],
+  "bundleSource": "https://www.exploratorium.edu/rentals/full-facility-gallery-bundles",
+  "eventTypes": [
+    {
+      "id": "holiday",
+      "title": "Holiday Parties",
+      "tag": "Glow / December",
+      "description": "Five gallery spaces can be bundled, with Glow luminous artworks, LED packages, monitor branding and outdoor heat lamps.",
+      "facts": [
+        "Up to 3,500 guests",
+        "5 gallery spaces",
+        "In-house add-ons"
+      ],
+      "categories": [
+        "celebrations"
+      ],
+      "url": "https://www.exploratorium.edu/rentals/holiday-parties",
+      "image": "holiday_moon"
+    },
+    {
+      "id": "daytime",
+      "title": "Daytime Meetings, Conference Events & Filmings",
+      "tag": "Conference / Meetings",
+      "description": "Fisher Bay Observatory and Kanbar Forum support daytime business meetings, seminars and team building; larger gallery spaces are available on closed Mondays and Tuesdays.",
+      "facts": [
+        "Museum admission during open hours",
+        "Kanbar Forum + Observatory",
+        "Central Gallery: 500 theatre / 300 rounds"
+      ],
+      "categories": [
+        "daytime",
+        "conference"
+      ],
+      "url": "https://www.exploratorium.edu/rentals/daytime-meetings",
+      "image": "daytime_marquee"
+    },
+    {
+      "id": "prom",
+      "title": "Proms and School Events",
+      "tag": "Schools",
+      "description": "Proms, formals, homecomings and grad nights with interactive exhibits, explainer staff, an on-site coordinator and a 15% nonprofit discount.",
+      "facts": [
+        "15% nonprofit discount",
+        "Explainer staff",
+        "Photo-op galleries"
+      ],
+      "categories": [
+        "school"
+      ],
+      "url": "https://www.exploratorium.edu/rentals/proms-school-events",
+      "image": "prom_2"
+    },
+    {
+      "id": "weddings",
+      "title": "Weddings",
+      "tag": "Social",
+      "description": "The East + Fisher Bay Observatory bundle pairs Bay views, an outdoor terrace and life-sciences exhibits for ceremonies and receptions.",
+      "facts": [
+        "East + Observatory bundle",
+        "Terrace ceremonies",
+        "2026 wedding brochure"
+      ],
+      "categories": [
+        "social",
+        "celebrations"
+      ],
+      "url": "https://www.exploratorium.edu/rentals/weddings",
+      "image": "wedding_shadow_1"
+    },
+    {
+      "id": "afterdark",
+      "title": "After Dark Thursday Rental Options",
+      "tag": "18+ / Thursday",
+      "description": "Private and semi-private Thursday-night rentals include guest admission to After Dark, 6–10 PM, with 650+ interactive exhibits.",
+      "facts": [
+        "Thursday 6–10 PM",
+        "Lounges up to 45",
+        "Private galleries up to 200"
+      ],
+      "categories": [
+        "afterdark",
+        "celebrations"
+      ],
+      "url": "https://www.exploratorium.edu/rentals/after-dark",
+      "image": "afterdark_3"
+    }
+  ],
+  "documents": [
+    {
+      "id": "rentals-map",
+      "title": "2026 Rentals Map — Pier 15",
+      "url": "https://www.exploratorium.edu/sites/default/files/2026-06/2026_RentalsMap_Pier15_w_0.pdf",
+      "kind": "pdf",
+      "scope": "floor plan and gallery zones"
+    },
+    {
+      "id": "corporate-brochure",
+      "title": "Corporate Brochure 2026",
+      "url": "https://www.exploratorium.edu/sites/default/files/2026-10/_Brochure_Map_Exploratorium_2026.pdf",
+      "kind": "pdf",
+      "scope": "facility story and capacities"
+    },
+    {
+      "id": "wedding-brochure",
+      "title": "Wedding Packages 2026",
+      "url": "https://www.exploratorium.edu/sites/default/files/2026-09/Wedding_Packages_Exploratorium_2026_v2.pdf",
+      "kind": "pdf",
+      "scope": "wedding packages"
+    },
+    {
+      "id": "planning",
+      "title": "Event Planning Resources",
+      "url": "https://www.exploratorium.edu/rentals/planning",
+      "kind": "page",
+      "scope": "planning checklist"
+    },
+    {
+      "id": "faq",
+      "title": "Rentals FAQ",
+      "url": "https://www.exploratorium.edu/rentals/faq",
+      "kind": "page",
+      "scope": "rules and policies"
+    },
+    {
+      "id": "inquiry-form",
+      "title": "Rental Inquiry Form",
+      "url": "https://www.exploratorium.edu/rentals/form",
+      "kind": "form",
+      "scope": "official availability, pricing and proposals"
+    }
+  ],
+  "media": [
+    {
+      "id": "media-01",
+      "title": "Moon over the Central Gallery",
+      "category": "parties",
+      "caption": "Holiday Parties · original-site feature image",
+      "image": "holiday_moon",
+      "source": "https://www.exploratorium.edu/rentals/holiday-parties"
+    },
+    {
+      "id": "media-02",
+      "title": "Glow holiday marquee",
+      "category": "parties",
+      "caption": "Original rentals marquee imagery",
+      "image": "holiday_marquee",
+      "source": "https://www.exploratorium.edu/rentals/holiday-parties"
+    },
+    {
+      "id": "media-03",
+      "title": "Gallery celebration",
+      "category": "parties",
+      "caption": "Callan / Exploratorium event photography",
+      "image": "holiday_callan",
+      "source": "https://www.exploratorium.edu/rentals/full-facility-gallery-bundles"
+    },
+    {
+      "id": "media-04",
+      "title": "Kanbar Forum theater",
+      "category": "forum",
+      "caption": "Kanbar Forum image gallery",
+      "image": "forum_1",
+      "source": "https://www.exploratorium.edu/rentals/kanbar-forum"
+    },
+    {
+      "id": "media-05",
+      "title": "Kanbar Forum seating",
+      "category": "forum",
+      "caption": "Kanbar Forum image gallery",
+      "image": "forum_2",
+      "source": "https://www.exploratorium.edu/rentals/kanbar-forum"
+    },
+    {
+      "id": "media-06",
+      "title": "Kanbar Forum showcase",
+      "category": "forum",
+      "caption": "Kanbar Forum image gallery",
+      "image": "forum_3",
+      "source": "https://www.exploratorium.edu/rentals/kanbar-forum"
+    },
+    {
+      "id": "media-07",
+      "title": "Observatory terrace dinner",
+      "category": "weddings",
+      "caption": "Weddings image gallery",
+      "image": "wedding_1",
+      "source": "https://www.exploratorium.edu/rentals/weddings"
+    },
+    {
+      "id": "media-08",
+      "title": "Wedding portrait",
+      "category": "weddings",
+      "caption": "Weddings image gallery",
+      "image": "wedding_2",
+      "source": "https://www.exploratorium.edu/rentals/weddings"
+    },
+    {
+      "id": "media-09",
+      "title": "Indoor Observatory couple",
+      "category": "weddings",
+      "caption": "Weddings image gallery",
+      "image": "wedding_3",
+      "source": "https://www.exploratorium.edu/rentals/weddings"
+    },
+    {
+      "id": "media-10",
+      "title": "Pier 15 at night",
+      "category": "venues",
+      "caption": "Exploratorium rental atmosphere",
+      "image": "pier_night",
+      "source": "https://pinterest.com/exploratorium/rent-the-exploratorium"
+    },
+    {
+      "id": "media-11",
+      "title": "Bay Bridge reception",
+      "category": "venues",
+      "caption": "Exploratorium rental atmosphere",
+      "image": "pier_event",
+      "source": "https://pinterest.com/exploratorium/rent-the-exploratorium"
+    },
+    {
+      "id": "media-12",
+      "title": "Full-facility event",
+      "category": "venues",
+      "caption": "Full Facility & Gallery Bundles",
+      "image": "pier_callan",
+      "source": "https://www.exploratorium.edu/rentals/full-facility-gallery-bundles"
+    },
+    {
+      "id": "media-13",
+      "title": "Central Gallery installation",
+      "category": "venues",
+      "caption": "Bechtel Central & Outdoor Gallery",
+      "image": "central_event",
+      "source": "https://www.exploratorium.edu/rentals/central-gallery"
+    },
+    {
+      "id": "media-14",
+      "title": "After Dark energy",
+      "category": "afterdark",
+      "caption": "After Dark visual reference",
+      "image": "afterdark_1",
+      "source": "https://www.exploratorium.edu/rentals/after-dark"
+    },
+    {
+      "id": "media-15",
+      "title": "After Dark fog",
+      "category": "afterdark",
+      "caption": "After Dark visual reference",
+      "image": "afterdark_2",
+      "source": "https://www.exploratorium.edu/rentals/after-dark"
+    },
+    {
+      "id": "media-16",
+      "title": "After Dark light wall",
+      "category": "afterdark",
+      "caption": "Original-site After Dark card image",
+      "image": "afterdark_3",
+      "source": "https://www.exploratorium.edu/rentals/after-dark"
+    },
+    {
+      "id": "media-17",
+      "title": "Daytime meeting marquee",
+      "category": "forum",
+      "caption": "Daytime Meetings, Conference Events & Filmings",
+      "image": "daytime_marquee",
+      "source": "https://www.exploratorium.edu/rentals/daytime-meetings"
+    },
+    {
+      "id": "media-18",
+      "title": "Conference card",
+      "category": "forum",
+      "caption": "Original Special Events card image",
+      "image": "daytime_card",
+      "source": "https://www.exploratorium.edu/rentals"
+    },
+    {
+      "id": "media-19",
+      "title": "West Gallery reception",
+      "category": "venues",
+      "caption": "Osher West Gallery image gallery",
+      "image": "west_1",
+      "source": "https://www.exploratorium.edu/rentals/west-gallery"
+    },
+    {
+      "id": "media-20",
+      "title": "West Gallery seated dinner",
+      "category": "venues",
+      "caption": "Osher West Gallery image gallery",
+      "image": "west_2",
+      "source": "https://www.exploratorium.edu/rentals/west-gallery"
+    },
+    {
+      "id": "media-21",
+      "title": "West Gallery light",
+      "category": "venues",
+      "caption": "Osher West Gallery image gallery",
+      "image": "west_3",
+      "source": "https://www.exploratorium.edu/rentals/west-gallery"
+    },
+    {
+      "id": "media-22",
+      "title": "East Gallery Bay windows",
+      "category": "venues",
+      "caption": "Moore East Gallery image gallery",
+      "image": "east_1",
+      "source": "https://www.exploratorium.edu/rentals/east-gallery"
+    },
+    {
+      "id": "media-23",
+      "title": "East Gallery reception",
+      "category": "venues",
+      "caption": "Moore East Gallery image gallery",
+      "image": "east_2",
+      "source": "https://www.exploratorium.edu/rentals/east-gallery"
+    },
+    {
+      "id": "media-24",
+      "title": "East Gallery exhibits",
+      "category": "venues",
+      "caption": "Moore East Gallery image gallery",
+      "image": "east_3",
+      "source": "https://www.exploratorium.edu/rentals/east-gallery"
+    },
+    {
+      "id": "media-25",
+      "title": "Prom marquee",
+      "category": "school",
+      "caption": "Proms and School Events",
+      "image": "prom_1",
+      "source": "https://www.exploratorium.edu/rentals/proms-school-events"
+    },
+    {
+      "id": "media-26",
+      "title": "Students dancing",
+      "category": "school",
+      "caption": "Proms and School Events image gallery",
+      "image": "prom_2",
+      "source": "https://www.exploratorium.edu/rentals/proms-school-events"
+    },
+    {
+      "id": "media-27",
+      "title": "Prom photo moment",
+      "category": "school",
+      "caption": "Proms and School Events image gallery",
+      "image": "prom_3",
+      "source": "https://www.exploratorium.edu/rentals/proms-school-events"
+    },
+    {
+      "id": "media-28",
+      "title": "Wedding colored shadows",
+      "category": "weddings",
+      "caption": "Weddings image gallery",
+      "image": "wedding_shadow_1",
+      "source": "https://www.exploratorium.edu/rentals/weddings"
+    },
+    {
+      "id": "media-29",
+      "title": "Colored Shadows diagram",
+      "category": "venues",
+      "caption": "Original exhibit reference",
+      "image": "wedding_shadow_2",
+      "source": "https://www.exploratorium.edu/exhibits/colored-shadows"
+    },
+    {
+      "id": "media-30",
+      "title": "Wedding celebration",
+      "category": "weddings",
+      "caption": "Weddings image gallery",
+      "image": "wedding_shadow_3",
+      "source": "https://www.exploratorium.edu/rentals/weddings"
+    },
+    {
+      "id": "media-31",
+      "title": "Exploratorium Event Rentals reel",
+      "category": "video",
+      "caption": "Official 56-second Exploratorium reel (2019)",
+      "image": "video_poster",
+      "source": "https://www.youtube.com/watch?v=qVxsUfNnzNw"
+    }
+  ],
+  "mapLabels": [
+    "Kanbar Forum",
+    "Osher West Gallery",
+    "Bechtel Central & Outdoor Gallery",
+    "Moore East Gallery",
+    "Fisher Bay Observatory & Terrace",
+    "Gallery 5",
+    "Gallery 6",
+    "Outdoor Observatory & Terrace",
+    "Tactile Dome",
+    "Bay Bridge",
+    "Embarcadero",
+    "Pier 15",
+    "Pier 17"
+  ],
+  "guardrails": {
+    "capacityNotice": "Capacities are subject to change and must be confirmed with the Events Team.",
+    "noPricing": true,
+    "noLiveAvailability": true,
+    "handoff": "https://www.exploratorium.edu/rentals/form"
+  },
+  "rightsNote": "Exploratorium editorial text, image URLs, brand marks and PDFs remain the property of their respective owners. This prototype is a design/adaptation study; verify availability, pricing, accessibility and licensing before production."
+}

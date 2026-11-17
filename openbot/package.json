@@ -1,0 +1,15 @@
+{
+  "name": "@exploratorium/pier15-concierge",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AG-UI bot for Exploratorium Pier 15 event rentals, ready to register in CopilotKit OpenBot.",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node src/server.mjs",
+    "dev": "EXPLORATORIUM_STATIC=1 STREAM_DELAY_MS=18 node src/server.mjs",
+    "kb": "node scripts/build-kb.mjs",
+    "test": "node --test test/"
+  },
+  "license": "MIT"
+}

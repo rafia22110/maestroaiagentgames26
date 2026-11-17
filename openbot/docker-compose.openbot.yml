@@ -1,0 +1,30 @@
+# Runs the Pier 15 Concierge beside an OpenBot deployment.
+#
+#   docker compose -f openbot/docker-compose.openbot.yml up --build
+#
+# Then in OpenBot: /bots -> New Bot
+#   Name:        Pier 15 Concierge
+#   Role:        Exploratorium event rentals concierge
+#   AG-UI URL:   http://pier15-concierge:8787/agui   (or http://host.docker.internal:8787/agui
+#                when OpenBot itself runs on the host through scripts/start.sh)
+# Leave the authorization header empty unless you put this service behind a proxy that sets one.
+services:
+  pier15-concierge:
+    build: .
+    container_name: pier15-concierge
+    restart: unless-stopped
+    ports:
+      - "8787:8787"
+    environment:
+      PORT: 8787
+      HOST: 0.0.0.0
+      ALLOWED_ORIGIN: ${ALLOWED_ORIGIN:-*}
+      STREAM_DELAY_MS: ${STREAM_DELAY_MS:-12}
+      EXPLORATORIUM_STATIC: ${EXPLORATORIUM_STATIC:-0}
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8787/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

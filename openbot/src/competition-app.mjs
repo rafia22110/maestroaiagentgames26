@@ -1,6 +1,7 @@
 import { createServer } from 'node:http';
 import { readFileSync } from 'node:fs';
 import { createConciergeServer } from './server.mjs';
+import { prepareBoardHtml } from './board-html.mjs';
 
 export const ORIGINAL_BOARD = new URL('../../board/source/agent-games-timeline.html', import.meta.url);
 
@@ -15,7 +16,7 @@ export function createCompetitionServer() {
         return res.end();
       }
       if (read && ['/board', '/board/', '/agent-games-timeline.html'].includes(pathname)) {
-        const html = readFileSync(ORIGINAL_BOARD);
+        const html = Buffer.from(prepareBoardHtml(readFileSync(ORIGINAL_BOARD, 'utf8')), 'utf8');
         res.writeHead(200, {
           'content-type': 'text/html; charset=utf-8',
           'content-length': html.byteLength,

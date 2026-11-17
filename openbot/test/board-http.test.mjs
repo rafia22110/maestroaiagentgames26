@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { once } from 'node:events';
 import { readFileSync } from 'node:fs';
 import { createCompetitionServer, ORIGINAL_BOARD } from '../src/competition-app.mjs';
+import { prepareBoardHtml } from '../src/board-html.mjs';
 
 test('original board HTTP integration and AG-UI transport', async t => {
   const previousWrite = process.env.BOARD_WRITE;
@@ -16,10 +17,11 @@ test('original board HTTP integration and AG-UI transport', async t => {
   const root = await fetch(base + '/', { redirect: 'manual' });
   assert.equal(root.status, 302);
   assert.equal(root.headers.get('location'), '/board');
+  const expected = prepareBoardHtml(readFileSync(ORIGINAL_BOARD, 'utf8'));
   for (const path of ['/board', '/board/', '/agent-games-timeline.html']) {
     const page = await fetch(base + path);
     assert.equal(page.status, 200);
-    assert.deepEqual(Buffer.from(await page.arrayBuffer()), readFileSync(ORIGINAL_BOARD));
+    assert.equal(await page.text(), expected);
   }
   const head = await fetch(base + '/board', { method: 'HEAD' });
   assert.equal(head.status, 200);
@@ -32,10 +34,10 @@ test('original board HTTP integration and AG-UI transport', async t => {
   const before = await (await fetch(base + '/api/board/tasks')).json();
   assert.ok(before.tasks.length > 0);
   const task = before.tasks[0];
-  const proposedStatus = task.status === 'done' ? 'open' : 'done';
-  const proposalResponse = await fetch(base + '/api/board/tasks/' + task.id, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ status: proposedStatus }) });
-  assert.equal(proposalResponse.status, 202);
-  const proposal = await proposalResponse.json();
+  const status = task.status === 'done' ? 'open' : 'done';
+  const proposed = await fetch(base + '/api/board/tasks/' + task.id, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ status }) });
+  assert.equal(proposed.status, 202);
+  const proposal = await proposed.json();
   assert.equal(proposal.proposed, true);
   assert.equal(proposal.changed, false);
   const after = await (await fetch(base + '/api/board/tasks', { headers: { connection: 'close' } })).json();

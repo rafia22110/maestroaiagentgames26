@@ -1,65 +1,93 @@
 # maestro-ai-agent-games-2026
 
-**Agent Games 2026 submission — Exploratorium (Pier 15) event-rentals concierge, with the project's
-task board and the venue evidence in one repository.**
+**Agent Games 2026 · Wedding Venues track (`tthezgqmvrrh`) · The Exploratorium, Pier 15, San Francisco.**
 
-| | |
-|---|---|
-| Track | Wedding Venues (`tthezgqmvrrh`) · Main Street Edition |
-| Venue | The Exploratorium, Pier 15, Embarcadero, San Francisco |
-| Prototype | [`index.html`](index.html) — standalone, no build step, no CDN, no API key |
-| Bot | [`openbot/`](openbot) — an AG-UI service, registrable in CopilotKit OpenBot, 11 tools, 18 tests |
-| Board | [`board/`](board) — 4 phases, 28 tasks, 6 submission-gate conditions, extracted and versioned |
-| Judges' map | [`SUBMISSION.md`](SUBMISSION.md) — each scoring criterion → the artefact that satisfies it |
+One repository, four surfaces that work together: the **Maestro AI app** that was already here, an
+**events-OS prototype** built from the venue's own rentals pages, the **concierge bot** that answers
+from the extracted venue data, and the **project task board**.
 
-```bash
-python3 build.py                                # regenerate the prototype, docs and bundle
-node board/scripts/extract-board.mjs --check    # fail if the board extraction drifted
-cd openbot && npm test && npm run dev           # bot tests, then the live service on :8787
-```
+| Surface | Entry point | What it is |
+| --- | --- | --- |
+| **Maestro AI — OKF v2.5** | [`index.html`](index.html) · [`maestro-ai-standalone.html`](maestro-ai-standalone.html) | The original submission app: ontology/knowledge-framework engine, 3-level spatial journey, stakeholder micro-survey, SVG floor plan, IF-THEN operational rules, venue-config switcher (`config/`). |
+| **Exploratorium Events OS** | [`events-os.html`](events-os.html) | Netflix-style glassmorphism events UI: 7 tabs, 30 sub-tab states, rotating rails, live mouseovers, animated wallpaper from the venue imagery, 3D glass cube with a background-free logo cutout, media wall, floor-plan hotspots, conference builder. One standalone file. |
+| **Pier 15 Concierge bot** | [`openbot/`](openbot) | An **AG-UI** service — 11 read-only tools over the extracted venue data plus the board, streamed steps, citations, approval-gated writes, 18 tests, Docker image. Registers in [CopilotKit OpenBot](https://github.com/CopilotKit/OpenBot) as a Bot with no fork. |
+| **Task board** | [`board/`](board) | The Agent Games planning board, extracted and versioned: 4 phases, 28 tasks, 6 submission-gate conditions, 6 compared venues, live `state.json`, append-only `activity.jsonl`. |
 
-**Main deliverable:** `index.html` — open it in the workspace viewer or download it. It is fully standalone: images, wallpaper, transparent cutout, styles and scripts are embedded.
+Judges: [`SUBMISSION.md`](SUBMISSION.md) maps each official scoring criterion to the artefact that
+satisfies it. Architecture notes: [`docs/OPENBOT_INTEGRATION.md`](docs/OPENBOT_INTEGRATION.md).
 
-**New Drive folder:** [Exploratorium Events UI · המשך התאמה · 2026-11-17](https://drive.google.com/drive/folders/1RdxbW61BqWv8S8Y9TeGHcNtV0gGWGBx1)  
-`צור תקיה חדשה במאגר לצורך המשך התאמה` — בוצע. התיקייה נוצרה בתוך המאגר שסיפקת.
-
-## Files
-
-- `index.html` — interactive Sakshinhiro Model A demo / Netflix-style glass events OS.
-- `events-tab-source.html` — faithful, minimal copy of only the Events / Special Events cards.
-- `SOURCE_COPY.md` — exact source text, media URLs, capacities, map labels and proposed sub-tabs.
-- `UPGRADE_PLAN.md` — IA, design system, bot contract, phased roadmap and acceptance criteria.
-- `content-inventory.json` — machine-readable extraction for continued adaptation.
-- `assets/` — 31 compressed local media stills, derived glass wallpaper, transparent logo cutout, official video poster.
-- `source/` — the received Maestro AI HTML brief, original uploaded logo, and extracted venue-map notes.
-- `build.py` — reproducible generator; `Exploratorium_Events_UI_bundle.zip` — portable archive.
-- `openbot/` — the concierge as an AG-UI bot (`POST /agui`) with tools, tests, Dockerfile and a knowledge base generated from `content-inventory.json`.
-- `docs/OPENBOT_INTEGRATION.md` — how to register the bot in CopilotKit OpenBot, policy, audit and deployment notes.
-- `board/` — the project's task board in the repository: original HTML, extracted `board.json`, live `state.json`, append-only `activity.jsonl`.
-- `docs/GIT_AND_DEPLOY.md` — repository history, GitHub publication and split deployment.
-
-## Running the bot
+## Run it
 
 ```bash
-cd openbot
-npm test          # protocol, grounding and guardrail tests
-npm run dev       # http://localhost:8787 — serves this prototype AND the AG-UI endpoint
+# 1. the apps — no build step, no CDN, no API key
+open index.html            # Maestro AI OKF app
+open events-os.html        # Exploratorium Events OS
+
+# 2. the bot + board on one origin (serves both apps too)
+cd openbot && npm run dev  # http://localhost:8787
+
+# 3. verification
+cd openbot && npm test                              # 18 tests
+node board/scripts/extract-board.mjs --check        # board.json vs its source HTML
+python3 build.py                                    # regenerate events-os.html + docs
 ```
 
-The same service reads the task board, so the bot can answer "what is left before the hackathon?"
-and record a tick-off with approval:
+`npm run dev` serves the apps at `/` and `/events-os.html`, the AG-UI endpoint at `POST /agui`, and
+the board at `/api/board` and `/board/source/agent-games-timeline.html`.
 
-```bash
-node board/scripts/extract-board.mjs            # rebuild board.json from the source HTML
-curl -s localhost:8787/api/board                # progress, gate, countdown, next actions
+## How the pieces connect
+
+```
+index.html (Maestro AI OKF)          events-os.html (Events OS)
+   └── config/*.json, js/*.js            └── build.py ← content-inventory.json
+                                                    │
+                                    openbot/  (AG-UI · 11 tools)
+                                      ├── kb/knowledge.json  ← content-inventory.json
+                                      └── board/board.json   ← board/source/*.html
+                                                    │
+                        OpenBot Bot endpoint  POST /agui  +  approval-gated board writes
 ```
 
-With the service running, the Maestro panel in `index.html` streams live answers from the bot and
-its status chip reads **● live AG-UI**. Without it (opened as a file, or offline) the panel falls
-back to the scripted demonstration, so the page is always usable.
+- The **bot** never invents venue facts: capacities, square footage, map zones and documents come
+  from `openbot/kb/knowledge.json`, generated from `content-inventory.json`, which was extracted from
+  the Exploratorium's own rentals pages. Pricing is never quoted; availability is never confirmed;
+  every answer ends at the official inquiry form.
+- The **board** is read by the bot (`board_status`, `board_tasks`, `board_gate`, `board_activity`) and
+  written only when `BOARD_WRITE=1`; otherwise a change comes back as a proposal, which is exactly
+  the approval OpenBot can enforce.
+- The **Maestro AI app** is untouched by this work. To give it live answers, point it at the bot:
+  `POST /agui` with an AG-UI `RunAgentInput`, or reuse `openbot/web/concierge-client.js`.
 
-## Provenance
+## Repository map
 
-Primary source: [https://www.exploratorium.edu/rentals](https://www.exploratorium.edu/rentals) and its linked venue/event pages. Official reel: [https://www.youtube.com/watch?v=qVxsUfNnzNw](https://www.youtube.com/watch?v=qVxsUfNnzNw). 2026 map: [https://www.exploratorium.edu/sites/default/files/2026-06/2026_RentalsMap_Pier15_w_0.pdf](https://www.exploratorium.edu/sites/default/files/2026-06/2026_RentalsMap_Pier15_w_0.pdf). Attachment received as Maestro AI HTML rather than PDF; the official map PDF was fetched from the site.
+```
+index.html, css/, js/, config/, prompts/, maestro-ai-standalone.html   the original Maestro AI app
+events-os.html            Exploratorium Events OS prototype (generated)
+events-tab-source.html    faithful copy of only the events-tab cards
+build.py                  generator for events-os.html, docs and the zip bundle
+assets/, source/          normalised stills, wallpaper, logo cutout, received brief, map notes
+content-inventory.json    the extraction everything else is derived from
+SOURCE_COPY.md            the extracted text in reviewable form
+UPGRADE_PLAN.md           IA, design system, bot contract, roadmap
+openbot/                  AG-UI bot: brain, tools, board, server, tests, Dockerfile, client
+board/                    task board: source HTML, extracted model, live state, activity log
+docs/                     integration notes, git/deployment notes, generated bundle README
+scripts/                  push-to-github.sh
+SUBMISSION.md             judging map
+```
 
-Editorial text, images and marks belong to their respective owners. Prototype is for design adaptation; confirm rights, availability and pricing before production.
+## Provenance and guardrails
+
+- Venue facts: <https://www.exploratorium.edu/rentals> and its linked venue and event pages; the
+  official 2026 Pier 15 rentals map PDF; the 2026 corporate and wedding brochures. Capacities are
+  stated as "subject to change" and are not a confirmation of availability or price.
+- Editorial text, photography and marks belong to their respective owners; this is a design
+  adaptation for the competition, not an endorsement by the Exploratorium.
+- The Maestro vendor roster (Paula LeDuc, McCalls, Blueprint Studios, Argus HD, Entire Productions,
+  Brookline Electric) is a generic San Francisco model used as interaction scaffolding.
+- Board data was extracted from `board/source/agent-games-timeline.html`, which is tracked verbatim.
+
+## Working copies
+
+A parallel copy of the bundle, the git bundle and the source archives live in the shared Drive
+folder: <https://drive.google.com/drive/folders/1RdxbW61BqWv8S8Y9TeGHcNtV0gGWGBx1>.

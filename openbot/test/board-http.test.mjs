@@ -1,9 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { once } from 'node:events';
-import server from '../src/vercel.mjs';
+import { readFileSync } from 'node:fs';
+import { createCompetitionServer, ORIGINAL_BOARD } from '../src/competition-app.mjs';
 
-test('board HTTP integration and AG-UI transport', async t => {
+test('original board HTTP integration and AG-UI transport', async t => {
+  const previousWrite = process.env.BOARD_WRITE;
+  process.env.BOARD_WRITE = '0';
+  t.after(() => { if (previousWrite === undefined) delete process.env.BOARD_WRITE; else process.env.BOARD_WRITE = previousWrite; });
+  const server = createCompetitionServer();
   server.listen(0, '127.0.0.1');
   await once(server, 'listening');
   const base = 'http://127.0.0.1:' + server.address().port;
@@ -11,9 +16,14 @@ test('board HTTP integration and AG-UI transport', async t => {
   const root = await fetch(base + '/', { redirect: 'manual' });
   assert.equal(root.status, 302);
   assert.equal(root.headers.get('location'), '/board');
-  const page = await fetch(base + '/board');
-  assert.equal(page.status, 200);
-  assert.match(await page.text(), /\/api\/board\/tasks/);
+  for (const path of ['/board', '/board/', '/agent-games-timeline.html']) {
+    const page = await fetch(base + path);
+    assert.equal(page.status, 200);
+    assert.deepEqual(Buffer.from(await page.arrayBuffer()), readFileSync(ORIGINAL_BOARD));
+  }
+  const head = await fetch(base + '/board', { method: 'HEAD' });
+  assert.equal(head.status, 200);
+  assert.equal(await head.text(), '');
   for (const path of ['/healthz', '/agui', '/api/board']) {
     const response = await fetch(base + path);
     assert.equal(response.status, 200, path);

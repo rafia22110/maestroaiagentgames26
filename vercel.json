@@ -10,6 +10,7 @@
         "includeFiles": [
           "board/board.json",
           "board/state.json",
+          "board/source/agent-games-timeline.html",
           "openbot/kb/**"
         ]
       }

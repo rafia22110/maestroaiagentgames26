@@ -1,0 +1,25 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "framework": null,
+  "builds": [
+    {
+      "src": "openbot/src/vercel.mjs",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": [
+          "board/board.json",
+          "board/state.json",
+          "openbot/kb/**"
+        ]
+      }
+    }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/openbot/src/vercel.mjs" }
+  ],
+  "env": {
+    "BOARD_WRITE": "0",
+    "EXPLORATORIUM_STATIC": "0"
+  }
+}

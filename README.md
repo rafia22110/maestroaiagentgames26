@@ -17,6 +17,8 @@
 - `build.py` — reproducible generator; `Exploratorium_Events_UI_bundle.zip` — portable archive.
 - `openbot/` — the concierge as an AG-UI bot (`POST /agui`) with tools, tests, Dockerfile and a knowledge base generated from `content-inventory.json`.
 - `docs/OPENBOT_INTEGRATION.md` — how to register the bot in CopilotKit OpenBot, policy, audit and deployment notes.
+- `board/` — the project's task board in the repository: original HTML, extracted `board.json`, live `state.json`, append-only `activity.jsonl`.
+- `docs/GIT_AND_DEPLOY.md` — repository history, GitHub publication and split deployment.
 
 ## Running the bot
 
@@ -24,6 +26,14 @@
 cd openbot
 npm test          # protocol, grounding and guardrail tests
 npm run dev       # http://localhost:8787 — serves this prototype AND the AG-UI endpoint
+```
+
+The same service reads the task board, so the bot can answer "what is left before the hackathon?"
+and record a tick-off with approval:
+
+```bash
+node board/scripts/extract-board.mjs            # rebuild board.json from the source HTML
+curl -s localhost:8787/api/board                # progress, gate, countdown, next actions
 ```
 
 With the service running, the Maestro panel in `index.html` streams live answers from the bot and

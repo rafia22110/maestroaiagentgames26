@@ -12,6 +12,7 @@ is in it and how to move it to GitHub, Vercel and OpenBot.
 | `SOURCE_COPY.md`, `UPGRADE_PLAN.md`, `content-inventory.json` | extraction, plan, machine-readable inventory | `python3 build.py` |
 | `assets/`, `source/` | normalised stills, wallpaper, cutout, official posters, received brief, map notes | `python3 build.py` |
 | `openbot/` | the concierge as an AG-UI bot with tests, Dockerfile, client | `npm test` / `npm run dev` |
+| `board/` | the Agent Games 2026 task board: source HTML, extracted model, live state, activity log | `node board/scripts/extract-board.mjs` |
 | `openbot/kb/knowledge.json` | venue knowledge base | `node openbot/scripts/build-kb.mjs` |
 | `docs/` | this file and the OpenBot integration notes | — |
 
@@ -20,6 +21,7 @@ recreates it.
 
 ```bash
 python3 build.py                                  # regenerate prototype + docs + zip
+node board/scripts/extract-board.mjs --check      # fail if the board extraction is stale
 cd openbot && npm test && npm run dev             # bot tests, then the live service
 ```
 

@@ -607,6 +607,8 @@ README = f'''# Exploratorium Events UI — adaptation bundle
 - `build.py` — reproducible generator; `Exploratorium_Events_UI_bundle.zip` — portable archive.
 - `openbot/` — the concierge as an AG-UI bot (`POST /agui`) with tools, tests, Dockerfile and a knowledge base generated from `content-inventory.json`.
 - `docs/OPENBOT_INTEGRATION.md` — how to register the bot in CopilotKit OpenBot, policy, audit and deployment notes.
+- `board/` — the project's task board in the repository: original HTML, extracted `board.json`, live `state.json`, append-only `activity.jsonl`.
+- `docs/GIT_AND_DEPLOY.md` — repository history, GitHub publication and split deployment.
 
 ## Running the bot
 
@@ -614,6 +616,14 @@ README = f'''# Exploratorium Events UI — adaptation bundle
 cd openbot
 npm test          # protocol, grounding and guardrail tests
 npm run dev       # http://localhost:8787 — serves this prototype AND the AG-UI endpoint
+```
+
+The same service reads the task board, so the bot can answer "what is left before the hackathon?"
+and record a tick-off with approval:
+
+```bash
+node board/scripts/extract-board.mjs            # rebuild board.json from the source HTML
+curl -s localhost:8787/api/board                # progress, gate, countdown, next actions
 ```
 
 With the service running, the Maestro panel in `index.html` streams live answers from the bot and
@@ -742,7 +752,7 @@ footer{padding:30px clamp(18px,4vw,58px) 80px;border-top:1px solid var(--line);c
 
 <header class="topbar">
   <div class="brand"><div class="brand-mark" aria-hidden="true"></div><div><b>EXPLORATORIUM · EVENTS OS</b><small>Sakshinhiro Model A / adaptation study</small></div></div>
-  <div class="top-actions"><span class="status"><i class="dot"></i> Venue data synced</span><button class="pill" data-go="source">Source copy</button><button class="pill primary" data-open-bot>Ask Maestro</button></div>
+  <div class="top-actions"><span class="status"><i class="dot"></i> Venue data synced</span><a class="pill" href="board/source/agent-games-timeline.html" target="_blank" rel="noopener">Task board ↗</a><button class="pill" data-go="source">Source copy</button><button class="pill primary" data-open-bot>Ask Maestro</button></div>
 </header>
 
 <main>
@@ -993,6 +1003,7 @@ async function askLive(q){
         if(ev.type==='CUSTOM'&&ev.name==='bot.stage'){botStage(ev.value.index);continue}
         if(ev.type==='TEXT_MESSAGE_CONTENT'){if(!started){bubble.classList.remove('typing');started=true}text+=ev.delta;bubble.textContent=text;botLog.scrollTop=botLog.scrollHeight;continue}
         if(ev.type==='CUSTOM'&&ev.name==='artifact.brief'&&ev.value){$('#builder-result').innerHTML=`<b>${esc(ev.value.anchorSpace.name)}</b> — ${esc(ev.value.guests)} guests, ${esc(ev.value.format)}. ${ev.value.openQuestions.length} open questions for the Events Team.`;continue}
+        if(ev.type==='CUSTOM'&&ev.name==='artifact.board'&&ev.value&&ev.value.summary){const b=ev.value.summary;const d=document.createElement('div');d.className='msg bot';d.innerHTML=`<small style="opacity:.7;display:block;margin-bottom:6px">Task board · ${esc(b.event)}</small>${b.overall.done}/${b.overall.total} done (${b.overall.percent}%) · gate ${b.gate.passed}/${b.gate.total} · ${esc(b.countdown.hastaDeadline)} to deadline<br>${b.nextActions.slice(0,3).map(t=>`• ${esc(t.id)} ${esc(t.text.slice(0,54))}`).join('<br>')}<br><a href="board/source/agent-games-timeline.html" target="_blank" rel="noopener">Open the board ↗</a>`;botLog.appendChild(d);botLog.scrollTop=botLog.scrollHeight;continue}
         if(ev.type==='CUSTOM'&&ev.name==='artifact.citations'){applyCitations(ev.value.citations,ev.value.handoff);continue}
         if(ev.type==='RUN_ERROR')throw new Error(ev.message||'run error');
       }

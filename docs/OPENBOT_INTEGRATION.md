@@ -73,6 +73,11 @@ the scripted six-step simulation answers instead, so the demo never breaks.
 | `search_media` | `category`, `limit` | gallery tiles with captions and source URLs |
 | `draft_brief` | `guests`, `format`, `goal` | anchor space, runners-up, day flow, open questions, handoff |
 | `contact_paths` | — | phone, email, inquiry form, documents |
+| `board_status` | `limit?` | task-board progress by phase, critical path, submission gate, countdown, next actions |
+| `board_tasks` | `phase?`, `status?`, `criticalOnly?`, `tag?`, `limit?` | task rows |
+| `board_update_task` | `taskId`, `status?`/`done?`, `note?`, `by?` | the recorded change, or a proposal when `BOARD_WRITE` is off |
+| `board_gate` | `index?`, `passed?` | the six mandatory submission conditions |
+| `board_activity` | `limit?` | the tail of `board/activity.jsonl` |
 
 `callTool` throws `tool_not_granted` for anything else. In OpenBot this is belt and braces: the
 gateway refuses unknown tools too, and records the refusal.
@@ -92,6 +97,29 @@ The service writes one JSON line per event to stdout (`run_started`, `tool_call`
 `brief_export`, `inquiry_recorded`, `request_error`, `shutdown`). Ship stdout to the same log sink
 as OpenBot and a planner conversation can be reconstructed end to end without this service keeping
 any state.
+
+## 5a. The task board
+
+`board/` holds the Agent Games 2026 planning board: the original self-contained HTML in
+`board/source/`, an extraction of it in `board/board.json` (4 phases, 28 tasks, 6 gate conditions,
+6 compared venues), live progress in `board/state.json`, and an append-only `board/activity.jsonl`.
+
+It matters for this integration because the board *is* the project's operating state, and OpenBot's
+value is governed action. The bot exposes it read/write with one deliberate asymmetry:
+
+| Mode | Behaviour |
+| --- | --- |
+| `BOARD_WRITE` unset (default) | `board_update_task` returns `{proposed: true, requiresApproval: true}` and writes nothing. `POST /api/board/tasks/:id` answers **202**. |
+| `BOARD_WRITE=1` | the change is written to `state.json` atomically (tmp + rename) and appended to `activity.jsonl` with the actor and the timestamp. |
+
+In a governed deployment, leave writes off in the service and let OpenBot's approval step be the
+one that authorises a change — then whichever surface the person uses, the audit row and the
+activity line agree. The board is read-only from the model's point of view in every other sense:
+there is no path from a tool call to a shell, a file write outside `board/`, or a network request.
+
+Board answers are cited to `board/source/agent-games-timeline.html`, and anything the board claims
+about the venue is treated as the board's claim, not as venue fact: capacities still come from
+`kb/knowledge.json`, and pricing is still unquotable.
 
 ## 6. Grounding, and what the bot must never say
 
